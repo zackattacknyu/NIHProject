@@ -4,7 +4,7 @@
 
 %CONFIG VARS
 %sliceNum = ceil(rand(1,1)*numSlices);
-sliceNum = 118;
+sliceNum = 80;
 sR = 3; %support radius: radius around pixel of support region
 
 %THE CODE FOLLOWING HERE 
