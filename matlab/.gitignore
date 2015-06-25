@@ -1,2 +1,5 @@
 *.tif
 *.asv
+/timeSeries1_5005-5007/
+/timeSeries1_5005-5007_slices50-249/
+/timeSeries1_5005-5007_slices60-186_needleImages/

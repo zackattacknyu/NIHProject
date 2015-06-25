@@ -1,9 +1,11 @@
-%TO BE CHANGED AT WILL
-numFrames = 2;
-sR = 3;
-filename = '[XYZCT] registered timestepSample.tif';
+%CHANGE THIS DURING TESTS
+numFrames = 3;
+sR = 1;
+%filename = '[XYZCT] registered timestepSample.tif';
+filename = '[XYZCT] registered timeSeries1_5005-5007_slices50-249.tif';
 
-%SHOULD STAY RELATIVELY CONSTANT
+%REST OF THIS CODE SHOULD
+%   STAY THE SAME
 imgInfo = imfinfo(filename);
 num_images = numel(imgInfo);
 numSlices = floor(num_images/numFrames);
@@ -11,27 +13,26 @@ images = cell(1,num_images);
 for k = 1:num_images
    images{k} = imread(filename,k);
 end
+
 imagesFrames = reshape(images,numSlices,numFrames);
-%%
 imagesArray = zeros([size(images{1}) num_images]);
 for k = 1:num_images
    imagesArray(:,:,k) = images{k};
 end
 
-%%
-
 numRowsWFrame = size(images{1},1)-2*sR;
 numColWFrame = size(images{1},2)-2*sR;
-wronskianArray = zeros(numRowsWFrame,numColWFrame,numSlices);
-diffArray = zeros([size(images{1}) numSlices]);
-for k = 1:numSlices
-    frame1 = imagesFrames{k,1};
-    frame2 = imagesFrames{k,2};
-    wronskianArray(:,:,k) = wronskian(frame1,frame2,sR);
-    diffArray(:,:,k) = frame1-frame2;
-    k
+for secondFrame = 2:numFrames
+    wronskianArray = zeros(numRowsWFrame,numColWFrame,numSlices);
+    diffArray = zeros([size(images{1}) numSlices]);
+    for k = 1:numSlices
+        baselineFrame = imagesFrames{k,1};
+        comparisonFrame = imagesFrames{k,secondFrame};
+        wronskianArray(:,:,k) = wronskian(baselineFrame,comparisonFrame,sR);
+        diffArray(:,:,k) = baselineFrame-comparisonFrame;
+        k
+    end
+    imtool3D(wronskianArray);
+    imtool3D(diffArray);
+    
 end
-
-%%
-imtool3D(wronskianArray)
-imtool3D(diffArray)
