@@ -31,3 +31,7 @@ for k = 1:numSlices
     diffArray(:,:,k) = frame1-frame2;
     k
 end
+
+%%
+imtool3D(wronskianArray)
+imtool3D(diffArray)
