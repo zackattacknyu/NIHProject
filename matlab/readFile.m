@@ -8,6 +8,11 @@ num_images = numel(imgInfo);
 numSlices = floor(num_images/numFrames);
 images = cell(1,num_images);
 for k = 1:num_images
-   images{k} = imread(filename,k); 
+   images{k} = imread(filename,k);
 end
 imagesFrames = reshape(images,numSlices,numFrames);
+%%
+imagesArray = zeros([size(images{1}) num_images]);
+for k = 1:num_images
+   imagesArray(:,:,k) = images{k};
+end
