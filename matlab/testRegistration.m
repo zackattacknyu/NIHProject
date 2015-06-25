@@ -12,8 +12,12 @@ dcmDataFixed = single(getDCMFolderDataThreshold(fixedFolderName,thresholdFactor)
 dcmDataMoving = single(getDCMFolderDataThreshold(movingFolderName,thresholdFactor));
 
 [optimizer, metric]  = imregconfig('monomodal');
-[dcmDataRegistered,regInfo] = ...
-    imregister(dcmDataMoving,dcmDataFixed,'affine',optimizer,metric,'DisplayOptimization',true); 
+[dcmDataRegistered,regInfo,regT] = ...
+    imregister2(dcmDataMoving,dcmDataFixed,'affine',optimizer,metric,'DisplayOptimization',true); 
 
 %%
+%shows the newly registered images
 imtool3D(dcmDataFixed+dcmDataRegistered);
+
+%shows unregistered images
+imtool3D(dcmDataFixed+dcmDataMoving);
