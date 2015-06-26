@@ -6,7 +6,7 @@ sR=1;
 stackSize = size(compareStack);
 numSlices = stackSize(3);
 
-epsilon = 1e-1;
+epsilon = 1;
 
 numRowsWFrame = stackSize(1)-2*sR;
 numColWFrame = stackSize(2)-2*sR;
@@ -25,7 +25,7 @@ for k = 1:numSlices
     diffArray2(:,:,k) = baselineFrame-comparisonFrame2;
     k
 end
-
+%%
 imtool3D(wronskianArray);
 imtool3D(diffArray);
 imtool3D(wronskianArray2);
