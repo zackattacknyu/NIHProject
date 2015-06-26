@@ -1,4 +1,4 @@
-function [ WFrame ] = wronskian( frame1,frame2, sR )
+function [ WFrame ] = wronskian( frame1,frame2, sR,epsilon )
 %WRONSKIAN Computes the wronskian change detector on two frames
 %   frame1 - baseline frame
 %   frame2 - current frame
@@ -16,6 +16,7 @@ for i = (1+sR):(numRowsWFrame-sR)
       regionX = frame1((i-sR):(i+sR),(j-sR):(j+sR));
       regionY = frame2((i-sR):(i+sR),(j-sR):(j+sR));
       regionX = regionX(:); regionY = regionY(:);
+      regionY(regionY<epsilon)=epsilon; %makes sure no div by zero error
       squaredSum = sum((regionX.^2)./(regionY.^2));
       normalSum = sum(regionX./regionY);
       wValue = (squaredSum+normalSum)/sN;
