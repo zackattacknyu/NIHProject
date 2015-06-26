@@ -20,7 +20,31 @@ dcmDataMoving2 = single(getDCMFolderDataThreshold(movingFolderName2,thresholdFac
     imregister2(dcmDataMoving2,dcmDataFixed,'affine',optimizer,metric,'DisplayOptimization',true); 
 %%
 %shows the newly registered images
-%imtool3D(dcmDataFixed+dcmDataRegistered);
+unregThreshold = figure('Name','Registered Slices Thresholded');
+imtool3D(dcmDataFixed+dcmDataRegistered2,[0 0 1 1],unregThreshold);
 
 %shows unregistered images
-%imtool3D(dcmDataFixed+dcmDataMoving);
+regThreshold = figure('Name','Unregistered Slices Thresholded');
+imtool3D(dcmDataFixed+dcmDataMoving,[0 0 1 1],regThreshold);
+
+%%
+[~,dcmRawFixed] = getDCMFolderData(fixedFolderName);
+[~,dcmRawMoving] = getDCMFolderData(movingFolderName);
+[~,dcmRawMoving2] = getDCMFolderData(movingFolderName2);
+
+dcmRawFixed = single(dcmRawFixed);
+dcmRawMoving = single(dcmRawMoving);
+dcmRawMoving2 = single(dcmRawMoving2);
+
+Rfixed = imref3d(size(dcmRawFixed));
+dcmRawMovingReg = imwarp(dcmRawMoving,regInfo,regT,'OutputView',Rfixed);
+dcmRawMovingReg2 = imwarp(dcmRawMoving2,regInfo2,regT2,'OutputView',Rfixed);
+%%
+
+%raw data unregistered
+unreg = figure('Name','Unregistered Slices');
+imtool3D(dcmRawFixed+dcmRawMoving2,[0 0 1 1],unreg);
+
+%raw data registered to the needles
+regNeedles = figure('Name','Slices Registered to Needles');
+imtool3D(dcmRawFixed+dcmRawMovingReg2,[0 0 1 1],regNeedles);
