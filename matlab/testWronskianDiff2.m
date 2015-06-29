@@ -1,5 +1,7 @@
-baselineStack = dcmRawFixed;
-compareStack = dcmRawMoving2;
+%baselineStack = dcmRawFixed;
+%compareStack = dcmRawMoving2;
+baselineStack = fixedImg;
+compareStack = movingImg;
 sR=1;
 
 stackSize = size(compareStack);
@@ -12,10 +14,10 @@ diffArray = zeros(stackSize);
 for k = 1:numSlices
     baselineFrame = baselineStack(:,:,k);
     comparisonFrame = compareStack(:,:,k);
-    wronskianArray(:,:,k) = wronskian(baselineFrame,comparisonFrame,sR);
+    wronskianArray(:,:,k) = wronskian(baselineFrame,comparisonFrame,sR,0.1);
     diffArray(:,:,k) = baselineFrame-comparisonFrame;
     k
 end
-%%
+
 imtool3D(wronskianArray);
 imtool3D(diffArray);

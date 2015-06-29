@@ -19,7 +19,7 @@ for i = 1:length(thetas)
    sinogram(:,i) = sum(tmpImage,2);
    
    % visualization on the fly
-   imagesc(sinogram);
-   drawnow
+   %imagesc(sinogram);
+   %drawnow
    
 end

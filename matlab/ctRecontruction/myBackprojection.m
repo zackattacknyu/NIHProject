@@ -34,7 +34,7 @@ for i = 1:numOfAngularProjections
     BPI(indices) = BPI(indices) + sinogram(newCoords,i)./numOfAngularProjections;
     
     % visualization on the fly
-    imagesc(BPI)
-    drawnow
+    %imagesc(BPI)
+    %drawnow
 
 end

@@ -15,6 +15,7 @@ midindex = floor(size(backprojection,1)/2) + 1;
 % prepare filter for frequency domain without normalization
 [xCoords,yCoords] = meshgrid(1 - midindex:size(backprojection,1) - midindex);
 rampFilter2D      = sqrt(xCoords.^2 + yCoords.^2);
+rampFilter2D = rampFilter2D./max(rampFilter2D(:));
 
 % 2 D Fourier transformation and sorting
 reconstrution2DFT = fftshift(fft2(backprojection));

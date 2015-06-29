@@ -12,11 +12,18 @@ movingFolderName2 = strcat(parentDir,'ser_5007/');
 [~,~,dcmMovingHU] = getDCMFolderData(movingFolderName);
 [~,~,dcmMoving2HU] = getDCMFolderData(movingFolderName2);
 
+%%
 dcmFixedHUBackProj = zeros(size(dcmFixedHU));
-dcmMovingHUBackProj = zeros(size(dcmMovingHUBackProj));
-dcmMoving2HUBackProj = zeros(size(dcmMoving2HUBackProj));
+dcmMovingHUBackProj = zeros(size(dcmMovingHU));
+dcmMoving2HUBackProj = zeros(size(dcmMoving2HU));
 for i = 1:size(dcmFixedHU,3)
+    i
     dcmFixedHUBackProj(:,:,i) = getFilteredBackprojectImg(dcmFixedHU(:,:,i));
     dcmMovingHUBackProj(:,:,i) = getFilteredBackprojectImg(dcmMovingHU(:,:,i));
     dcmMoving2HUBackProj(:,:,i) = getFilteredBackprojectImg(dcmMoving2HU(:,:,i));
 end
+
+%%
+dcmFixedHUBackProjMod = dcmFixedHUBackProj;
+dcmFixedHUBackProjMod(dcmFixedHUBackProjMod<0)=0;
+dcmFixedHUBackProjMod(dcmFixedHUBackProjMod>400000)=40000;

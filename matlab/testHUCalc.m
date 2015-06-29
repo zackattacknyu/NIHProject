@@ -13,6 +13,8 @@ thresholdFactor = 0.85;
 [~,~,dcmMovingHU] = getDCMFolderData(movingFolderName);
 [~,~,dcmMoving2HU] = getDCMFolderData(movingFolderName2);
 
+%{
 imtool3D(dcmFixedHU);
 imtool3D(dcmMovingHU);
 imtool3D(dcmMoving2HU);
+%}

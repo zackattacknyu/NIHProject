@@ -3,7 +3,7 @@
 
 %folderNames = {'ser_5005','ser_5006'};
 folderNames = {'ser_5005','ser_5007'};
-thresholdFactor = 0.85;
+threshold = 400;
 %writeDirName = 'timeSeries1_5005-5007_slices60-186_needleImages/stack5005_5006/'; 
 writeDirName = 'timeSeries1_5005-5007_slices60-186_needleImages/stack5005_5007/'; 
 initIndex = 60;
@@ -15,7 +15,6 @@ for t=1:2
     
     [dcmData,dcmArray] = getDCMFolderData(dirName);
     maxPixel = max(max(max(dcmArray)));
-    threshold = maxPixel*thresholdFactor;
     dcmArrayThreshold = dcmArray>threshold;
     %imtool3D(dcmArrayThreshold);
 
