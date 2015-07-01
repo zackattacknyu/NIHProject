@@ -1,4 +1,4 @@
-function [ dcmData,dcmArray,dcmArrayHU ] = getDCMFolderData( dirName )
+function [ dcmData,dcmArray,dcmArrayHU,slope,intercept ] = getDCMFolderData( dirName )
 %GETDCMFOLDERDATA Summary of this function goes here
 %   dcmData - puts the matrices into a cell
 %   dcmAray - makes a large array
