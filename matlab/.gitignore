@@ -16,3 +16,4 @@
 *.mat
 /bfilter2/
 *.nii
+/niftiFiles2/
