@@ -13,3 +13,6 @@
 /sampleTIFFvol/
 /matlab.mat
 /data6-29.mat
+*.mat
+/bfilter2/
+*.nii

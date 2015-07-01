@@ -16,6 +16,8 @@ for i = (1+sR):(numRowsWFrame-sR)
       regionX = frame1((i-sR):(i+sR),(j-sR):(j+sR));
       regionY = frame2((i-sR):(i+sR),(j-sR):(j+sR));
       regionX = regionX(:); regionY = regionY(:);
+      badEntries = find(abs(regionY)<epsilon);
+      regionY(badEntries) = sign(regionY(badEntries))*epsilon;
       regionY(abs(regionY)<epsilon)=epsilon; %makes sure no div by zero error
       squaredSum = sum((regionX.^2)./(regionY.^2));
       normalSum = sum(regionX./regionY);
