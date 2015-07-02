@@ -35,6 +35,9 @@ wronskianBlocks = cell(4,6,numSR);
 
 for sR=1:numSR
     for iNum=1:4
+        iNum
+        sR
+        datestr(now)
         
         wronskianBlocks{iNum,1,sR} = wronskian3D(fixedImg,movingImages{iNum},sR,1);
         wronskianBlocks{iNum,2,sR} = wronskian3D(fixedImg+kb,movingImages{iNum}+kb,sR,1);
@@ -43,9 +46,10 @@ for sR=1:numSR
         wronskianBlocks{iNum,4,sR} = wronskian3D(movingImages{iNum},fixedImg,sR,1);
         wronskianBlocks{iNum,5,sR} = wronskian3D(movingImages{iNum}+kb,fixedImg+kb,sR,1);
         wronskianBlocks{iNum,6,sR} = wronskian3D(movingImages{iNum}+kc,fixedImg+kc,sR,1);
+        
+        datestr(now)
    end
 end
-
 
 %%
 maxVal = 15;
