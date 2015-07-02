@@ -20,13 +20,13 @@ for i = (1+sR):(numRowsWBlock-sR)
           regionX = reshape(regionX,1,sN); regionY = reshape(regionY,1,sN);
           badEntries = find(abs(regionY)<epsilon);
           regionY(badEntries) = sign(regionY(badEntries))*epsilon;
-          regionY(abs(regionY)<epsilon)=epsilon; %makes sure no div by zero error
-          squaredSum = sum((regionX.^2)./(regionY.^2));
-          normalSum = sum(regionX./regionY);
-          wValue = (squaredSum+normalSum)/sN;
-          WBlock(i,j) = wValue;
+          %regionY(abs(regionY)<epsilon)=epsilon; %makes sure no div by zero error
+          divRegion = regionX./regionY;
+          wValue = (sum(divRegion.^2)-sum(divRegion))/sN;
+          WBlock(i,j,k) = wValue;
        end
    end
+   i
 end
 
 
