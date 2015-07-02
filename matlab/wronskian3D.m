@@ -26,7 +26,7 @@ for i = (1+sR):(numRowsWBlock-sR)
           WBlock(i,j,k) = wValue;
        end
    end
-   i
+   %i
 end
 
 
