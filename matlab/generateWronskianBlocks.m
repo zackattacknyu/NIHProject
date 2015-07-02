@@ -35,20 +35,28 @@ wronskianBlock1e = wronskian3D(movingImg+kb,fixedImg+kb,sR,1);
 wronskianBlock1f = wronskian3D(movingImg+kc,fixedImg+kc,sR,1);
 
 wronskianBlock2 = wronskian3D(fixedImg,movingImg2,sR,1);
+wronskianBlock2b = wronskian3D(fixedImg+kb,movingImg2+kb,sR,1);
+wronskianBlock2c = wronskian3D(fixedImg+kc,movingImg2+kc,sR,1);
+
+wronskianBlock2d = wronskian3D(movingImg2,fixedImg,sR,1);
+wronskianBlock2e = wronskian3D(movingImg2+kb,fixedImg+kb,sR,1);
+wronskianBlock2f = wronskian3D(movingImg2+kc,fixedImg+kc,sR,1);
 
 wronskianBlock3 = wronskian3D(fixedImg,movingImg3,sR,1);
+wronskianBlock3b = wronskian3D(fixedImg+kb,movingImg3+kb,sR,1);
+wronskianBlock3c = wronskian3D(fixedImg+kc,movingImg3+kc,sR,1);
 
-wronskianBlock3a = wronskian3D(movingImg3,fixedImg,sR,1);
+wronskianBlock3d = wronskian3D(movingImg3,fixedImg,sR,1);
+wronskianBlock3e = wronskian3D(movingImg3+kb,fixedImg+kb,sR,1);
+wronskianBlock3f = wronskian3D(movingImg3+kc,fixedImg+kc,sR,1);
 
-movingImg3b = movingImg3+4200;
-fixedImgb = fixedImg+4200;
-wronskianBlock3b = wronskian3D(movingImg3b,fixedImgb,sR,1);
-%%
-movingImg3c = movingImg3+2400;
-fixedImgc = fixedImg+2400;
-wronskianBlock3c = wronskian3D(movingImg3c(:,:,70:100),fixedImgc(:,:,70:100),sR,1);
-%%
 wronskianBlock4 = wronskian3D(fixedImg,movingImg4,sR,1);
+wronskianBlock4b = wronskian3D(fixedImg+kb,movingImg4+kb,sR,1);
+wronskianBlock4c = wronskian3D(fixedImg+kc,movingImg4+kc,sR,1);
+
+wronskianBlock4d = wronskian3D(movingImg4,fixedImg,sR,1);
+wronskianBlock4e = wronskian3D(movingImg4+kb,fixedImg+kb,sR,1);
+wronskianBlock4f = wronskian3D(movingImg4+kc,fixedImg+kc,sR,1);
 %%
 sR=2;
 wronskianBlock5 = wronskian3D(fixedImg,movingImg,sR,1);
