@@ -11,9 +11,7 @@ movingImg = niiMoving.img;
 movingImg2 = niiMoving2.img;
 movingImg3 = niiMovingReg.img;
 movingImg4 = niiMovingReg2.img;
-
 %%
-
 %temporary. 
 %   TO BE DELETED ONCE PROPER HU UNITS ARE IN NII FILES
 fixedImg = fixedImg.*fixedSlope + fixedInt;
@@ -23,70 +21,32 @@ movingImg3 = movingImg3.*movingSlope + movingInt;
 movingImg4 = movingImg4.*movingSlope2 + movingInt2;
 
 %%
-sR=1;
+numSR=10;
 kb = 2400;
 kc = 4200;
-wronskianBlock1 = wronskian3D(fixedImg,movingImg,sR,1);
-wronskianBlock1b = wronskian3D(fixedImg+kb,movingImg+kb,sR,1);
-wronskianBlock1c = wronskian3D(fixedImg+kc,movingImg+kc,sR,1);
+movingImages = cell(1,4);
+movingImages{1} = movingImg;
+movingImages{2} = movingImg2;
+movingImages{3} = movingImg3;
+movingImages{4} = movingImg4;
 
-wronskianBlock1d = wronskian3D(movingImg,fixedImg,sR,1);
-wronskianBlock1e = wronskian3D(movingImg+kb,fixedImg+kb,sR,1);
-wronskianBlock1f = wronskian3D(movingImg+kc,fixedImg+kc,sR,1);
+%order is movingImageNum,blockType,sR
+wronskianBlocks = cell(4,6,numSR);
 
-wronskianBlock2 = wronskian3D(fixedImg,movingImg2,sR,1);
-wronskianBlock2b = wronskian3D(fixedImg+kb,movingImg2+kb,sR,1);
-wronskianBlock2c = wronskian3D(fixedImg+kc,movingImg2+kc,sR,1);
+for sR=1:numSR
+    for iNum=1:4
+        
+        wronskianBlocks{iNum,1,sR} = wronskian3D(fixedImg,movingImages{iNum},sR,1);
+        wronskianBlocks{iNum,2,sR} = wronskian3D(fixedImg+kb,movingImages{iNum}+kb,sR,1);
+        wronskianBlocks{iNum,3,sR} = wronskian3D(fixedImg+kc,movingImages{iNum}+kc,sR,1);
 
-wronskianBlock2d = wronskian3D(movingImg2,fixedImg,sR,1);
-wronskianBlock2e = wronskian3D(movingImg2+kb,fixedImg+kb,sR,1);
-wronskianBlock2f = wronskian3D(movingImg2+kc,fixedImg+kc,sR,1);
+        wronskianBlocks{iNum,4,sR} = wronskian3D(movingImages{iNum},fixedImg,sR,1);
+        wronskianBlocks{iNum,5,sR} = wronskian3D(movingImages{iNum}+kb,fixedImg+kb,sR,1);
+        wronskianBlocks{iNum,6,sR} = wronskian3D(movingImages{iNum}+kc,fixedImg+kc,sR,1);
+   end
+end
 
-wronskianBlock3 = wronskian3D(fixedImg,movingImg3,sR,1);
-wronskianBlock3b = wronskian3D(fixedImg+kb,movingImg3+kb,sR,1);
-wronskianBlock3c = wronskian3D(fixedImg+kc,movingImg3+kc,sR,1);
 
-wronskianBlock3d = wronskian3D(movingImg3,fixedImg,sR,1);
-wronskianBlock3e = wronskian3D(movingImg3+kb,fixedImg+kb,sR,1);
-wronskianBlock3f = wronskian3D(movingImg3+kc,fixedImg+kc,sR,1);
-
-wronskianBlock4 = wronskian3D(fixedImg,movingImg4,sR,1);
-wronskianBlock4b = wronskian3D(fixedImg+kb,movingImg4+kb,sR,1);
-wronskianBlock4c = wronskian3D(fixedImg+kc,movingImg4+kc,sR,1);
-
-wronskianBlock4d = wronskian3D(movingImg4,fixedImg,sR,1);
-wronskianBlock4e = wronskian3D(movingImg4+kb,fixedImg+kb,sR,1);
-wronskianBlock4f = wronskian3D(movingImg4+kc,fixedImg+kc,sR,1);
-%%
-sR=2;
-wronskianBlock5 = wronskian3D(fixedImg,movingImg,sR,1);
-wronskianBlock6 = wronskian3D(fixedImg,movingImg2,sR,1);
-wronskianBlock7 = wronskian3D(fixedImg,movingImg3,sR,1);
-wronskianBlock8 = wronskian3D(fixedImg,movingImg4,sR,1);
-
-sR=3;
-wronskianBlock9 = wronskian3D(fixedImg,movingImg,sR,1);
-wronskianBlock10 = wronskian3D(fixedImg,movingImg2,sR,1);
-wronskianBlock11 = wronskian3D(fixedImg,movingImg3,sR,1);
-wronskianBlock12 = wronskian3D(fixedImg,movingImg4,sR,1);
-
-sR=4;
-wronskianBlock13 = wronskian3D(fixedImg,movingImg,sR,1);
-wronskianBlock14 = wronskian3D(fixedImg,movingImg2,sR,1);
-wronskianBlock15 = wronskian3D(fixedImg,movingImg3,sR,1);
-wronskianBlock16 = wronskian3D(fixedImg,movingImg4,sR,1);
-
-sR=5;
-wronskianBlock17 = wronskian3D(fixedImg,movingImg,sR,1);
-wronskianBlock18 = wronskian3D(fixedImg,movingImg2,sR,1);
-wronskianBlock19 = wronskian3D(fixedImg,movingImg3,sR,1);
-wronskianBlock20 = wronskian3D(fixedImg,movingImg4,sR,1);
-
-sR=6;
-wronskianBlock21 = wronskian3D(fixedImg,movingImg,sR,1);
-wronskianBlock22 = wronskian3D(fixedImg,movingImg2,sR,1);
-wronskianBlock23 = wronskian3D(fixedImg,movingImg3,sR,1);
-wronskianBlock24 = wronskian3D(fixedImg,movingImg4,sR,1);
 %%
 maxVal = 15;
 wronskian1 = getModifiedWronskian(wronskianArray,maxVal);
