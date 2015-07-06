@@ -12,11 +12,12 @@ WBlock = zeros(numRowsWBlock,numColWBlock,numFraWBlock);
 
 %makes the wronskian frame
 sN = (sR*2+1)^3; %support N, number of pixels in support region
+fprintf(1,'I value: ');
 for i = (1+sR):(numRowsWBlock-sR)
    for j = (1+sR):(numColWBlock-sR)
        for k = (1+sR):(numFraWBlock-sR)
-          regionX = baseBlock((i-sR):(i+sR),(j-sR):(j+sR),(k-sR):(k+sR));
-          regionY = currentBlock((i-sR):(i+sR),(j-sR):(j+sR),(k-sR):(k+sR));
+          regionX = currentBlock((i-sR):(i+sR),(j-sR):(j+sR),(k-sR):(k+sR));
+          regionY = baseBlock((i-sR):(i+sR),(j-sR):(j+sR),(k-sR):(k+sR));
           regionX = reshape(regionX,1,sN); regionY = reshape(regionY,1,sN);
           badEntries = find(abs(regionY)<epsilon);
           regionY(badEntries) = sign(regionY(badEntries))*epsilon;
@@ -26,9 +27,9 @@ for i = (1+sR):(numRowsWBlock-sR)
           WBlock(i,j,k) = wValue;
        end
    end
-   %i
+   fprintf(1,'\b%d',i); pause(.1)
 end
-
+fprintf('\n')
 
 end
 

@@ -1,4 +1,4 @@
-function [ weight, feature ] = getFeatureWeight( patch )
+function [ weight, feature ] = getFeatureWeight3D( patch )
 %GETFEATUREWEIGHT Summary of this function goes here
 %   Detailed explanation goes here
 

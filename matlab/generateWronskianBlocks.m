@@ -30,6 +30,33 @@ movingImages{2} = movingImg2;
 movingImages{3} = movingImg3;
 movingImages{4} = movingImg4;
 
+%%
+
+%order is movingImageNum,blockType,sR
+wronskianBlocks2 = cell(2,2);
+
+movingRegImages = cell(1,2);
+movingRegImages{1} = putInMinMaxRange(movingImages{3},-100,1000);
+movingRegImages{2} = putInMinMaxRange(movingImages{4},-100,1000);
+%%
+
+fixedImgA = putInMinMaxRange(fixedImg,-100,1000);
+%%
+kc=1200;
+for sR=1:2
+    for iNum=1:2
+        iNum
+        sR
+        datestr(now)
+        
+        wronskianBlocks2{iNum,sR} = wronskian3D(fixedImgA+kc,movingRegImages{iNum}+kc,sR,1);
+        
+        datestr(now)
+   end
+end
+
+%%
+
 %order is movingImageNum,blockType,sR
 wronskianBlocks = cell(4,6,numSR);
 
