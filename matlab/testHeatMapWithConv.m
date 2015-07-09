@@ -28,9 +28,9 @@ fixedImgSlice = fixedImg(:,:,sliceNum);
 figure
 imagesc(fixedImgSlice)
 [x, y] = ginput;
-wSize=2; center = floor([y(1) x(1)]);
+wSize=1; center = floor([y(1) x(1)]);
 %%
-[colCoords,rowCoords]=meshgrid(center(1)-wSize:1:center(1)+wSize,center(2)-wSize:1:center(2)+wSize);
+[rowCoords,colCoords]=meshgrid(center(1)-wSize:1:center(1)+wSize,center(2)-wSize:1:center(2)+wSize);
 controlInds = sub2ind(size(fixedImgSlice),rowCoords(:),colCoords(:));
 %%
 
@@ -41,7 +41,7 @@ figure
 imagesc(curImage);
 [x,y] = ginput;
 center = floor([y(1) x(1)]);
-[colCoords,rowCoords]=meshgrid(center(1)-wSize:1:center(1)+wSize,center(2)-wSize:1:center(2)+wSize);
+[rowCoords,colCoords]=meshgrid(center(1)-wSize:1:center(1)+wSize,center(2)-wSize:1:center(2)+wSize);
 ablationInds = sub2ind(size(curImage),rowCoords(:),colCoords(:));
 
 %%
@@ -71,4 +71,7 @@ hold off
 %%
 imtool3D(polyval(coeff,diffImageConv)+37);
 imtool3D(polyval(coeff,diffImageConv2)+37);
+
+%%
+save('pt1TempData.mat')
 
