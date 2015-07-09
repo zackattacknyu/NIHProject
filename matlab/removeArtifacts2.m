@@ -18,7 +18,7 @@ movingImgNoArt = zeros(arrSize);
 movingImg2NoArt = zeros(arrSize);
 movingImg3NoArt = zeros(arrSize);
 movingImg4NoArt = zeros(arrSize);
-for k = 1:size(dcmFixedHU,3)
+for k = 1:arrSize(3)
     k
     fixedImgNoArt(:,:,k) = getImgArtifactsRemoved(fixedImg(:,:,k));
     movingImgNoArt(:,:,k) = getImgArtifactsRemoved(movingImg(:,:,k));

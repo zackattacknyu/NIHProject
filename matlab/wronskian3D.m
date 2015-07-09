@@ -12,7 +12,7 @@ WBlock = zeros(numRowsWBlock,numColWBlock,numFraWBlock);
 
 %makes the wronskian frame
 sN = (sR*2+1)^3; %support N, number of pixels in support region
-fprintf(1,'I value: ');
+fprintf(1,'I value:\n');
 for i = (1+sR):(numRowsWBlock-sR)
    for j = (1+sR):(numColWBlock-sR)
        for k = (1+sR):(numFraWBlock-sR)
@@ -27,7 +27,13 @@ for i = (1+sR):(numRowsWBlock-sR)
           WBlock(i,j,k) = wValue;
        end
    end
-   fprintf(1,'\b%d',i); pause(.1)
+   
+   numDigits = floor(log10(i))+1;
+    for j=1:numDigits
+        fprintf(1,'\b');
+    end
+    fprintf(1,'%d',i); pause(.1)
+   
 end
 fprintf('\n')
 
