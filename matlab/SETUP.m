@@ -1,29 +1,17 @@
 
-
-%{
 parentDir = 'niftiFiles/';
 niiFixed = load_nii(strcat(parentDir,'fixed_5005.nii'));
 niiMoving = load_nii(strcat(parentDir,'moving_5006.nii'));
 niiMoving2 = load_nii(strcat(parentDir,'moving_5007.nii'));
 niiMovingReg = load_nii(strcat(parentDir,'moving_5006_registered.nii'));
 niiMovingReg2 = load_nii(strcat(parentDir,'moving_5007_registered.nii'));
-%}
-parentDir = 'niftiFilesPt8/';
-niiFixed = load_nii(strcat(parentDir,'fixed_5002.nii'));
-niiMoving = load_nii(strcat(parentDir,'moving_5003.nii'));
-niiMoving2 = load_nii(strcat(parentDir,'moving_5004.nii'));
-niiMovingReg = load_nii(strcat(parentDir,'moving_5003_registered.nii'));
-niiMovingReg2 = load_nii(strcat(parentDir,'moving_5004_registered.nii'));
-
 
 fixedImg = niiFixed.img;
 movingImg = niiMoving.img;
 movingImg2 = niiMoving2.img;
 movingImg3 = niiMovingReg.img;
 movingImg4 = niiMovingReg2.img;
-load('niftiFilesPt8/dcmVars.mat');
 
-%{
 parentDir = 'timeSeries1_5005-5007/';
 fixedFolderName = strcat(parentDir,'ser_5005/');
 movingFolderName = strcat(parentDir,'ser_5006/');
@@ -31,7 +19,7 @@ movingFolderName2 = strcat(parentDir,'ser_5007/');
 [~,~,~,fixedSlope,fixedInt] = getDCMFolderData(fixedFolderName);
 [~,~,~,movingSlope,movingInt] = getDCMFolderData(movingFolderName);
 [~,~,~,movingSlope2,movingInt2] = getDCMFolderData(movingFolderName2);
-%}
+
 
 fixedImg = fixedImg.*fixedSlope + fixedInt;
 movingImg = movingImg.*movingSlope + movingInt;

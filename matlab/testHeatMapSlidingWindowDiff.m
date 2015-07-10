@@ -7,16 +7,24 @@ squFrame = slidingWindowSquDiff(fixedSlice,movingSlice,8);
 
 %squFrameBlock = getSlidingWindowBlocks(fixedImg,movingImg3,8);
 
-numRowsWFrame = size(fixedImg,1)-2*sR;
-numColWFrame = size(fixedImg,2)-2*sR;
-squFrames = zeros(numRowsWFrame,numColWFrame,size(fixedImg,3));
+wSize=4;
 
-wSize=8;
-for k=135:155
+numRowsWFrame = size(fixedImg,1)-2*wSize;
+numColWFrame = size(fixedImg,2)-2*wSize;
+squFrames = cell(1,size(fixedImg,3));
+squFrames2 = cell(1,size(fixedImg,3));
+%squFrames = zeros(numRowsWFrame,numColWFrame,size(fixedImg,3));
+%squFrames2 = zeros(numRowsWFrame,numColWFrame,size(fixedImg,3));
+
+for k=142:155
     datestr(now)
     fixedSlice = fixedImg(:,:,k);
-    movingSlice = movingImg(:,:,k);
-    squFrames(:,:,k) = slidingWindowSquDiff(fixedSlice,movingSlice,wSize);
+    movingSlice = movingImg3(:,:,k);
+    movingSlice2 = movingImg4(:,:,k);
+    squFrames{k} = slidingWindowSquDiff(fixedSlice,movingSlice,wSize);
+    squFrames2{k} = slidingWindowSquDiff(fixedSlice,movingSlice2,wSize);
+    %squFrames(:,:,k) = slidingWindowSquDiff(fixedSlice,movingSlice,wSize);
+    %squFrames2(:,:,k) = slidingWindowSquDiff(fixedSlice,movingSlice2,wSize);
 end
 
 meanSquFrames = sqrt(squFrames);
