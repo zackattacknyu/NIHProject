@@ -18,3 +18,6 @@
 *.nii
 /niftiFiles2/
 /timeSeriesPt8_5002-5004/
+/timeSeriesPt4_5007-5009/
+/timeSeriesPt2_5014-5016/
+/Pt8ConvDiffVolumes/

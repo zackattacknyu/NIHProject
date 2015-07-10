@@ -16,7 +16,7 @@ squFrames2 = cell(1,size(fixedImg,3));
 %squFrames = zeros(numRowsWFrame,numColWFrame,size(fixedImg,3));
 %squFrames2 = zeros(numRowsWFrame,numColWFrame,size(fixedImg,3));
 
-for k=142:155
+for k=148:155
     datestr(now)
     fixedSlice = fixedImg(:,:,k);
     movingSlice = movingImg3(:,:,k);
@@ -28,6 +28,16 @@ for k=142:155
 end
 
 meanSquFrames = sqrt(squFrames);
+
+%%
+
+squFramesArray = zeros([size(squFrames{143}) size(fixedImg,3)]);
+squFramesArray2 = zeros([size(squFrames{143}) size(fixedImg,3)]);
+%%
+for k=148:155
+    squFramesArray(:,:,k) = squFrames{k};
+    squFramesArray2(:,:,k) = squFrames2{k};
+end
 
 
 

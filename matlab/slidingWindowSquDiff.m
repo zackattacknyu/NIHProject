@@ -14,7 +14,7 @@ for i = (1+sR):(numRowsWFrame+sR)
    for j = (1+sR):(numColWFrame+sR)
       regionX = frame1((i-sR):(i+sR),(j-sR):(j+sR));
       regionY = frame2((i-sR):(i+sR),(j-sR):(j+sR));
-      WFrame(i,j) = getMinWindowSquDiff(regionX,regionY);
+      WFrame(i-sR,j-sR) = getMinWindowSquDiff(regionX,regionY);
    end
    i
 end
