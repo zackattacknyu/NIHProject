@@ -16,7 +16,7 @@ for i = (1+sR):(numRowsWFrame+sR)
       regionY = frame2((i-sR):(i+sR),(j-sR):(j+sR));
       WFrame(i-sR,j-sR) = getMinWindowSquDiff(regionX,regionY);
    end
-   i
+   %i
 end
 
 

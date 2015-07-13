@@ -1,4 +1,5 @@
-fSize=8;
+%fSize=8; %for Pt 9 and Pt 8
+fSize=4; %for Pt4
 wSize = 1;
 %%
 
@@ -7,8 +8,12 @@ wSize = 1;
 %temps = [108 5 10 0];
 
 %for Pt 8, baseline 1
-sliceNum=210;
-temps = [64 0 14 1];
+%sliceNum=210;
+%temps = [64 0 14 1];
+
+%for Pt4, baseline 1
+sliceNum = 117;
+temps = [28 20 31 21];
 
 
 %%
@@ -16,13 +21,11 @@ fixedImgConv = getAverageFilteredBlocks(fixedImg,fSize);
 movingImgConv = getAverageFilteredBlocks(movingImg3,fSize);
 movingImgConv2 = getAverageFilteredBlocks(movingImg4,fSize);
 
-%%
 diffImageConv=fixedImgConv-movingImgConv;
 diffImageConv2=fixedImgConv-movingImgConv2;
 
-%%
-diffImageConv2 = putInMinMaxRange(fixedImgConv-movingImgConv2,-1000,1000);
-diffImageConv = putInMinMaxRange(fixedImgConv-movingImgConv,-1100,1100);
+%diffImageConv2 = putInMinMaxRange(fixedImgConv-movingImgConv2,-1000,1000);
+%diffImageConv = putInMinMaxRange(fixedImgConv-movingImgConv,-1100,1100);
 %%
 %the fixed image is what we use to get coords for thermocouple,
 fixedImgSlice = fixedImg(:,:,sliceNum);
@@ -47,5 +50,5 @@ imtool3D(polyval(coeff,diffImageConv)+37);
 imtool3D(polyval(coeff,diffImageConv2)+37);
 
 %%
-save('pt1TempData.mat')
+save('pt4TempData.mat')
 

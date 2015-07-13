@@ -1,0 +1,2 @@
+reg_aladin -ref D:\git\NIHProject\matlab\niftiFilesPt1\fixed_5007.nii -flo D:\git\NIHProject\matlab\niftiFilesPt1\moving_5008.nii -aff D:\git\NIHProject\matlab\niftiFilesPt1\moving_5008_transform.txt
+reg_aladin -ref D:\git\NIHProject\matlab\niftiFilesPt1\fixed_5007.nii -flo D:\git\NIHProject\matlab\niftiFilesPt1\moving_5009.nii -aff D:\git\NIHProject\matlab\niftiFilesPt1\moving_5009_transform.txt

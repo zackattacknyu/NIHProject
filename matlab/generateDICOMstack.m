@@ -1,13 +1,14 @@
-%writeDirName = 'Pt8ConvDiffVolumes/volume5002_5003/'; 
-%volToWrite = putin01scale(diffImageConv);
-%writeDirName = 'Pt8ConvDiffVolumes/volume5002_5004/'; 
-%volToWrite = putin01scale(diffImageConv2);
-writeDirName = 'Pt8ConvDiffVolumes/volume3/'; 
-volToWrite2 = putin01scale(diffImageConv);
-volToWrite3 = putin01scale(fixedImg);
-volToWrite = putin01scale(volToWrite2+volToWrite3);
+%writeDirName = 'Pt8ConvDiffVolumes/diffVol5002_5003/'; 
+%infoDirName = 'timeSeriesPt8_5002-5004/ser_5002/';
+writeDirName = 'Pt8ConvDiffVolumes/diffVol5002_5004/'; 
+infoDirName = 'timeSeriesPt8_5002-5004/ser_5002/';
+infoFilesInFolder = dir(infoDirName);
+volToWrite = putin01scale(diffImageConv2);
 
 for k = 1:size(volToWrite,3)
-    fileName = strcat(writeDirName,'diffVolSlice',num2str(k),'.dcm');
-    dicomwrite(volToWrite(:,:,k),fileName);
+    readFileName = infoFilesInFolder(k+2,1).name;
+    infoFilePath = strcat(infoDirName,readFileName);
+    dcmMetadata = dicominfo(infoFilePath);
+    fileName = strcat(writeDirName,'diffVol2Slice',num2str(k),'.dcm');
+    dicomwrite(volToWrite(:,:,k),fileName,dcmMetadata);
 end

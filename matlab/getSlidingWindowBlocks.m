@@ -1,15 +1,20 @@
-function [ squFrames ] = getSlidingWindowBlocks( fixedImg,movingImg,wSize )
+function [ diffFrameBlock ] = getSlidingWindowBlocks( fixedROI,movingROI,fSize )
 %GETAVERAGEFILTEREDBLOCKS Summary of this function goes here
 %   Detailed explanation goes here
 
-squFrames = cell(1,size(fixedImg,3));
-%for k=1:size(fixedImg,3)
-for k=130:160
+numR = size(fixedROI,1)-2*fSize; 
+numC = size(fixedROI,2)-2*fSize; 
+numZ = size(fixedROI,3);
+diffFrameBlock = zeros(numR,numC,numZ);
+
+for k=1:numZ
     datestr(now)
-    fixedSlice = fixedImg(:,:,k);
-    movingSlice = movingImg(:,:,k);
-    squFrames{k} = slidingWindowSquDiff(fixedSlice,movingSlice,wSize);
+    fixedSlice = fixedROI(:,:,k);
+    movingSlice = movingROI(:,:,k);
+    diffFrameBlock(:,:,k) = slidingWindowSquDiff(fixedSlice,movingSlice,fSize);
+    k
 end
+
 
 end
 
