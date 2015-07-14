@@ -1,5 +1,5 @@
-%fSize=8; %for Pt 9 and Pt 8
-fSize=4; %for Pt4
+fSize=8; %for Pt 9, Pt 8, Pt1
+%fSize=4; %for Pt4
 wSize = 1;
 %%
 
