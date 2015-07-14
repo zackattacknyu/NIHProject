@@ -15,6 +15,12 @@ temps = [64 0 14 1];
 %sliceNum = 117;
 %temps = [28 20 31 21];
 
+%for Pt 1, slice 51 seems to have the zone
+%   the thermocouples though appear in later slices
+
+%for Pt2, it seems to appear around 47,
+%   but the conv difference is faint
+
 
 %%
 fixedImgConv = getAverageFilteredBlocks(fixedImg,fSize);
