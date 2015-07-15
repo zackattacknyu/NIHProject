@@ -2,15 +2,17 @@
 clear all
 SETUP
 fSize=4;
-rInds=181:242;cInds=133:204;zInds=120:145;
+%rInds=181:242;cInds=133:204;zInds=120:145;
+rInds=140:260;cInds=40:210;zInds=120:155;
 fixedROI = fixedImg(rInds,cInds,zInds);
 movingROI = movingImg3(rInds,cInds,zInds);
 movingROI2 = movingImg4(rInds,cInds,zInds);
 diffFrameBlock = getSlidingWindowBlocks(fixedROI,movingROI,fSize);
 diffFrameBlock2 = getSlidingWindowBlocks(fixedROI,movingROI2,fSize);
-save('script7_21_pt9Values.mat');
-
+save('script7_13_pt9Values.mat');
+%%
 %gets data for Pt 4
+%   good ablation zone seems to be shown here
 clear all
 SETUP3
 fSize=4;

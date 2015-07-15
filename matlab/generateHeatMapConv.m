@@ -4,12 +4,12 @@ wSize = 1;
 %%
 
 %for Pt 9, baseline 1
-%sliceNum=144;
-%temps = [108 5 10 0];
+sliceNum=144;
+temps = [108 5 10 0];
 
 %for Pt 8, baseline 1
-sliceNum=210;
-temps = [64 0 14 1];
+%sliceNum=210;
+%temps = [64 0 14 1];
 
 %for Pt4, baseline 1
 %sliceNum = 117;
@@ -49,6 +49,8 @@ figure
 plot(xx,yy);
 hold on
 plot(diffVals,tempVals,'rx');
+xlabel('Filtered Difference');
+ylabel('Temperature Change');
 hold off
 
 %%

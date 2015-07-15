@@ -22,10 +22,10 @@ diffFrameBlock = getSlidingWindowBlocks(fixedROI,movingROI,fSize);
 diffFrameBlock2 = getSlidingWindowBlocks(fixedROI,movingROI2,fSize);
 save('script7_14_pt5b3Values.mat');
 
-
-%%
+%{
 niiSlideImage = make_nii(diffFrameBlock); 
 save_nii(niiSlideImage,'niftiFilesPt8/slidingWindowDiffBlock_5002_5003.nii');
 niiSlideImage = make_nii(diffFrameBlock2); 
 save_nii(niiSlideImage,'niftiFilesPt8/slidingWindowDiffBlock_5002_5004.nii');
+%}
 
