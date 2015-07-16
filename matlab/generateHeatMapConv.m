@@ -4,16 +4,16 @@ wSize = 1;
 %%
 
 %for Pt 9, baseline 1
-sliceNum=144;
-temps = [108 5 10 0];
+%sliceNum=144;
+%temps = [108 5 10 0];
 
 %for Pt 8, baseline 1
 %sliceNum=210;
 %temps = [64 0 14 1];
 
 %for Pt4, baseline 1
-%sliceNum = 117;
-%temps = [28 20 31 21];
+sliceNum = 117;
+temps = [28 20 31 21];
 
 %for Pt 1, slice 51 seems to have the zone
 %   the thermocouples though appear in later slices
@@ -41,7 +41,6 @@ curImage = diffImageConv(:,:,sliceNum);
 curImage2 = diffImageConv2(:,:,sliceNum);
 
 [diffVals,tempVals] = getDiffTempVals(fixedImgSlice,curImage,curImage,curImage2,wSize,temps);
-%%
 
 degree=1;
 [coeff,xx,yy] = generateRegressionOutput(diffVals,tempVals,degree);

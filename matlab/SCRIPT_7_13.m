@@ -23,18 +23,18 @@ movingROI2 = movingImg4(rInds,cInds,zInds);
 diffFrameBlock = getSlidingWindowBlocks(fixedROI,movingROI,fSize);
 diffFrameBlock2 = getSlidingWindowBlocks(fixedROI,movingROI2,fSize);
 save('script7_21_pt4Values.mat');
-
+%%
 %gets data for Pt 8
 clear all
 SETUP2
 fSize=4;
-rInds = 60:130; cInds = 100:170; zInds = 200:230;
+rInds = 60:190; cInds = 100:270; zInds = 200:230;
 fixedROI = fixedImg(rInds,cInds,zInds);
 movingROI = movingImg3(rInds,cInds,zInds);
 movingROI2 = movingImg4(rInds,cInds,zInds);
 diffFrameBlock = getSlidingWindowBlocks(fixedROI,movingROI,fSize);
 diffFrameBlock2 = getSlidingWindowBlocks(fixedROI,movingROI2,fSize);
-save('script7_21_pt8Values.mat');
+save('script7_13_pt8Values.mat');
 %%
 niiSlideImage = make_nii(diffFrameBlock); 
 save_nii(niiSlideImage,'niftiFilesPt8/slidingWindowDiffBlock_5002_5003.nii');

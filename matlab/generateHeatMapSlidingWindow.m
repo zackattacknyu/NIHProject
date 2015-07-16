@@ -29,17 +29,17 @@ diffFrameBlock = getSlidingWindowBlocks(fixedROI,movingROI,fSize);
 diffFrameBlock2 = getSlidingWindowBlocks(fixedROI,movingROI2,fSize);
 
 %%
-%diffFrame = slidingWindowSquDiff(fixedROI(:,:,10),movingROI(:,:,10),fSize);
-%diffFrame2 = slidingWindowSquDiff(fixedROI(:,:,10),movingROI2(:,:,10),fSize);
-diffFrame = diffFrameBlock(:,:,25);
-diffFrame2 = diffFrameBlock2(:,:,25);
-%%
+%diffFrame = slidingWindowSquDiff(fixedROI(:,:,11),movingROI(:,:,11),fSize);
+%diffFrame2 = slidingWindowSquDiff(fixedROI(:,:,11),movingROI2(:,:,11),fSize);
+diffFrame = diffFrameBlock(:,:,18);
+diffFrame2 = diffFrameBlock2(:,:,18);
+
 diffFrameR = sqrt(diffFrame);
 diffFrameR2 = sqrt(diffFrame2);
-fixedSlice = fixedImg(rInds,cInds,144);
+fixedSlice = fixedImg(rInds,cInds,117);
 
-temps = [108 5 10 0];
-%temps = [28 20 31 21]; %for Pt4
+%temps = [108 5 10 0];
+temps = [28 20 31 21]; %for Pt4
 
 [diffVals,tempVals] = getDiffTempVals(fixedSlice,diffFrameR,diffFrameR,diffFrameR2,wSize,temps);
 

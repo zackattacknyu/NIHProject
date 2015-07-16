@@ -1,3 +1,37 @@
+%%
+%{
+
+THE FOLLOWING SECTION IS USED FOR THE CHANGE DETECTION PICTURES
+
+%}
+
+
+%this is done for Patient 4, so slice 117
+sliceNum=117;
+fixedSlice = fixedImg(:,:,sliceNum);
+movingSlice = movingImg(:,:,sliceNum);
+movingRegSlice = movingImg3(:,:,sliceNum);
+%rawDiff = fixedSlice-movingSlice;
+%rawDiffReg = fixedSlice-movingRegSlice;
+figure
+imagesc([fixedSlice movingRegSlice]);
+rectX = 1; %starting col Index of ROI
+rectY = 60; %ending row Index of ROI
+sizeX = 80; %ROI num cols
+sizeY = 70; %ROI num rows
+rectX2 = rectX + 256;
+%rectX3 = rectX2 + 384;
+rectangle('Position',[rectX rectY sizeX sizeY])
+rectangle('Position',[rectX2 rectY sizeX sizeY])
+%rectangle('Position',[rectX3 rectY sizeX sizeY])
+axis off;
+%%
+%must run the following:
+%load('script7_21_pt8Values.mat');
+
+
+%%
+
 %{
 
 THIS SECTION IS USED FOR THE PICTURES IN THE RESULTS SECTION
@@ -7,8 +41,8 @@ THIS SECTION IS USED FOR THE PICTURES IN THE RESULTS SECTION
 %must be run after generateHeatMapConv
 %       has done the regression
 
-sliceNum=144;
-rInds=140:260;cInds=40:210;
+sliceNum=117;
+rInds=60:130;cInds=1:80;
 diffImageSlice = diffImageConv(:,:,sliceNum);
 diffImageROI = diffImageSlice(rInds,cInds);
 thermMapROI = polyval(coeff,diffImageROI);
@@ -47,7 +81,7 @@ centR = floor(centerR); centC = floor(centerC);
 numR = size(tempImage,2);
 numC = size(tempImage,1);
 [rr, cc] = meshgrid(1:numR,1:numC);
-maxRadii=60;
+maxRadii=120;
 averageTemps = zeros(1,maxRadii+1);
 for curRadius = 0:maxRadii
     includeMat = single((rr-centR).^2 + (cc-centC).^2 <= curRadius^2);
@@ -58,6 +92,11 @@ for curRadius = 0:maxRadii
     tempsInRegion = tempsInRegion(tempsInRegion>0);
     averageTemps(curRadius+1) = mean(tempsInRegion);
 end
+%%
+
+averageTempsSliding = averageTemps;
+averageTempsConv = averageTemps;
+
 %%
 figure
 %plot(0:maxRadii,averageTemps);
@@ -71,6 +110,30 @@ ylabel('Average Temperature in Region (Celcius)');
 %%
 
 save('pt9_slidingWindowValues.mat')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
