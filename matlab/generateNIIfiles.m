@@ -25,7 +25,7 @@ initDir = 'D:/git/NIHProject/matlab/';
 %baselineScanNum = '5009';
 %comparison1ScanNum = '5010';
 %comparison2ScanNum = '5011';
-
+%%
 ptNum=10;
 baselineScanNum = '5003';
 comparison1ScanNum = '5004';
@@ -50,6 +50,13 @@ comparison2ScanNum = '5016';
 writeAllNIIfiles( initDir,dataParentDir,mrns,ptNum,...
     baselineScanNum,comparison1ScanNum,comparison2ScanNum )
 
+%%
+
+ptNum=11;
+baselineScanNum = 5007;
+numCompare = 4;
+writeAllNIIfiles( initDir,dataParentDir,mrns,ptNum,...
+    baselineScanNum,numCompare )
 %{
 
 [ outputDir,baselineNIIfilePath,comparison1NIIfilePath,comparison2NIIfilePath ] ...

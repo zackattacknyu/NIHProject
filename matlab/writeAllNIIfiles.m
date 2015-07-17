@@ -1,15 +1,15 @@
 function [ ] = writeAllNIIfiles( initDir,dataParentDir,mrns,ptNum,...
-    baselineScanNum,comparison1ScanNum,comparison2ScanNum )
+    baselineScanNum,numCompare )
 %WRITEALLNIIFILES Summary of this function goes here
 %   Detailed explanation goes here
 
-[ outputDir,baselineNIIfilePath,comparison1NIIfilePath,comparison2NIIfilePath ] ...
+[ outputDir,baselineNIIfilePath,comparisonNIIfilePaths ] ...
     = writeUnregNIIfiles( dataParentDir,mrns,ptNum,...
-    baselineScanNum,comparison1ScanNum,comparison2ScanNum );
+    baselineScanNum,numCompare );
+
 
 [ commandName ] = writeNIIbatchScript( initDir,outputDir,ptNum,baselineScanNum,...
-    comparison1ScanNum,comparison2ScanNum,baselineNIIfilePath,...
-    comparison1NIIfilePath,comparison2NIIfilePath );
+    baselineNIIfilePath,comparisonNIIfilePaths );
 
 system(commandName)
 
