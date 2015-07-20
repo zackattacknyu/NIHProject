@@ -29,6 +29,10 @@ diffFrameBlock = getSlidingWindowBlocks(fixedROI,movingROI,fSize);
 diffFrameBlock2 = getSlidingWindowBlocks(fixedROI,movingROI2,fSize);
 
 %%
+
+diffFrameBlock = diffFrameBlocks{1};
+diffFrameBlock2 = diffFrameBlocks{2};
+%%
 %diffFrame = slidingWindowSquDiff(fixedROI(:,:,11),movingROI(:,:,11),fSize);
 %diffFrame2 = slidingWindowSquDiff(fixedROI(:,:,11),movingROI2(:,:,11),fSize);
 
@@ -46,23 +50,35 @@ fixedSlice = fixedImg(rInds,cInds,128);
 %controlSliceNum=8;
 
 %for pt5, baseline 3
-ablationSliceNum=12;
-controlSliceNum=20;
+%ablationSliceNum=12;
+%controlSliceNum=20;
 
-diffFrameAblation = sqrt(diffFrameBlock(:,:,ablationSliceNum));
-diffFrameAblation2 = sqrt(diffFrameBlock2(:,:,ablationSliceNum));
-diffFrameControl = sqrt(diffFrameBlock(:,:,controlSliceNum));
-diffFrameControl2 = sqrt(diffFrameBlock2(:,:,controlSliceNum));
+%for pt 6, baseline 1
+ablationSliceNum=178;
+controlSliceNum=178;
+
+indImages = {sqrt(diffFrameBlock(:,:,ablationSliceNum)) sqrt(diffFrameBlock(:,:,controlSliceNum))};
+
+diffImages = {sqrt(diffFrameBlock(:,:,ablationSliceNum)) sqrt(diffFrameBlock2(:,:,ablationSliceNum));...
+    sqrt(diffFrameBlock(:,:,controlSliceNum)) sqrt(diffFrameBlock2(:,:,controlSliceNum))};
+
+%diffFrameAblation = sqrt(diffFrameBlock(:,:,ablationSliceNum));
+%diffFrameAblation2 = sqrt(diffFrameBlock2(:,:,ablationSliceNum));
+%diffFrameControl = sqrt(diffFrameBlock(:,:,controlSliceNum));
+%diffFrameControl2 = sqrt(diffFrameBlock2(:,:,controlSliceNum));
 
 %temps = [108 5 10 0]; %for Pt 9
 %temps = [28 20 31 21]; %for Pt4
 %temps = [23 3 31 23]; %for Pt 5, baseline 1
-temps = [47 10 59 14]; %for Pt 5, baseline 3
+%temps = [47 10 59 14]; %for Pt 5, baseline 3
+temps = [101 95;15 68]; %for Pt 6, baseline 1
 
 %[diffVals,tempVals] = getDiffTempVals(fixedSlice,diffFrameR,diffFrameR,diffFrameR2,wSize,temps);
 
-[diffVals,tempVals] = getDiffTempVals2(diffFrameControl,diffFrameAblation,...
-    diffFrameControl,diffFrameAblation,diffFrameControl2,diffFrameAblation2,wSize,temps);
+%[diffVals,tempVals] = getDiffTempVals2(diffFrameControl,diffFrameAblation,...
+%    diffFrameControl,diffFrameAblation,diffFrameControl2,diffFrameAblation2,wSize,temps);
+
+[diffVals,tempVals] = getDiffTempVals3(indImages,diffImages,wSize,temps);
 
 %%
 
