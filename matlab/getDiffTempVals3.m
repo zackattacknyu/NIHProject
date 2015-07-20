@@ -18,12 +18,12 @@ tempVals = [];
 for row = 1:size(diffValsImages,1)
     curInds = outputInds{row};
     for col = 1:size(diffValsImages,2)
-       curValImage = diffValsImages(row,col);
+       curValImage = diffValsImages{row,col};
        curDiffVals = curValImage(curInds);
-       diffVals = [diffVals curDiffVals];
+       diffVals = [diffVals;curDiffVals];
        
        curTempVals = temps(row,col)*ones(length(curDiffVals),1);
-       tempVals = [tempVals curTempVals];
+       tempVals = [tempVals;curTempVals];
     end
 end
 

@@ -5,8 +5,10 @@
 
 curRadius = 2; %radius for temperature zone in pixels
 
-inputImages = {diffFrameControl,diffFrameAblation,...
-    diffFrameControl2,diffFrameAblation2};
+%inputImages = {diffFrameControl,diffFrameAblation,...
+%    diffFrameControl2,diffFrameAblation2};
+%inputImages = diffImages(1,1:2);
+inputImages = diffImages(:);
 
 outputAvgTemps = cell(1,length(inputImages));
 
@@ -41,4 +43,6 @@ comparison2,thermocouple: 46.0497
 %save('pt9_dataValues.mat');
 %save('pt4_dataValues.mat');
 %save('pt5b1_dataValues.mat');
-save('pt5b3_dataValues.mat');
+%save('pt5b3_dataValues.mat');
+%save('pt6b1_dataValues.mat');
+save('pt3b1_dataValues.mat');

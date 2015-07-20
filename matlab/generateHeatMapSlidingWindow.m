@@ -54,13 +54,21 @@ fixedSlice = fixedImg(rInds,cInds,128);
 %controlSliceNum=20;
 
 %for pt 6, baseline 1
-ablationSliceNum=178;
-controlSliceNum=178;
+%sliceNum=178;
+%indImages = repmat({sqrt(diffFrameBlock(:,:,sliceNum))},1,3);
+%diffImages = repmat({sqrt(diffFrameBlock(:,:,sliceNum)) sqrt(diffFrameBlock2(:,:,sliceNum))},3,1);
 
-indImages = {sqrt(diffFrameBlock(:,:,ablationSliceNum)) sqrt(diffFrameBlock(:,:,controlSliceNum))};
+%for pt 3, baseline 1
+sliceNum1 = 83;
+sliceNum2 = 79;
+sliceNum3 = 88;
+indImages = {sqrt(diffFrameBlock(:,:,sliceNum1)) ...
+    sqrt(diffFrameBlock(:,:,sliceNum2)) ...
+    sqrt(diffFrameBlock(:,:,sliceNum3))};
+diffImages = {sqrt(diffFrameBlock(:,:,sliceNum1)) sqrt(diffFrameBlock2(:,:,sliceNum1));...
+    sqrt(diffFrameBlock(:,:,sliceNum2)) sqrt(diffFrameBlock2(:,:,sliceNum2));...
+    sqrt(diffFrameBlock(:,:,sliceNum3)) sqrt(diffFrameBlock2(:,:,sliceNum3))};
 
-diffImages = {sqrt(diffFrameBlock(:,:,ablationSliceNum)) sqrt(diffFrameBlock2(:,:,ablationSliceNum));...
-    sqrt(diffFrameBlock(:,:,controlSliceNum)) sqrt(diffFrameBlock2(:,:,controlSliceNum))};
 
 %diffFrameAblation = sqrt(diffFrameBlock(:,:,ablationSliceNum));
 %diffFrameAblation2 = sqrt(diffFrameBlock2(:,:,ablationSliceNum));
@@ -71,7 +79,8 @@ diffImages = {sqrt(diffFrameBlock(:,:,ablationSliceNum)) sqrt(diffFrameBlock2(:,
 %temps = [28 20 31 21]; %for Pt4
 %temps = [23 3 31 23]; %for Pt 5, baseline 1
 %temps = [47 10 59 14]; %for Pt 5, baseline 3
-temps = [101 95;15 68]; %for Pt 6, baseline 1
+%temps = [101 95;93 76;15 68]; %for Pt 6, baseline 1
+temps = [18 23;11 6;14 15]; %for Pt 3, baseline 1
 
 %[diffVals,tempVals] = getDiffTempVals(fixedSlice,diffFrameR,diffFrameR,diffFrameR2,wSize,temps);
 
@@ -97,5 +106,7 @@ imtool3D(polyval(coeff,curImage2)+37);
 
 %%
 %save('pt4TempData_slidingWindowDiff.mat')
-save('pt5b1TempData_slidingWindowDiff.mat')
+%save('pt5b1TempData_slidingWindowDiff.mat')
+%save('pt6b1TempData_slidingWindowDiff.mat')
+save('pt3b1TempData_slidingWindowDiff.mat')
 
