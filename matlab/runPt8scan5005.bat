@@ -1,0 +1,2 @@
+reg_aladin -ref D:/git/NIHProject/matlab/niftiFilesPt8_5005/fixed_5005.nii -flo D:/git/NIHProject/matlab/niftiFilesPt8_5005/moving_5006.nii  -aff  D:/git/NIHProject/matlab/niftiFilesPt8_5005/moving_5006_transform.txt
+reg_f3d -ref D:/git/NIHProject/matlab/niftiFilesPt8_5005/fixed_5005.nii -flo D:/git/NIHProject/matlab/niftiFilesPt8_5005/moving_5006.nii -aff D:/git/NIHProject/matlab/niftiFilesPt8_5005/moving_5006_transform.txt -cpp D:/git/NIHProject/matlab/niftiFilesPt8_5005/moving_5006_cpp.nii -res D:/git/NIHProject/matlab/niftiFilesPt8_5005/moving_5006_registered.nii

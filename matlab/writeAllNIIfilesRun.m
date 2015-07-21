@@ -11,7 +11,7 @@ function [ ] = writeAllNIIfiles( initDir,dataParentDir,mrns,ptNum,...
 [ commandName ] = writeNIIbatchScript( initDir,outputDir,ptNum,baselineScanNum,...
     baselineNIIfilePath,comparisonNIIfilePaths );
 
-%system(commandName)
+system(commandName)
 
 end
 

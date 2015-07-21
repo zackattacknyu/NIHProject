@@ -1,0 +1,2 @@
+reg_aladin -ref D:/git/NIHProject/matlab/niftiFilesPt3_5011/fixed_5011.nii -flo D:/git/NIHProject/matlab/niftiFilesPt3_5011/moving_5012.nii  -aff  D:/git/NIHProject/matlab/niftiFilesPt3_5011/moving_5012_transform.txt
+reg_f3d -ref D:/git/NIHProject/matlab/niftiFilesPt3_5011/fixed_5011.nii -flo D:/git/NIHProject/matlab/niftiFilesPt3_5011/moving_5012.nii -aff D:/git/NIHProject/matlab/niftiFilesPt3_5011/moving_5012_transform.txt -cpp D:/git/NIHProject/matlab/niftiFilesPt3_5011/moving_5012_cpp.nii -res D:/git/NIHProject/matlab/niftiFilesPt3_5011/moving_5012_registered.nii

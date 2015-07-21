@@ -97,8 +97,8 @@ figure
 plot(xx,yy);
 hold on
 plot(diffVals,tempVals,'rx');
-xlabel('Sliding Window Value');
-ylabel('Temperatue Change');
+xlabel('Sliding Window RMSE');
+ylabel('Temperature Change (Celsius)');
 hold off
 %%
 imtool3D(polyval(coeff,curImage)+37);

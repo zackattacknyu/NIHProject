@@ -8,9 +8,12 @@ curRadius = 2; %radius for temperature zone in pixels
 %inputImages = {diffFrameControl,diffFrameAblation,...
 %    diffFrameControl2,diffFrameAblation2};
 %inputImages = diffImages(1,1:2);
-inputImages = diffImages(:);
+%inputImages = diffImages(:);
+%inputImages = {diffFrameR};
+inputImages = {diffFrameR diffFrameR2};
 
 outputAvgTemps = cell(1,length(inputImages));
+
 
 for ind = 1:length(inputImages)
     tempImage = polyval(coeff,inputImages{ind})+36;
