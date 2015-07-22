@@ -13,7 +13,7 @@ It then finds the connected components and considers the components with a
 %clear all;
 %SETUP
 
-threshold = 2900; %HU for needle
+threshold = 2500; %HU for needle
 pointsThreshold = 100; %number of points before connected component is considered important
 
 fixedImgNeedle = single(fixedImg>threshold);
