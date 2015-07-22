@@ -23,9 +23,9 @@ maxCoordsAll = cell(numImpComps,2);
 for j = 1:numImpComps
     [rInd,cInd,zInd] = ind2sub(size(fixedImg),compPixelLists{compIndices(j)});
     pts = [rInd,cInd,zInd];
-    [coeff,score,latent] = pca(pts);
+    [~,score] = pca(pts);
     needleScore = score(:,1);
-    [scores,pointInds] = sort(needleScore);
+    [~,pointInds] = sort(needleScore);
     needleStart = pts(pointInds(1),:);
     needleEnd = pts(pointInds(end),:);
     
