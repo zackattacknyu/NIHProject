@@ -4,11 +4,11 @@
 %MAKE SURE RINDS, CINDS, ZINDS ARE SET CORRECTLY
 %
 
-needleThreshold = 2000;
-filePath = 'pt4_TempVolume/needleTempVol2.nii';
+needleThreshold = 1000;
+filePath = 'pt4_TempVolume/needleTempVol6.nii';
 
-numTempValues = 1000;
-valueForMinTemp = 4000;
+numTempValues = 2000;
+needleValue = -1000;
 baselineTemp=37;
 minDisplayTemperature=50;
 fSize=4;
@@ -27,13 +27,13 @@ tempBlockWhole(rStart:rEnd,cStart:cEnd,zInds) = tempBlock;
 temperatureIndices = find(tempBlockWhole>minDisplayTemperature);
 
 tempBlockInsert = putin01scale(tempBlockWhole(temperatureIndices));
-tempBlockInsert = tempBlockInsert.*numTempValues + valueForMinTemp;
+tempBlockInsert = tempBlockInsert.*numTempValues;
 
-needleIndices = find(fixedImg>needleThreshold);
+%needleIndices = find(fixedImg>needleThreshold);
 
-fixedImgWithBlock = fixedImg;
-fixedImgWithBlock(temperatureIndices)=tempBlockInsert;
-fixedImgWithBlock(needleIndices) = fixedImg(needleIndices);
+volumeBlock = zeros(size(fixedImg));
+volumeBlock(temperatureIndices)=tempBlockInsert;
+%volumeBlock(needleIndices) = needleValue;
 
-niiVolImage = make_nii(fixedImgWithBlock);
+niiVolImage = make_nii(volumeBlock);
 save_nii(niiVolImage,filePath);
