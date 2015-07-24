@@ -1,11 +1,11 @@
-function [ ] = generateDiffOutputFiles( ptNum,baselineScanNum,numCompare,threshold,pointsThreshold,roiRadius,fSize )
+function [ ] = generateDiffOutputFiles( ptNum,baselineScanNum,numCompare,huThreshold,pointsThreshold,minNumNeedles,roiRadius,fSize )
 %GENERATEDIFFOUTPUTFILES Summary of this function goes here
 %   Detailed explanation goes here
 
 [fixedImg,~,movingImgRegArr] = ...
     initializeNIIfiles(ptNum,baselineScanNum,numCompare);
 [outputROI,minCoordsAll,maxCoordsAll] = getROIregions( ...
-    fixedImg, threshold,pointsThreshold,roiRadius );
+    fixedImg, huThreshold,pointsThreshold,minNumNeedles,roiRadius );
 
 movingOutputROI = cell([numCompare size(outputROI)]);
 for img = 1:numCompare

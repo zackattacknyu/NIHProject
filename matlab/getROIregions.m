@@ -1,5 +1,5 @@
 function [outputROI,minCoordsAll,maxCoordsAll] = getROIregions( ...
-    fixedImg, threshold,pointsThreshold,roiRadius )
+    fixedImg, threshold,pointsThreshold,minNumNeedles,roiRadius )
 %GETROIREGIONS Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -16,11 +16,17 @@ end
 [numInComp,compIndices] = sort(sizeComps,'descend');
 numImpComps = find(numInComp<pointsThreshold, 1 )-1;
 
-outputROI = cell(numImpComps,2);
-minCoordsAll = cell(numImpComps,2);
-maxCoordsAll = cell(numImpComps,2);
+%in case there are not components with more than 100, select the top ones anyway
+numCompsUse = max(minNumNeedles,numImpComps); 
 
-for j = 1:numImpComps
+%make sure it doesn't select more components than what exists
+numCompsUse = min(numCompsUse,numComps); 
+
+outputROI = cell(numCompsUse,2);
+minCoordsAll = cell(numCompsUse,2);
+maxCoordsAll = cell(numCompsUse,2);
+
+for j = 1:numCompsUse
     [rInd,cInd,zInd] = ind2sub(size(fixedImg),compPixelLists{compIndices(j)});
     pts = [rInd,cInd,zInd];
     [~,score] = pca(pts);

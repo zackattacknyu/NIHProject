@@ -12,8 +12,7 @@ WFrame = zeros(numRowsWFrame,numColWFrame);
 %sN = (sR*2+1)^2; %support N, number of pixels in support region
 for i = (1+sR):(numRowsWFrame+sR)
    for j = (1+sR):(numColWFrame+sR)
-      regionX = frame1((i-sR):(i+sR),(j-sR):(j+sR));
-      regionY = frame2((i-sR):(i+sR),(j-sR):(j+sR));
+      [regionX,regionY] = getRegionsAroundPixel(frame1,frame2,i,j,sR);
       WFrame(i-sR,j-sR) = getMinWindowSquDiff(regionX,regionY);
    end
    %i

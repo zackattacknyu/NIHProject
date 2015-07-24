@@ -15,6 +15,7 @@ It then finds the connected components and considers the components with a
 
 threshold = 2500; %HU for needle
 pointsThreshold = 100; %number of points before connected component is considered important
+numNeedleGuess = 3; %mininum number of connected components
 
 fixedImgNeedle = single(fixedImg>threshold);
 
@@ -28,14 +29,20 @@ end
 [numInComp,compIndices] = sort(sizeComps,'descend');
 numImpComps = find(numInComp<pointsThreshold, 1 )-1;
 
-outputComp = cell(1,numImpComps);
-for j = 1:numImpComps
+%in case there are not components with more than 100, select the top ones anyway
+numCompsUse = max(numNeedleGuess,numImpComps); 
+
+%make sure it doesn't select more components than what exists
+numCompsUse = min(numCompsUse,numComps); 
+
+outputComp = cell(1,numCompsUse);
+for j = 1:numCompsUse
     outputComp{j} = compPixelLists{compIndices(j)};
 end
 
 figure
 hold on
-for compNum = 1:numImpComps
+for compNum = 1:numCompsUse
     
     [rInd,cInd,zInd] = ind2sub(size(fixedImg),outputComp{compNum});
     pts = [rInd,cInd,zInd];
