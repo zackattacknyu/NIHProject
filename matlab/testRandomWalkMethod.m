@@ -40,8 +40,6 @@ for i = 1:numTests
 
 end
 
-save('script_7_24_randWalkValues.mat');
-
 %{
 figure
 semilogy(diffBetweenGood(:,1),'r-')
