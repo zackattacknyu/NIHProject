@@ -1,0 +1,5 @@
+twoDiffImages.fig
+twoDiffImages_pt9.fig
+
+show on the left the diff image with our brute force minimization
+show on the right the diff image with random walk minimization

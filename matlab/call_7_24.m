@@ -17,7 +17,7 @@ time2=toc
 
 Nsteps=50;
 tic
-diffFrameBlockRandWalk_50 = getSlidingWindowBlocksRandWalk( fixedROI,movingROI,fSize,Nsteps );\
+diffFrameBlockRandWalk_50 = getSlidingWindowBlocksRandWalk( fixedROI,movingROI,fSize,Nsteps );
 time3=toc
 
 tic
