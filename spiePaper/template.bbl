@@ -1,0 +1,39 @@
+\begin{thebibliography}{1}
+
+\bibitem{Lamport94}
+L.~Lamport, {\em LaTeX: A Document Preparation System}, Addison-Wesley,
+  Reading, Mass., 1994.
+
+\bibitem{Alred03}
+G.~J. Alred, C.~T. Brusaw, and W.~E. Oliu, {\em Handbook of Technical Writing},
+  St. Martin's, New York, 2003 (seventh edition).
+
+\bibitem{Perelman97}
+L.~C. Perelman, J.~Paradis, and E.~Barrett, {\em Mayfield Handbook of Technical
+  and Scientific Writing}, Mountain View, Mayfield, 1997.
+\newblock http://mit.imoat.net/handbook/.
+
+\bibitem{Mittelbach04}
+F.~Mittelbach, M.~Goossens, J.~Braams, and D.~Carlisle, {\em The LaTeX
+  Companion}, Addison-Wesley, Reading, Mass., 2004 (second edition).
+
+\bibitem{Goossens97}
+M.~Goossens, F.~Mittelbach, and S.~Rahtz, {\em The LaTeX Companion},
+  Addison-Wesley, Reading, Mass., 1997.
+
+\bibitem{Metropolis53}
+N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller,
+  ``Equations of state calculations by fast computing machine,'' {\em J. Chem.
+  Phys.}~{\bf 21}, pp.~1087--1091, 1953.
+
+\bibitem{Gull89a}
+S.~F. Gull, ``Developments in maximum-entropy data analysis,'' in {\em Maximum
+  Entropy and Bayesian Methods},  J.~Skilling, ed., pp.~53--71, Kluwer
+  Academic, Dordrecht, 1989.
+
+\bibitem{Hanson93c}
+K.~M. Hanson, ``Introduction to {B}ayesian image analysis,'' in {\em Medical
+  Imaging:\ Image Processing},  M.~H. Loew, ed., {\em Proc. SPIE} {\bf 1898},
+  pp.~716--731, 1993.
+
+\end{thebibliography}
