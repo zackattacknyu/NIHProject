@@ -8,15 +8,6 @@ L.~Lamport, {\em LaTeX: A Document Preparation System}, Addison-Wesley,
 G.~J. Alred, C.~T. Brusaw, and W.~E. Oliu, {\em Handbook of Technical Writing},
   St. Martin's, New York, 2003 (seventh edition).
 
-\bibitem{Perelman97}
-L.~C. Perelman, J.~Paradis, and E.~Barrett, {\em Mayfield Handbook of Technical
-  and Scientific Writing}, Mountain View, Mayfield, 1997.
-\newblock http://mit.imoat.net/handbook/.
-
-\bibitem{Mittelbach04}
-F.~Mittelbach, M.~Goossens, J.~Braams, and D.~Carlisle, {\em The LaTeX
-  Companion}, Addison-Wesley, Reading, Mass., 2004 (second edition).
-
 \bibitem{Goossens97}
 M.~Goossens, F.~Mittelbach, and S.~Rahtz, {\em The LaTeX Companion},
   Addison-Wesley, Reading, Mass., 1997.

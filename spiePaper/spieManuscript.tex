@@ -56,57 +56,32 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{abstract}
-This document shows the desired format and appearance of a manuscript prepared for the Proceedings of the SPIE.  It contains general formatting instructions and hints about how to use LaTeX.  The LaTeX source file that produced this document, {\tt article.tex} (Version 3.3), provides a template, used in conjunction with {\tt spie.cls} (Version 3.3).  
+The possibility of Cone-beam CT Thermometry was explored previously in **NADINE'S PAPER REF**. We seek to extend this work but applying it to real patients. This requires an additional step of doing image registration between cone-beam CT scans. Additionally, we vary the change metric used.  
 \end{abstract}
 
 %>>>> Include a list of keywords after the abstract 
 
-\keywords{Manuscript format, template, SPIE Proceedings, LaTeX}
+\keywords{Cone-beam CT, Thermometry, Radiofrequency Ablation}
 
-\section{INTRODUCTION}
+\section{Introduction}
 \label{sec:intro}  % \label{} allows reference to this section
 
-This document shows the desired format and appearance of a manuscript prepared for the Proceedings of the SPIE.\footnote{The basic format was developed in 1995 by Rick Herman (SPIE) and Ken Hanson (Los Alamos National Lab.).} It is prepared using LaTeX2e\cite{Lamport94} with the class file {\tt spie.cls}.  The LaTeX source file used to create this document is {\tt article.tex}, which contains important formatting information embedded in it.  These files are available on the Internet at {\tt http://home.lanl.gov/kmh/spie/}.  The font used throughout is the LaTeX default font, Computer Modern Roman, which is equivalent to the Times Roman font available on many systems.  If this font is not available, use a similar serif font.  Normal text has a font size of 10 points\footnote{Font sizes are specified in points, abbreviated pt., which is a unit of length.  One inch = 72.27 pt.; one cm = 28.4 pt.} for which the actual height of a capital E is about 2.4 mm (7 pt.) and the line-to-line spacing is about 4.2 mm (12 pt.).  The font attributes for other parts of the manuscript, summarized in Table~\ref{tab:fonts}, are described in the following sections.  Normal text should be justified to both the left and right margins.  Appendix~\ref{sec:latex} has information about PostScript fonts.
+Monitoring temperature during ablation procedures is important for prevention of overtreatment and undertreatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  In particular, this must be possible for Cone-beam CT (CBCT) scans. This possibility was explored with CBCT scans of a pig shoulder phantom being ablated [1] . We are extending this work by using CBCT scans of real patients. Additionally, we are employing various image refinement techniques to improve the thermometry map. 
 
-To be properly reproduced in the Proceedings, all text and figures must fit inside a rectangle 6.75-in.\ wide by 8.75-in.\ high or 17.15 cm by 22.23 cm.  The text width and height are set in {\tt spie.cls} to match this requirement.
-%% This table is carefully placed in the source file to make 
-%% it appear at bottom of page, but above the footnotes.  
-%% Use of [h] in following command forces table to appear "here".
-\begin{table}[h]
-\caption{Fonts sizes to be used for various parts of the manuscript.  All fonts are Computer Modern Roman or an equivalent.  Table captions should be centered above the table.  When the caption is too long to fit on one line, it should be justified to the right and left margins of the body of the text.} 
-\label{tab:fonts}
-\begin{center}       
-\begin{tabular}{|l|l|} %% this creates two columns
-%% |l|l| to left justify each column entry
-%% |c|c| to center each column entry
-%% use of \rule[]{}{} below opens up each row
-\hline
-\rule[-1ex]{0pt}{3.5ex}  Article title & 16 pt., bold, centered  \\
-\hline
-\rule[-1ex]{0pt}{3.5ex}  Author names and affiliations & 12 pt., normal, centered   \\
-\hline
-\rule[-1ex]{0pt}{3.5ex}  Section heading & 11 pt., bold, centered (all caps)  \\
-\hline
-\rule[-1ex]{0pt}{3.5ex}  Subsection heading & 11 pt., bold, left justified  \\
-\hline
-\rule[-1ex]{0pt}{3.5ex}  Sub-subsection heading & 10 pt., bold, left justified  \\
-\hline
-\rule[-1ex]{0pt}{3.5ex}  Normal text & 10 pt., normal  \\
-\hline
-\rule[-1ex]{0pt}{3.5ex}  Figure and table captions & \, 9 pt., normal \\
-\hline
-\rule[-1ex]{0pt}{3.5ex}  Footnote & \, 9 pt., normal \\
-\hline 
-\end{tabular}
-\end{center}
-\end{table} 
-The text should begin 1.00 in.\ or 2.54 cm from the top of the page.  The right and left margins should be 0.875~in.\ or 2.22 cm for US letter-size paper (8.5 in.\ by 11 in.) or 1.925 cm for A4 paper (210 mm by 297 mm) to horizontally center the text on the page.  See Appendix~\ref{sec:latex} for guidance regarding paper-size specification. 
+We used a data set of CBCT scans taken during 13 ablation procedures performed between September 2013 and June 2015. For each ablation procedure, there were between 1 and 4 ablations done. With each ablation, a baseline scan was taken followed by 1-4 comparison scans at different time points. Each of these time points had the ablation needle at different temperatures. We thus wanted to generate a thermal map at each of these time points in order to know how much tissue has been affected. 
 
-Authors are encouraged to follow the principles of sound technical writing, as described in Refs.~\citenum{Alred03} and \citenum{Perelman97}, for example.  Many aspects of technical writing are addressed in the {\em AIP Style Manual}, published by the American Institute of Physics.  It is available on line at {\tt http://www.aip.org/pubservs/style/4thed/toc.html} or {\tt http://public.lanl.gov/kmh/AIP\verb+_+Style\verb+_+4thed.pdf}. A spelling checker is helpful for finding misspelled words. 
+For each comparison scan, the following was done to generate a thermal map:
+\begin{enumerate}
+\item Register the comparison scan to the baseline scan
+\item Filter both images and calculate the difference
+\item Use the result to find the Region of Interest (ROI)
+\item Calculate the Sliding Window RMSE value for the ROI
+\item Correlate values from (4) in the temperature zones with the temperature data
+\item Use regression from (5) to generate thermal map for entire ROI
+\end{enumerate}
 
-An author may use this LaTeX source file as a template by substituting his/her own text in each field.  This document is not meant to be a complete guide on how to use LaTeX.  For that, refer to books on LaTeX usage, such as the definitive work by Lamport\cite{Lamport94} or the very useful compendium by Mittelbach et al.\cite{Mittelbach04}
+\section{Related Work}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{PARTS OF MANUSCRIPT} 
 
 This section describes the normal structure of a manuscript and how each part should be handled.  The appropriate vertical spacing between various parts of this document is achieved in LaTeX through the proper use of defined constructs, such as \verb|\section{}|.  In LaTeX, paragraphs are separated by blank lines in the source file. 
