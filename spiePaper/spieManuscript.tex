@@ -98,11 +98,17 @@ Our change metric ends up being RMSE between windows around a given pixel, but w
 
 \subsection{Image Registration} 
 
-Each comparison scan was registered to the baseline scan. Affine and Deformable Registration were performed using NiftyReg [2].
+Each comparison scan was registered to the baseline scan. Affine and Deformable Registration were performed using NiftyReg [2]. The following pictures are examples of images before and after registration:
+
+**INSERT BEFORE AND AFTER REG IMAGE IN POSTER**
 
 \subsection{Needle Detection}
 
-The HU value for the needle and thermocouple were significantly higher than the values for normal tissue. I was thus able to easily find all the points in the 3D scan with the needle. I then did PCA on these points in order find the direction of the needle. I was also able to obtain the endpoints of the needle by finding the min and max point in the principle PCA direction. I chose the end point closest to the center of the image as the probable end point. 
+The HU value for the needle and thermocouple were significantly higher than the values for normal tissue. I was thus able to easily find all the points in the 3D scan with the needle. 
+
+**MENTION CONNECTED COMPONENT ANALYSIS DONE**
+
+I then did PCA on these points in order find the direction of the needle. I was also able to obtain the endpoints of the needle by finding the min and max point in the principle PCA direction. I chose the end point closest to the center of the image as the probable end point. 
 
 \subsection{Change Detection}
 
@@ -141,11 +147,29 @@ U_{k+n,l+m} = U_{k,l}
 
 We then took the sliding window RMSE value and calibrated it using the measured temperature change at the needle through a regression model. We used the model to calculate a thermal map in the ROI. This thermal map was used to obtain an approximate mean temperature around the needles and thermocouples.
 
+**INSERT POSTER IMAGES**
+
 
 \section{Results}
 
-For this project
+\subsection{Finding Error Rates}
 
+We decided to take the thermal maps generated from regression and see the average temperature in the zones that we were testing. We then did an RMSE of those temperatures with the measured temperatures. We dividied this RMSE by the temperature range in order to obtain an error rate. Here are the results:
+
+**INSERT RESULT TABLE**
+
+\subsection{Approximating Ablation Zone Area}
+
+For the ablation zones, we made a graph of radius of region versus average temperature in that region in the thermal map. This graph can one day be used to approximate the radius of an ablation zone. Here it is for the various patients in our study. 
+
+**INSERT GRAPH OF AREA VS AVERAGE TEMPERATURE**
+
+
+\subsection{3D Visualization of Ablation Zone}
+
+By taking the 3D Thermal Map, thresholding the values, and then using a surface generation algorithm **REFERENCE ITK-SNAP HERE**, we were able to create a 3D diagram of the ablation zone. We overlayed the 3D diagram of the needle and we were able to obtain a convincing visual. 
+
+**SHOW VISUALS OF NEEDLE AND ABLATION ZONES**
 
 \section{Conclusions and Future Work}
 
