@@ -22,7 +22,7 @@ function varargout = ctTherm(varargin)
 
 % Edit the above text to modify the response to help ctTherm
 
-% Last Modified by GUIDE v2.5 27-Jul-2015 13:17:49
+% Last Modified by GUIDE v2.5 27-Jul-2015 14:45:37
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -52,6 +52,9 @@ function ctTherm_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to ctTherm (see VARARGIN)
 
+addpath('niftiIO');
+addpath('imtool3D');
+
 % Choose default command line output for ctTherm
 handles.output = hObject;
 
@@ -80,6 +83,55 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 [niiFile,parentDir] = uigetfile('*.nii','Select Nifty File');
 imgData = initializeNIIfileWithDCMData(parentDir,niiFile);
-assignin('base','imgData',imgData);
+assignin('base','baselineScan',imgData);
+set(handles.edit1,'String',strcat(parentDir,niiFile));
 
 
+% --- Executes on button press in pushbutton2.
+function pushbutton2_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+try
+    imtool3D(evalin('base','baselineScan'));
+catch
+    msgbox('Please load baseline NII scan first');
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function text1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over text1.
+function text1_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to text1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+
+function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit1 as text
+%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
