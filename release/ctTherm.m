@@ -22,7 +22,7 @@ function varargout = ctTherm(varargin)
 
 % Edit the above text to modify the response to help ctTherm
 
-% Last Modified by GUIDE v2.5 27-Jul-2015 16:36:51
+% Last Modified by GUIDE v2.5 27-Jul-2015 17:53:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -826,5 +826,12 @@ function pushbutton33_Callback(hObject, eventdata, handles)
 % --- Executes on button press in pushbutton34.
 function pushbutton34_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton34 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in pushbutton35.
+function pushbutton35_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton35 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)

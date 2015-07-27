@@ -1,0 +1,9 @@
+
+Work to cite:
+http://proceedings.asmedigitalcollection.asme.org/proceeding.aspx?articleID=1644123
+
+Webpage to cite (possible):
+http://www.mathworks.com/help/signal/ug/cross-correlation-of-delayed-signal-in-noise.html
+
+wikipedia page:
+https://en.wikipedia.org/wiki/Cross-correlation#cite_note-2
