@@ -17,6 +17,21 @@ public class WholeDiffImage {
     private final int fSize;
     private final int sqSize;
     
+    public static double[][] getWholeDiffImage(Double[][] img1x, Double[][] img2x, Integer fSize){
+        double[][] img1 = new double[img1x.length][img1x[0].length];
+        double[][] img2 = new double[img2x.length][img2x[0].length];
+        
+        for(int i = 0; i < img1.length; i++){
+            for(int j = 0; j < img2.length; j++){
+                img1[i][j] = img1x[i][j];
+                img2[j][j] = img2x[i][j];
+            }
+        }
+        
+        WholeDiffImage myImage = new WholeDiffImage(img1,img2,fSize);
+        return myImage.outputImg;
+    }
+    
     public WholeDiffImage(double[][] img1, double[][] img2, int fSize){
         this.img1 = img1;
         this.img2 = img2;

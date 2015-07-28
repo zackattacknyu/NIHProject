@@ -35,4 +35,53 @@ for i = 1:numTests
     i
 
 end
+%%
+
+javaaddpath('D:\git\NIHProject\release\SlidingWindow\dist\SlidingWindow.jar');
+
+
+%%
+
+img1 = rand(40,40)*200;
+img2 = rand(40,40)*200;
+
+
+img1Java = javaArray('java.lang.Double',size(img1,1),size(img1,2));
+img2Java = javaArray('java.lang.Double',size(img2,1),size(img2,2));
+
+for i = 1:size(img1,1)
+    for j = 1:size(img1,2)
+        img1Java(i,j) = java.lang.Double(img1(i,j));
+        img2Java(i,j) = java.lang.Double(img2(i,j)); 
+    end
+end
+fSize=4;
+fSizeJava = java.lang.Integer(fSize);
+
+javaOne = javaMethod('getWholeDiffImage','slidingwindow.WholeDiffImage',img1Java,img2Java,fSizeJava);
+canonOne = slidingWindowSquDiff(img1,img2,fSize);
+
+figure
+imagesc([javaOne canonOne]);
+colorbar;
+
+%%
+numHoriz = 10;
+numVert = 6;
+numDispTotal = numHoriz*numVert;
+numPatchesTotal = 700;
+patches = cell(1,numPatchesTotal);
+for i = 1:length(patches)
+   patches{i} = javaMethod('generatePatch','generatepatches.GeneratePatches'...
+    ,size,centerVariance,intsArray,numPassesArray);
+end
+
+
+
+
+
+
+
+
+
 
