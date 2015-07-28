@@ -227,6 +227,9 @@ function pushbutton7_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton7 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+comparisonDCMfolder = uigetdir('','Select Comparison Scan DICOM folder');
+assignin('base','comparisonDCMfolder',comparisonDCMfolder);
+set(handles.edit4,'String',comparisonDCMfolder);
 
 
 % --- Executes on button press in pushbutton8.
