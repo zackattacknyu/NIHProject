@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sampleapplication;
+package slidingwindow;
 
 /**
  *
@@ -17,12 +17,12 @@ public class SlidingWindowDifference {
         squareSize = fSize*2 + 1;
     }
     
-    public void generateInfo(double[][] window1, double[][] window2){
+    public double findMinDifference(double[][] window1, double[][] window2){
         double[][] repWindow2 = repeatArray2by2(window2);
-        getMinDifference(window1,repWindow2);
+        return getMinDifference(window1,repWindow2);
     }
     
-    public double getMinDifference(double[][] baselineWindow, double[][] comparisonWindow){
+    private double getMinDifference(double[][] baselineWindow, double[][] comparisonWindow){
         
         double minDiff = Double.MAX_VALUE;
         double cumDiff=0; 

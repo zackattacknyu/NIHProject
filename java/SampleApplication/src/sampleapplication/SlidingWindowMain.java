@@ -27,7 +27,7 @@ public class SlidingWindowMain {
         SlidingWindowDifference instance = new SlidingWindowDifference(fSize);
         
         for(int i = 0; i < numTrials; i++){
-            instance.generateInfo();
+            //instance.generateInfo();
         }
         
         
