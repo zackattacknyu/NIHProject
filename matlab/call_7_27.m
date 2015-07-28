@@ -1,3 +1,4 @@
+fSize=4;
 fixedROI = fixedImg(rInds,cInds,zInds);
 movingROI = movingImg3(rInds,cInds,zInds);
 movingROI2 = movingImg4(rInds,cInds,zInds);
