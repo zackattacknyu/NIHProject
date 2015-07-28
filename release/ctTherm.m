@@ -202,7 +202,7 @@ try
     if( inputFolder(end)~='\' )
        inputFolder = strcat(inputFolder,'\'); 
     end
-    [outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file');
+    [outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Baseline Scan');
     fullFilePath = strcat(outputFilePath,outputFileName);
     dcmHU = writeNIIfile(inputFolder,fullFilePath);
 
@@ -252,7 +252,21 @@ function pushbutton8_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton8 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+    inputFolder = evalin('base','comparisonDCMfolder');
+    if( inputFolder(end)~='\' )
+       inputFolder = strcat(inputFolder,'\'); 
+    end
+    [outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Comparison Scan');
+    fullFilePath = strcat(outputFilePath,outputFileName);
+    dcmHU = writeNIIfile(inputFolder,fullFilePath);
 
+    assignin('base','comparisonScan',dcmHU);
+    set(handles.edit2,'String',fullFilePath);
+    
+catch
+    msgbox('Please specify comparison DICOM folder first');
+end
 
 
 function edit4_Callback(hObject, eventdata, handles)
@@ -282,6 +296,11 @@ function pushbutton10_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+baselineFile = get(handles.edit1,'String');
+comparisonFile = get(handles.edit2,'String');
+[cmdName,batchFilePath] = writeNIIbatchScript(baselineFile,comparisonFile);
+assignin('base','batchScriptCommand',cmdName);
+set(handles.edit5,'String',batchFilePath);
 
 
 % --- Executes on button press in pushbutton11.
@@ -289,6 +308,8 @@ function pushbutton11_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+runCommand = evalin('base','batchScriptCommand');
+system(runCommand);
 
 
 
