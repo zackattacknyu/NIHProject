@@ -20,7 +20,17 @@ public class SlidingWindowMain {
 
         long initTime = Calendar.getInstance().getTimeInMillis();
         
-        SlidingWindowDifference instance = new SlidingWindowDifference(4);
+        int numTrials = 27000;
+        int fSize = 4;
+        
+        
+        SlidingWindowDifference instance = new SlidingWindowDifference(fSize);
+        
+        for(int i = 0; i < numTrials; i++){
+            instance.generateInfo();
+        }
+        
+        
 
         long nowTime = Calendar.getInstance().getTimeInMillis();
         
