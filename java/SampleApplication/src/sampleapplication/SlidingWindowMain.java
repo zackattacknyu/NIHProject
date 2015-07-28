@@ -5,17 +5,26 @@
  */
 package sampleapplication;
 
+import java.util.Calendar;
+
 /**
  *
  * @author destefanozr
  */
-public class SampleApplication {
-
+public class SlidingWindowMain {
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Hello World");
+
+        long initTime = Calendar.getInstance().getTimeInMillis();
+        
+        SlidingWindowDifference instance = new SlidingWindowDifference(4);
+
+        long nowTime = Calendar.getInstance().getTimeInMillis();
+        
+        System.out.println("Time: " + (nowTime-initTime) + " ms");
     }
     
 }
