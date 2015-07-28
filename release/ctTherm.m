@@ -197,6 +197,21 @@ function pushbutton6_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+    inputFolder = evalin('base','baselineDCMfolder');
+    if( inputFolder(end)~='\' )
+       inputFolder = strcat(inputFolder,'\'); 
+    end
+    [outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file');
+    fullFilePath = strcat(outputFilePath,outputFileName);
+    dcmHU = writeNIIfile(inputFolder,fullFilePath);
+
+    assignin('base','baselineScan',dcmHU);
+    set(handles.edit1,'String',fullFilePath);
+    
+catch
+    msgbox('Please specify baseline DICOM folder first');
+end
 
 
 
