@@ -19,12 +19,14 @@ public class SlidingWindow {
     public static void main(String[] args) {
         long initTime = Calendar.getInstance().getTimeInMillis();
         
-        int fSize = 4;
-        int imgSize = 400;
+        int fSize = 1;
+        int imgSize = 3;
         
         double[][] img1 = generateRandomArray(imgSize);
         double[][] img2 = generateRandomArray(imgSize);
-        WholeDiffImage myImage = new WholeDiffImage(img1,img2,fSize);
+        //WholeDiffImage myImage = new WholeDiffImage(img1,img2,fSize);
+        
+        SlidingWindowDifference.findMinDifference(img1, img2, fSize);
         
         
         long nowTime = Calendar.getInstance().getTimeInMillis();

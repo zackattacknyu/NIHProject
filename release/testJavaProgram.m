@@ -42,8 +42,8 @@ javaaddpath('D:\git\NIHProject\release\SlidingWindow\dist\SlidingWindow.jar');
 
 %%
 
-img1 = rand(40,40)*200;
-img2 = rand(40,40)*200;
+img1 = rand(10,10)*200;
+img2 = rand(10,10)*200;
 
 
 img1Java = javaArray('java.lang.Double',size(img1,1),size(img1,2));
@@ -64,6 +64,29 @@ canonOne = slidingWindowSquDiff(img1,img2,fSize);
 figure
 imagesc([javaOne canonOne]);
 colorbar;
+
+%%
+
+img1 = rand(3,3)*200;
+img2 = rand(3,3)*200;
+
+
+img1Java = javaArray('java.lang.Double',size(img1,1),size(img1,2));
+img2Java = javaArray('java.lang.Double',size(img2,1),size(img2,2));
+
+for i = 1:size(img1,1)
+    for j = 1:size(img1,2)
+        img1Java(i,j) = java.lang.Double(img1(i,j));
+        img2Java(i,j) = java.lang.Double(img2(i,j)); 
+    end
+end
+fSize=1;
+fSizeJava = java.lang.Integer(fSize);
+
+javaOne = javaMethod('findMinDifference','slidingwindow.SlidingWindowDifference',img1Java,img2Java,fSizeJava);
+
+canonOne = getMinWindowSquDiff(img1,img2);
+
 
 %%
 numHoriz = 10;

@@ -54,6 +54,7 @@ function ctTherm_OpeningFcn(hObject, eventdata, handles, varargin)
 
 addpath('niftiIO');
 addpath('imtool3D');
+javaaddpath('SlidingWindow\dist\SlidingWindow.jar');
 
 % Choose default command line output for ctTherm
 handles.output = hObject;

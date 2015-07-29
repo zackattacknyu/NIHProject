@@ -30,6 +30,9 @@ for rInd = 1:numel(rOffsetValues)
       diffWindows = window2-slidingWindow1;
       diffArray = diffWindows(:);
       meanDiff = mean(diffArray.^2);
+      rOffset
+      cOffset
+      diffArray
       if(meanDiff < minSquDiff)
          minSquDiff = meanDiff;
          bestRoffset = rOffset;

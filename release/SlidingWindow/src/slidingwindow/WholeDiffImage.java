@@ -24,7 +24,7 @@ public class WholeDiffImage {
         for(int i = 0; i < img1.length; i++){
             for(int j = 0; j < img2.length; j++){
                 img1[i][j] = img1x[i][j];
-                img2[j][j] = img2x[i][j];
+                img2[i][j] = img2x[i][j];
             }
         }
         
