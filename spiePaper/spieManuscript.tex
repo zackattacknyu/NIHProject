@@ -22,6 +22,8 @@
 %  e.g., [dvips], but that may be inappropriate for some LaTeX 
 %  installations. 
 \usepackage[]{graphicx}
+\usepackage{caption} 
+\usepackage{subcaption} 
 %\usepackage{mathtools}
 
 \title{CT Thermometry with Image Registration and Filtering} 
@@ -35,7 +37,7 @@
 
 \author{Zachary DeStefano\supit{a}, Jack Yao\supit{a}, Nadine Abi-Jaoudeh\supit{a}, Ming Li\supit{a}
 \skiplinehalf
-\supit{a}National InstituteS of Health, Clinical Center\\Bethesda, MD 20814
+\supit{a}National Institutes of Health, Clinical Center\\Bethesda, MD 20814
 }
 
 %>>>> Further information about the authors, other than their 
@@ -57,30 +59,21 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{abstract}
-The possibility of Cone-beam CT Thermometry was explored previously in **NADINE'S PAPER REF**. We seek to extend this work but applying it to real patients. This requires an additional step of doing image registration between cone-beam CT scans. Additionally, we vary the change metric used.  
+Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Li et al explored this possibility using CBCT scans of a pig shoulder undergoing ablation. We are extending this work by using CBCT scans of real patients. Because we have real patients, we register the scans using NiftyReg **INSERT REF** before comparing them. Due to the noise in the image and remaining registration errors, we also employ a more robust change metric than simple image difference. 
 \end{abstract}
 
 %>>>> Include a list of keywords after the abstract 
 
-\keywords{Cone-beam CT, Thermometry, Radiofrequency Ablation}
+\keywords{Cone-beam CT, CBCT, Thermometry, Radiofrequency Ablation, Time Delay Analysis}
 
 \section{Introduction}
 \label{sec:intro}  % \label{} allows reference to this section
 
-Monitoring temperature during ablation procedures is important for prevention of overtreatment and undertreatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  In particular, this must be possible for Cone-beam CT (CBCT) scans. This possibility was explored with CBCT scans of a pig shoulder phantom being ablated [1] . We are extending this work by using CBCT scans of real patients. Additionally, we are employing various image refinement techniques to improve the thermometry map. 
+Li et al explored the possibility of generating a thermal map from CBCT scans taken at different time points. We decided to extend this work and furthur explore thermometry map generation. We applied the methods to real patients. Because we have real patients, there is movement and deformation of the organs between CBCT scans. We thus decided to keep the baseline scan static and register the subsequent scans to the baseline one using **NIFTY**. After registration, there is still noise, needle artifacts, and small registration errors. We thus needed a change metric that was robust to these issues. We decided to compute the RMSE of the window around a given pixel. We treat the windows as a signal and find the ideal spatial delay between them and use the subsequent RMSE as the amount of change that occurred. 
 
-We used a data set of CBCT scans taken during 13 ablation procedures performed between September 2013 and June 2015. For each ablation procedure, there were between 1 and 4 ablations done. With each ablation, a baseline scan was taken followed by 1-4 comparison scans at different time points. Each of these time points had the ablation needle at different temperatures. We thus wanted to generate a thermal map at each of these time points in order to know how much tissue has been affected. 
+The change metric we employ is computationally intensive. We thus only compute it around the Region of Interest (ROI) where the ablation occured. Because the needle has distinct Hounsfeld Unit values from tissue, we were able to isolate the needle and find the tip of it. The region around the tip was then our ROI. 
 
-For each comparison scan, the following was done to generate a thermal map:
-\begin{enumerate}
-\item Register the comparison scan to the baseline scan
-\item Filter both images and calculate the difference
-\item Use Connected Component and PCA to detect the Needles
-\item Use the result to find the Region of Interest (ROI)
-\item Calculate the Sliding Window RMSE value for the ROI
-\item Correlate values from (5) in the temperature zones with the temperature data
-\item Use regression from (6) to generate thermal map for entire ROI
-\end{enumerate}
+We used a data set of CBCT scans taken during 13 ablation procedures performed between September 2013 and June 2015. For each ablation procedure, there were between 1 and 4 ablations done. With each ablation, a baseline scan was taken followed by 1-4 comparison scans at different time points. Each of these time points had the ablation needle at different temperatures. We generated a thermal map at each of these time points in order to estimate the amount of tissue affected. 
 
 \section{Related Work}
 
@@ -96,11 +89,37 @@ Our change metric ends up being RMSE between windows around a given pixel, but w
 
 \section{Pipeline}
 
+Here is a summary of the pipeline performed for each comparison scan to generate a thermal map:
+\begin{enumerate}
+\item Register the comparison scan to the baseline scan
+\item Filter both images and calculate the difference
+\item Use Connected Component and PCA to detect the Needles
+\item Use the result to find the Region of Interest (ROI)
+\item Calculate the Sliding Window RMSE value for the ROI
+\item Correlate values from (5) in the temperature zones with the temperature data
+\item Use regression from (6) to generate thermal map for entire ROI
+\end{enumerate}
+
+
 \subsection{Image Registration} 
 
-Each comparison scan was registered to the baseline scan. Affine and Deformable Registration were performed using NiftyReg [2]. The following pictures are examples of images before and after registration:
+Each comparison scan was registered to the baseline scan. Affine **INSERT REF** and Deformable Registration **INSERT REF** were performed using NiftyReg. Figure \ref{beforeAndAfterReg} shows an example of image slices before and after registration. 
 
-**INSERT BEFORE AND AFTER REG IMAGE IN POSTER**
+\begin{figure} 
+\centering 
+\begin{subfigure}[t]{0.45\textwidth} 
+\includegraphics[width=\textwidth]{unregisteredSlice.png}
+\caption{Before Registration} 
+\label{unregSlice} 
+\end{subfigure} 
+\begin{subfigure}[t]{0.45\textwidth} 
+\includegraphics[width=\textwidth]{registeredSlice.png} 
+\caption{After Registration} \label{regSlice} 
+\end{subfigure} 
+\caption{Baseline (green channel) and Comparison (red channel) Image superimposed in one image before and after registration}
+\label{beforeAndAfterReg} 
+
+\end{figure}
 
 \subsection{Needle Detection}
 
