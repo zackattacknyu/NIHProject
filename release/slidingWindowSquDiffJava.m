@@ -1,6 +1,16 @@
 function [ javaOutput ] = slidingWindowSquDiffJava( img1,img2,fSize )
-%SLIDINGWINDOWSQUDIFFJAVA Summary of this function goes here
-%   Detailed explanation goes here
+%SLIDINGWINDOWSQUDIFFJAVA Finds sliding window difference for images
+%
+%   This finds the sliding window difference image between two images
+%       It calls a Java method to perform the calculation
+%   
+%   INPUT:
+%       img1 - first grayscale image
+%       img2 - second grayscale image
+%       fSize - half-width of window
+%
+%   OUTPUT:
+%       javaOutput - difference image
 
 img1Java = javaArray('java.lang.Double',size(img1,1),size(img1,2));
 img2Java = javaArray('java.lang.Double',size(img2,1),size(img2,2));
