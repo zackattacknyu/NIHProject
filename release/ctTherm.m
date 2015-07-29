@@ -22,7 +22,7 @@ function varargout = ctTherm(varargin)
 
 % Edit the above text to modify the response to help ctTherm
 
-% Last Modified by GUIDE v2.5 27-Jul-2015 17:53:32
+% Last Modified by GUIDE v2.5 29-Jul-2015 18:58:19
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -878,5 +878,13 @@ function pushbutton34_Callback(hObject, eventdata, handles)
 % --- Executes on button press in pushbutton35.
 function pushbutton35_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton35 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over listbox1.
+function listbox1_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to listbox1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
