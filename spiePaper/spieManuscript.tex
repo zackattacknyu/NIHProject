@@ -123,11 +123,30 @@ Each comparison scan was registered to the baseline scan. Affine **INSERT REF** 
 
 \subsection{Needle Detection}
 
-The HU value for the needle and thermocouple were significantly higher than the values for normal tissue. I was thus able to easily find all the points in the 3D scan with the needle. 
+The HU values for the needle and thermocouple are significantly higher than the values for normal tissues. Thus after thresholding the values in the CBCT scan high enough, the points remaining are the ones in the needle and thermocouple. Doing connected component analysis **INSERT REF** let us find the clusters which contain the needles and thermocouples. For each components, PCA was done to find the needle vector and endpoints. 
 
-**MENTION CONNECTED COMPONENT ANALYSIS DONE**
+Here was the procedure done to get the ROIs:
+\begin{enumerate}
+\item Convert a voxel to a 3D point in the set if the HU value is over 1200
+\item Run connected component analysis
+\item Isolate the connected components with the most points
+\item For each component:
+\item Run PCA and find most signficant vector
+\item Find each points coordinate in the new vector space
+\item The points with the greatest and least value will be the endpoints
+\end{enumerate}
 
-I then did PCA on these points in order find the direction of the needle. I was also able to obtain the endpoints of the needle by finding the min and max point in the principle PCA direction. I chose the end point closest to the center of the image as the probable end point. 
+\begin{figure} 
+\centering 
+\begin{subfigure}[t]{0.45\textwidth} 
+\includegraphics[width=\textwidth]{needleDetection3D_1.png}
+\end{subfigure} 
+\begin{subfigure}[t]{0.45\textwidth} 
+\includegraphics[width=\textwidth]{needleDetection3D_2.png} 
+\end{subfigure} 
+\caption{Needles and Thermocouple (blue) and their endpoints (red) detected using PCA}
+\label{needleDetection} 
+\end{figure}
 
 \subsection{Change Detection}
 
