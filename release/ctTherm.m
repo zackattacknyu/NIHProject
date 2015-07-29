@@ -57,6 +57,7 @@ addpath('imtool3D');
 import java.util.ArrayList;
 javaaddpath('SlidingWindow\dist\SlidingWindow.jar');
 javaaddpath('SlidingWindow\build\classes\slidingwindow');
+ctThermConfig;
 
 % Choose default command line output for ctTherm
 handles.output = hObject;
@@ -343,6 +344,23 @@ function pushbutton12_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton12 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+baseScan = evalin('base','baselineScan');
+HUthreshold = evalin('base','HUthreshold')
+pointsThreshold = evalin('base','pointsThreshold')
+minNumNeedles = evalin('base','minNumNeedles')
+roiRadius = evalin('base','roiRadius')
+[outputROI,minCoordsAll,maxCoordsAll] = getROIregions(baseScan, HUthreshold,pointsThreshold,minNumNeedles,roiRadius )
+outputNames = cell(1,numel(outputROI));
+index = 1;
+for j = 1:size(outputROI,1)
+    outputNames{index} = strcat('Needle_',num2str(j),'_Tip'); 
+    index = index+1;
+end
+for j = 1:size(outputROI,1)
+    outputNames{index} = strcat('Needle_',num2str(j),'_Other End'); 
+    index = index+1;
+end
+set(handles.listbox1,'String',outputNames,'Value',1);
 
 
 % --- Executes on selection change in listbox1.
@@ -525,6 +543,12 @@ function pushbutton15_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton15 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+currentNames = get(handles.listbox1,'String');
+numROI = numel(currentNames);
+nextROIn = evalin('base','nextManualROInum');
+currentNames{numROI+1} = strcat('Manual_ROI_',num2str(nextROIn));
+assignin('base','nextManualROInum',nextROIn+1);
+set(handles.listbox1,'String',currentNames);
 
 
 % --- Executes on button press in pushbutton17.
