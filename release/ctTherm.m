@@ -782,11 +782,21 @@ function pushbutton25_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton25 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+%{
 uigetfile('*.nii','Select Nifty File for Index Gathering');
 prompt = 'Specify Slice Number:';
 title = 'Slice Number Entry:';
 sliceNum = inputdlg(prompt,title,1);
 uigetfile('*.nii','Select Nifty File for Value Gathering');
+%}
+tempPointNames = get(handles.listbox3,'String');
+numPoints = numel(tempPointNames);
+nextTempPointN = evalin('base','nextTempPointNum');
+tempPointNames{numPoints+1} = strcat('Temperature_Point_',num2str(nextTempPointN));
+assignin('base','nextTempPointNum',nextTempPointN+1);
+set(handles.listbox3,'String',tempPointNames);
+
 
 
 % --- Executes on button press in pushbutton26.

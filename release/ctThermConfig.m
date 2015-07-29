@@ -9,31 +9,38 @@ CHANGE THE VALUES BELOW IF DESIRED.
 This defines the HU unit threshold. HU voxels above this value are counted
 as needles or thermocouple and below this value they are counted as tissue.
 %}
-assignin('base','HUthreshold',1200);
+HUthreshold=1200;
+
 
 %{
 When needle detection is run, this is used as the least number of points in
 a component before it is counted as being important. 
 %}
-assignin('base','pointsThreshold',50);
+pointsThreshold=50;
+
 
 %{
 When needle detection is run, it finds the N most significant components to
 use as the needles or thermocouples. The value of N is determined by this
 variable
 %}
-assignin('base','minNumNeedles',3);
+minNumNeedles=3;
+
 
 %{
 This is the radius (in pixels) around the needle used to obtain the ROI.
 A box around the needle tip is taken, thus this defines the L-inf norm
 distance. 
 %}
-assignin('base','roiRadius',30);
-
+roiRadius=30;
 
 
 %{
-DO NOT CHANGE THE VALUES BELOW
+DO NOT CHANGE THE CODE BELOW
 %}
+assignin('base','HUthreshold',HUthreshold);
+assignin('base','pointsThreshold',pointsThreshold);
+assignin('base','minNumNeedles',minNumNeedles);
+assignin('base','roiRadius',roiRadius);
 assignin('base','nextManualROInum',1);
+assignin('base','nextTempPointNum',1);
