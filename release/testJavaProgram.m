@@ -42,28 +42,33 @@ javaaddpath('D:\git\NIHProject\release\SlidingWindow\dist\SlidingWindow.jar');
 
 %%
 
-img1 = rand(10,10)*200;
-img2 = rand(10,10)*200;
+for i = 1:10
+    
+    img1 = rand(30,30)*200;
+    img2 = rand(30,30)*200;
 
 
-img1Java = javaArray('java.lang.Double',size(img1,1),size(img1,2));
-img2Java = javaArray('java.lang.Double',size(img2,1),size(img2,2));
+    img1Java = javaArray('java.lang.Double',size(img1,1),size(img1,2));
+    img2Java = javaArray('java.lang.Double',size(img2,1),size(img2,2));
 
-for i = 1:size(img1,1)
-    for j = 1:size(img1,2)
-        img1Java(i,j) = java.lang.Double(img1(i,j));
-        img2Java(i,j) = java.lang.Double(img2(i,j)); 
+    for i = 1:size(img1,1)
+        for j = 1:size(img1,2)
+            img1Java(i,j) = java.lang.Double(img1(i,j));
+            img2Java(i,j) = java.lang.Double(img2(i,j)); 
+        end
     end
+    fSize=4;
+    fSizeJava = java.lang.Integer(fSize);
+
+    javaOne = javaMethod('getWholeDiffImage','slidingwindow.WholeDiffImage',img1Java,img2Java,fSizeJava);
+    canonOne = slidingWindowSquDiff(img1,img2,fSize);
+
+    diffBetweenMethods = sum(sum(javaOne-canonOne));
+    diffBetweenMethods
+    
 end
-fSize=4;
-fSizeJava = java.lang.Integer(fSize);
 
-javaOne = javaMethod('getWholeDiffImage','slidingwindow.WholeDiffImage',img1Java,img2Java,fSizeJava);
-canonOne = slidingWindowSquDiff(img1,img2,fSize);
 
-figure
-imagesc([javaOne canonOne]);
-colorbar;
 
 %%
 

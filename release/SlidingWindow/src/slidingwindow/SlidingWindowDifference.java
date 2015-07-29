@@ -43,36 +43,18 @@ public class SlidingWindowDifference {
     private double getMinDifference(double[][] baselineWindow, double[][] comparisonWindow){
         
         double minDiff = Double.MAX_VALUE;
-        double cumDiff=0; 
+        double cumDiff; 
         double curDiff;
         for(int rOff = 0; rOff < squareSize; rOff++){
             for(int cOff = 0; cOff < squareSize; cOff++){
                 
-                System.out.println("rOff:" + rOff + " cOff:" + cOff);
-                
                 cumDiff = 0;
-                
-                /*
-                RETURN TO THIS CODE ONCE DEBUGGED
-                
                 for(int i = 0; i < squareSize; i++){
                     for(int j = 0; j < squareSize; j++){
                         curDiff = baselineWindow[i][j] - comparisonWindow[i+rOff][j+cOff];
                         cumDiff = cumDiff + curDiff*curDiff;
                     }
                 }
-                */
-                
-                for(int j = 0; j < squareSize; j++){
-                    for(int i = 0; i < squareSize; i++){
-                        curDiff = baselineWindow[i][j] - comparisonWindow[i+rOff][j+cOff];
-                        System.out.println("i=" + i + " j=" + j);
-                        System.out.println("window2val: " + baselineWindow[i][j] + " repWindow1Val: " + comparisonWindow[i+rOff][j+cOff]);
-                        cumDiff = cumDiff + curDiff*curDiff;
-                    }
-                }
-                
-                
                 
                 if(cumDiff < minDiff){
                     minDiff = cumDiff;
