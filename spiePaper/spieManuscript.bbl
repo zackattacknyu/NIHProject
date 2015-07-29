@@ -1,7 +1,23 @@
 \begin{thebibliography}{1}
 
-\bibitem{Lamport94}
-L.~Lamport, {\em LaTeX: A Document Preparation System}, Addison-Wesley,
-  Reading, Mass., 1994.
+\bibitem{Modat10}
+M.~Modat, G.~G. Ridgway, Z.~A. Taylor, M.~Lehmann, J.~Barnes, N.~C. Fox, D.~J.
+  Hawkes, and S.~Ourselin, ``Fast free-form deformation using graphics
+  processing units,'' {\em Computer Methods and Programs in Biomedicine} , June
+  2010.
+
+\bibitem{Fani14}
+F.~Fani, E.~Schena, P.~Saccomandi, and S.~Silvestri, ``Ct-based thermometry: An
+  overview,'' {\em International Journal of Hyperthermia} , June 2014.
+
+\bibitem{Ourselin01}
+S.~Ourselin, A.~Roche, G.~Subsol, X.~Pennec, and N.~Ayache, ``Reconstructing a
+  3d structure from serial histological sections,'' {\em Image and Vision
+  Computing} , January 2001.
+
+\bibitem{Li13}
+M.~Li, N.~Abi-Jaoudeh, A.~Kapoor, S.~Kadoury, S.~Xu, N.~Noordhoek, A.~Radaelli,
+  B.~Carelsen, and B.~J. Wood, ``Towards cone-beam ct thermometry,'' {\em Proc.
+  SPIE 8671} , March 2013.
 
 \end{thebibliography}
