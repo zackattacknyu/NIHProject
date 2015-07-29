@@ -74,7 +74,7 @@ rectangle('Position',[rectX rectY sizeX sizeY])
 rectangle('Position',[rectX2 rectY sizeX sizeY])
 %rectangle('Position',[rectX3 rectY sizeX sizeY])
 axis off;
-
+%%
 %must run the following:
 %load('script7_13_pt9Values.mat');
 slidWindowSliceNum = (sliceNum-zInds(1))+1;
@@ -90,7 +90,7 @@ convROI = putin01scale(diffImageROI(5:117,5:167));
 slidROI = putin01scale(diffFrameImage);
 
 figure
-imagesc([rawROI;convROI;slidROI]);
+imagesc([rawROI convROI slidROI]);
 axis off
 
 %{

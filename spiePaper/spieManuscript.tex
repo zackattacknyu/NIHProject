@@ -59,7 +59,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{abstract}
-Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Li et al explored this possibility using CBCT scans of a pig shoulder undergoing ablation. We are extending this work by using CBCT scans of real patients. Because we have real patients, we register the scans using NiftyReg **INSERT REF** before comparing them. Due to the noise in the image and remaining registration errors, we also employ a more robust change metric than simple image difference. 
+Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Li et al explored this possibility using CBCT scans of a pig shoulder undergoing ablation. We are extending this work by using CBCT scans of real patients. Because we have real patients, we register the scans using NiftyReg **INSERT REF** before comparing them. Due to the noise in the image and remaining registration errors, we also employ a more robust change metric than simple image difference. \cite{Lamport94} 
 \end{abstract}
 
 %>>>> Include a list of keywords after the abstract 
@@ -131,7 +131,7 @@ Here was the procedure done to get the ROIs:
 \item Run connected component analysis
 \item Isolate the connected components with the most points
 \item For each component:
-\item Run PCA and find most signficant vector
+\item Run PCA and find most significant vector
 \item Find each points coordinate in the new vector space
 \item The points with the greatest and least value will be the endpoints
 \end{enumerate}
@@ -150,42 +150,57 @@ Here was the procedure done to get the ROIs:
 
 \subsection{Change Detection}
 
-These images have a low signal to noise ratio as well as beam hardening artifacts. Because of this, a simple difference image is quite noisy. We decided to use an averaging filter to obtain the Region of Interest (ROI) that contained the ablation zone. We then calculate a Sliding Window RMSE value for each pixel in the ROI. 
+These images have a low signal to noise ratio as well as beam hardening artifacts. Li et al used the Wronskian Change Detector to try to account for this. While this change detector works well for classifying which pixels changed, it is not ideally suited for regression where the amount of change is important. The Wronskian detector uses a window around a pixel. We decided to use the window method also but with a different change metric. 
 
-The panel to the left shows different ways of comparing the ROI, including:
-Raw Subtraction (top)
-Average Filtered Image difference (middle)
-Sliding Window method difference (bottom)
+We ended up using two metrics. The first one is more efficient but less robust. The second more is less efficient to compute but much more robust. The first one was used to get an idea of what the thermal map will look like. The second one was used to actually generate the thermal map. 
 
-Raw Subtraction
-Let A be baseline image 
-Let B be comparison image 
-Each pixel (i,j) in result image is as follows: A(i,j)-B(i,j)
+There are various image filters that are meant to reduce noise. We decided to incorporate an averaging filter. We apply the filter to both images and then find the difference of the filtered image. This is equivalent to taking a window around a pixel and finding the mean difference in the window. This was the first method. 
 
-Average Filtered Image difference
-Let C be baseline image after applying an averaging filter
-Let D be comparison image after applying an averaging filter
-Each pixel (i,j) in result image is as follows: C(i,j)-D(i,j)
+While the first method reduces the effects of noise, there are still beam hardening artifacts and registration errors that are not accounted for. We thus incorporated a second method where we took the windows and minimized the RMSE over every offset of the windows. 
 
-Sliding Window RMSE Method
-For each pixel (i,j) in result image: 
-Let U be neighborhood around (i,j) in the baseline image
-Let V be neighborhood around (i,j) in the comparison image
-Calculate the following:
+The second method is equivalent to treating the baseline and comparison windows as signals and finding the ideal spatial delay between them **INSERT REF**. 
+
+Here is the second method procedure:
+For each pixel $(i,j)$ in the result image:
+\begin{enumerate}
+\item Let $w$ be half-width of the window around the pixel. 
+\item Let $n=2w+1$. This means the window is size $n$ by $n$. 
+\item Let $U$ be window around $(i,j)$ in baseline image
+\item Let $U'$ be $U$ repeated in the following way:
 \[
-\min_{r,c} \sum_{l=0}^{m-1} \sum_{k=0}^{n-1} {(U_{k+r,l+c}-V_{k,l})^2}
+\forall(k,l,i \in Z)\, \, \, U'_{k+i \cdot n,l+i \cdot n} = U_{k,l}
 \]
-where it holds that
+\item Let $V$ be window around $(i,j)$ in the comparison image
+\item Calculate the following:
 \[
-U_{k+n,l+m} = U_{k,l}
+\min_{r,c} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {(U'_{k+r,l+c}-V_{k,l})^2}
 \]
 
+\end{enumerate}
+
+\begin{figure} 
+\centering 
+\includegraphics[width=\textwidth]{changeDetectionPanel2.png} 
+\caption{Results of different change metrics in the ROI. Raw subtraction (left), Filtered Difference (center), and Sliding Window RMSE (right)} 
+\end{figure}
 
 \subsection{Regression}
 
+After generating the sliding window image, we find the coordinates where the measured temperature zones are located. We correlate the sliding window values with the measured temperature at those zones using linear regression. We then take the regression equation found and compute its output across the sliding window image. This gives us the thermal map.  
+
 We then took the sliding window RMSE value and calibrated it using the measured temperature change at the needle through a regression model. We used the model to calculate a thermal map in the ROI. This thermal map was used to obtain an approximate mean temperature around the needles and thermocouples.
 
-**INSERT POSTER IMAGES**
+\begin{figure} 
+\centering 
+\includegraphics[width=4in]{slidingDiffRegression.png} 
+\caption{Regression Curve Calculated} 
+\end{figure}
+
+\begin{figure} 
+\centering 
+\includegraphics[width=4in]{slidingDiffThermalMap.png} 
+\caption{Thermal Map generated from Regression curve} 
+\end{figure}
 
 
 \section{Results}
@@ -200,14 +215,22 @@ We decided to take the thermal maps generated from regression and see the averag
 
 For the ablation zones, we made a graph of radius of region versus average temperature in that region in the thermal map. This graph can one day be used to approximate the radius of an ablation zone. Here it is for the various patients in our study. 
 
-**INSERT GRAPH OF AREA VS AVERAGE TEMPERATURE**
+\begin{figure} 
+\centering 
+\includegraphics[width=3in]{meanTempVsRadiusFull.png} 
+\caption{Shows the graph of radius vs mean temperature} 
+\end{figure}
 
 
 \subsection{3D Visualization of Ablation Zone}
 
 By taking the 3D Thermal Map, thresholding the values, and then using a surface generation algorithm **REFERENCE ITK-SNAP HERE**, we were able to create a 3D diagram of the ablation zone. We overlayed the 3D diagram of the needle and we were able to obtain a convincing visual. 
 
-**SHOW VISUALS OF NEEDLE AND ABLATION ZONES**
+\begin{figure} 
+\centering 
+\includegraphics[width=3in]{NeedleAndAblationZone.png} 
+\caption{Shows a 3D Visualization of the Needle and Ablation Zone} 
+\end{figure}
 
 \section{Conclusions and Future Work}
 
@@ -219,7 +242,7 @@ The next step is to automate ROI selection using the needle properties. Addition
 
 
 
-%\bibliography{report}   %>>>> bibliography data in report.bib
-%\bibliographystyle{spiebib}   %>>>> makes bibtex use spiebib.bst
+\bibliography{report}   %>>>> bibliography data in report.bib
+\bibliographystyle{spiebib}   %>>>> makes bibtex use spiebib.bst
 
 \end{document} 
