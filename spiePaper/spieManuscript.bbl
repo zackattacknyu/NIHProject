@@ -41,6 +41,20 @@ B.~Subudhi, S.~Ghosh, and A.~Ghosh, ``Change detection for moving object
   segmentation with robust background construction under wronskian framework,''
   {\em Machine Vision and Applications}~{\bf 24}(4), pp.~795--809, 2013.
 
+\bibitem{Boas11}
+F.~E. Boas and D.~Fleischmann, ``Evaluation of two iterative techniques for
+  reducing metal artifacts in computed tomography,'' {\em Radiology}~{\bf
+  259}(3), pp.~894--902, 2011.
+
+\bibitem{Bangert12}
+M.~Bangert, ``Ct reconstruction package,'' 2012.
+
+\bibitem{bwconncomp}
+MathWorks, ``Find connected components in raw image,'' 2015.
+
+\bibitem{pca}
+MathWorks, ``Principal component analysis of raw data,'' 2015.
+
 \bibitem{Rhudy09}
 M.~Rhudy, B.~Bucci, J.~Vipperman, J.~Allanach, and B.~Abraham, ``Microphone
   array analysis methods using cross-correlations,'' {\em ASME Proceedings:

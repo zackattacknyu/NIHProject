@@ -100,6 +100,7 @@ Our change metric ends up being RMSE between windows around a given pixel, but w
 
 \subsection{Metal Artifact Deletion}
 
+In addition to filtering, a common method to clean up these images before analysis is through Metal Deletion \cite{Boas11}. It is an active area of research. Unfortunately, the metal deletion techniques such as \href{http://www.mathworks.com/matlabcentral/fileexchange/34608-ct-reconstruction-package}{FBP} \cite{Bangert12} change the HU values and thus we were not able to rely on them for this work. 
 
 
 \section{Pipeline}
@@ -138,7 +139,7 @@ Each comparison scan was registered to the baseline scan. Affine **INSERT REF** 
 
 \subsection{Needle Detection}
 
-The HU values for the needle and thermocouple are significantly higher than the values for normal tissues. Thus after thresholding the values in the CBCT scan high enough, the points remaining are the ones in the needle and thermocouple. Doing connected component analysis **INSERT REF** let us find the clusters which contain the needles and thermocouples. For each components, PCA was done to find the needle vector and endpoints. 
+The HU values for the needle and thermocouple are significantly higher than the values for normal tissues. Thus after thresholding the values in the CBCT scan high enough, the points remaining are the ones in the needle and thermocouple. Doing connected component analysis with \href{http://www.mathworks.com/help/images/ref/bwconncomp.html}{bwconncomp in Matlab} \cite{bwconncomp} let us find the clusters which contain the needles and thermocouples. For each components, \href{http://www.mathworks.com/help/stats/pca.html}{PCA in Matlab} \cite{pca} was done to find the needle vector and endpoints. 
 
 Here was the procedure done to get the ROIs:
 \begin{enumerate}
