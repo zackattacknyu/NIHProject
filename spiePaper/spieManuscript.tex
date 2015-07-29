@@ -59,7 +59,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{abstract}
-Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Li et al explored this possibility using CBCT scans of a pig shoulder undergoing ablation. We are extending this work by using CBCT scans of real patients. Because we have real patients, we register the scans using NiftyReg **INSERT REF** before comparing them. Due to the noise in the image and remaining registration errors, we also employ a more robust change metric than simple image difference. \cite{Lamport94} 
+Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Li et al explored this possibility using CBCT scans of a pig shoulder undergoing ablation. We are extending this work by using CBCT scans of real patients. Because we have real patients, we register the scans using NiftyReg \cite{Modat10} before comparing them. Due to the noise in the image and remaining registration errors, we also employ a more robust change metric than simple image difference.
 \end{abstract}
 
 %>>>> Include a list of keywords after the abstract 
@@ -77,11 +77,11 @@ We used a data set of CBCT scans taken during 13 ablation procedures performed b
 
 \section{Related Work}
 
-CT Thermometry has been explored since the 1970's with some success **CT OVERVIEW PAPER**. The attempts mentioned only focused on taking individual CT scan values at different points and doing a linear regression. Being that the CT scans have quite a lot of noise and artifacts, we decided to attempt to use a metric that accounted for it. Additionally, those attempts did not see what a full thermal map would look like.
+CT Thermometry has been explored since the 1970's with some success\cite{Fani14}. The attempts mentioned only focused on taking individual CT scan values at different points and doing a linear regression. Being that the CT scans have quite a lot of noise and artifacts, we decided to attempt to use a metric that accounted for it. Additionally, those attempts did not see what a full thermal map would look like.
 
-Image Registration between 3D Medical Scans has been explored **NIFTY REFERENCES**. There is now an open source tool to accomplish this. We incorporated that tool in our work.  
+Image Registration between 3D Medical Scans has been explored \cite{Ourselin01,Modat10}. There is now an open source tool to accomplish this. We incorporated that tool in our work.  
 
-A more robust change metric was proposed in **NADINE'S PAPER**. While this change metric would be good for classification, the formula makes it less than ideal for regression. We thus needed to figure out a change metric adapted for regression.
+A more robust change metric was proposed\cite{Li13}. While this change metric would be good for classification, the formula makes it less than ideal for regression. We thus needed to figure out a change metric adapted for regression.
 
 A change metric used in the pipeline is the difference between the convolutional average filtered image. Convolution is a common technique used in image processing. The averaging filter is a common method to reduce noise. We thus use it to give us denoised difference information. Unfortunately, it does not account for potential registration errors, so we needed something that adjusted to it. 
 
