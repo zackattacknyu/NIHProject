@@ -92,9 +92,7 @@ Many of the attempts focused on correlating individual HU unit values with tempe
 
 \subsection{Image Registration}
 
-Medical Image Registration has been researched extensively \cite{Oliveira14, Hill01}. For our purposes, we hoped to align temporal sequences of CBCT scans.
-
-Image Registration between 3D Medical Scans has been explored \cite{Ourselin01,Modat10}. There is now an open source tool to accomplish this. We incorporated that tool in our work.  
+Medical Image Registration has been researched extensively \cite{Oliveira14, Hill01}. For our purposes, we needed to align temporal sequences of CBCT scans. In particular, we performed an affine registration in order to account for movement of the organs during the ablation procedure. The organs can deform thus we also incorporated non-rigid registration. Therer is now an open source tool known as \href{http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftyReg}{NiftyReg} \cite{Ourselin01,Modat10} that was able to perform both the affine \cite{Ourselin01} and deformable \cite{Modat10} registration.   
 
 \subsection{Change Metric}
 
