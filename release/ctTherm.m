@@ -811,6 +811,12 @@ function pushbutton27_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton27 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+curContents = get(handles.listbox3,'String');
+indexSelected = get(handles.listbox3,'Value');
+curContents(indexSelected)=[]; %deletes the currently selected one
+set(handles.listbox3,'String',curContents);
+set(handles.listbox3,'Value',1);
+
 
 
 % --- Executes on button press in pushbutton28.
