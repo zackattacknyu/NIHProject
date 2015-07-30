@@ -60,7 +60,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{abstract}
-Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Li et al explored this possibility using CBCT scans of a pig shoulder undergoing ablation. We are extending this work by using CBCT scans of real patients. Because we have real patients, we register the scans using NiftyReg \cite{Modat10} before comparing them. Due to the noise in the image and remaining registration errors, we also employ a more robust change metric than simple image difference.
+Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Previously, this was attempted using CBCT scans of a pig shoulder undergoing ablation \cite{Li13}. We are extending this work by using CBCT scans of real patients and incorporating more processing steps. We register the scans before comparing them due to the movement of organs. We also employ a robust change metric due to image noise and artifacts. In order to achieve an automated system in the future, we use PCA to select the Region of Interest (ROI) where the needle tip is located and thus where the ablation occurred. Once we have generated a change map in the ROI, we correlate change data with temperature data at points in the region to transform our change map into a thermal map. This thermal map is then able to provide an estimate as to the size of the ablation zone. We repeated our procedure on a data set of 12 patients who had a total of 24 ablation procedures performed. We were able to generate reasonable thermal maps with varying degrees of accuracy. In addition to providing estimates of the size of the ablation zone, these maps were used to produce 3D visualizations of the ablation zone and needle.  
 \end{abstract}
 
 %>>>> Include a list of keywords after the abstract 
@@ -70,11 +70,17 @@ Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is
 \section{Introduction}
 \label{sec:intro}  % \label{} allows reference to this section
 
-Li et al explored the possibility of generating a thermal map from CBCT scans taken at different time points. We decided to extend this work and furthur explore thermometry map generation. We applied the methods to real patients. Because we have real patients, there is movement and deformation of the organs between CBCT scans. We thus decided to keep the baseline scan static and register the subsequent scans to the baseline one using **NIFTY**. After registration, there is still noise, needle artifacts, and small registration errors. We thus needed a change metric that was robust to these issues. We decided to compute the RMSE of the window around a given pixel. We treat the windows as a signal and find the ideal spatial delay between them and use the subsequent RMSE as the amount of change that occurred. 
+The possibility of generating a thermal map from CBCT scans has been explored before \cite{Li13}. We decided to extend the work to real patients and incorporate more processing steps to enhance the maps. For the procedures analyzed in this work, there was a baseline CBCT scan taken after the ablation needle was inserted but before it was heated. There were then 1-4 scans taken as the needle was heated and cooled.
 
-The change metric we employ is computationally intensive. We thus only compute it around the Region of Interest (ROI) where the ablation occured. Because the needle has distinct Hounsfeld Unit values from tissue, we were able to isolate the needle and find the tip of it. The region around the tip was then our ROI. 
+These scans were taken a few minutes apart on live patients, thus there was movement of the organs. In order to account for this, we kept the baseline scan static and registered the subsequent scans to the baseline scan. This allowed us to have 3D CBCT scans that were reasonably aligned. However there was still noise, needle artifacts, and small registration errors. We thus needed a change metric that was robust to these issues. 
 
-We used a data set of CBCT scans taken during 13 ablation procedures performed between September 2013 and June 2015. For each ablation procedure, there were between 1 and 4 ablations done. With each ablation, a baseline scan was taken followed by 1-4 comparison scans at different time points. Each of these time points had the ablation needle at different temperatures. We generated a thermal map at each of these time points in order to estimate the amount of tissue affected. 
+Computing the pixel by pixel difference between scans is a poor metric that is not robust enough for our needs. Using the Wronskian Change Detector was explored previously \cite{Li13} but it is not well suited for the regression calculation we need to perform. Using the values in a window around a pixel proved to be effective though. 
+
+We compared windows around a pixel in the baseline scan and comparison scan using two different methods: Mean Difference and Spatial Offset RMSE. The mean difference method is equivalent to performing a convolution using an averaging filter on both images and then computing the difference image. The Spatial Offset RMSE method is equivalent to finding the ideal spatial offset between the windows and then computing the RMSE of the pixel values in the shifted signal. 
+
+Because the relationship between HU change and temperature change varies depending on which organ is being affected \cite{Fani14}, it makes sense to only compute the thermal map for the ROI where the ablation occurred. Because the needle has distinct HU values from tissue and the ablation occurred at the tip of the needle, we were able to automate the process of finding the ROI. 
+
+The Spatial Offset RMSE method is more computationally intensive than the Mean Difference method but it produces a much smoother change map. We thus use the Mean Difference to give us an estimate of the thermal map in order to verify that our ROI contains the ablation. We then use the Spatial Offset RMSE to compute a more accurate thermal map. 
 
 \section{Related Work}
 
@@ -220,6 +226,8 @@ We then took the sliding window RMSE value and calibrated it using the measured 
 
 
 \section{Results}
+
+We used a data set of CBCT scans taken during 13 ablation procedures performed between September 2013 and June 2015. For each ablation procedure, there were between 1 and 4 ablations done. With each ablation, a baseline scan was taken followed by 1-4 comparison scans at different time points. Each of these time points had the ablation needle at different temperatures. We generated a thermal map at each of these time points in order to estimate the amount of tissue affected. 
 
 \subsection{Finding Error Rates}
 
