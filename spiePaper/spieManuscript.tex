@@ -86,9 +86,13 @@ The Spatial Offset RMSE method is more computationally intensive than the Mean D
 
 \subsection{CT Thermometry}
 
-CT Thermometry has been explored since the 1970's with some success\cite{Fani14}. The attempts mentioned only focused on taking individual CT scan values at different points and doing a linear regression. Being that the CT scans have quite a lot of noise and artifacts, we decided to attempt to use a metric that accounted for it. Additionally, those attempts did not see what a full thermal map would look like.
+CT Thermometry has been explored since the late 1970's with some success \cite{Fani14}. Using linear regression, various attempts have shown relationships between HU unit value and temperature. Due to the varying thermal properties of different tissues, the exact calibration curve varies depending on which organ is being affected. It thus makes sense for us to only focus on the ROI around the ablation needle when generating a thermal map. 
+
+Many of the attempts focused on correlating individual HU unit values with temperature. These values can be heavily influenced by image noise and metal artifacts. We thus decided to use a more robust change metric when correlating our HU unit change values with temperature change.  
 
 \subsection{Image Registration}
+
+Medical Image Registration has been researched extensively \cite{Oliveira14, Hill01}. For our purposes, we hoped to align temporal sequences of CBCT scans.
 
 Image Registration between 3D Medical Scans has been explored \cite{Ourselin01,Modat10}. There is now an open source tool to accomplish this. We incorporated that tool in our work.  
 
