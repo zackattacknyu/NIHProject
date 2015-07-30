@@ -98,11 +98,16 @@ Medical Image Registration has been researched extensively \cite{Oliveira14, Hil
 
 Previously, the Wronskian Change Detector \cite{Durucan01} was proposed as a metric that would be robust to noise \cite{Li13}. This particular change detector has been shown to perform well for classification problems \cite{Panda13,Durucan01,Ang11,Subudhi13} in image analysis. The formula however computes the ratios between intensity values. Because the relationship between HU unit value and temperature is roughly linear \cite{Fani14}, we need a function that increases linearly as the change in HU unit increases. Because the Wronskian function does not, we decided not to use it for our purposes. 
 
-\subsection{Image Filtering}
-
-A change metric used in the pipeline is the difference between the convolutional average filtered image. Convolution is a common technique used in image processing. The averaging filter is a common method to reduce noise. We thus use it to give us denoised difference information. Unfortunately, it does not account for potential registration errors, so we needed something that adjusted to it. 
-
 \subsection{Time Delay Analysis}
+
+It is a common problem in signal processing to have two nearly identical signals that are offset by a delay. In order to calculate the most likely delay, cross-correlations are used \cite{Rhudy09}. The cross-correlation of two real-valued discrete signals $f$ and $g$ is defined as follows:
+\[
+(f \star g)[n] = \sum_{m=-\infty}^{\infty}{f[m]g[m+n]}
+\]
+The most likely delay $t_{delay}$ occurs when the correlation is the highest thus
+\[
+t_{delay} = arg\,max_t (f \star g)[t]
+\]
 
 Our change metric ends up being RMSE between windows around a given pixel, but with an offset. Time delay analysis is a common field of study in signal processing. It is used to find the delay between signals. This is done by finding the cross correlation with different delays and seeing where it's maximized. The offset we use ends up being the same value. 
 
