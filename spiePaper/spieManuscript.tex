@@ -208,40 +208,70 @@ After generating the Spatial Offset RMSE result image, we find the coordinates w
 
 \section{Results}
 
-We used a data set of CBCT scans taken during 13 ablation procedures performed between September 2013 and June 2015. For each ablation procedure, there were between 1 and 4 ablations done. With each ablation, a baseline scan was taken followed by 1-4 comparison scans at different time points. Each of these time points had the ablation needle at different temperatures. We generated a thermal map at each of these time points in order to estimate the amount of tissue affected. 
+We used a data set of CBCT scans taken for 13 patients whose procedures were performed between September 2013 and June 2015. For each patient, there were between 1 and 4 ablations done. With each ablation, a baseline scan was taken followed by 1-4 comparison scans at different time points. Each of these time points had the ablation needle at different temperatures. We generated a thermal map at each of these time points in order to estimate the amount of tissue affected. 
 
 \subsection{Finding Error Rates}
 
-We decided to take the thermal maps generated from regression and see the average temperature in the zones that we were testing. We then did an RMSE of those temperatures with the measured temperatures. We dividied this RMSE by the temperature range in order to obtain an error rate. Here are the results:
+We decided to take the thermal maps generated from regression and see the average temperature in the zones that we were testing. We then did an RMSE of those temperatures with the measured temperatures. We divided this RMSE by the temperature range in order to obtain an error ratio. The results are in the table below. In that table, temperatures are in Celsius and \textit{Temps (From Regression)} is the average temperature in the neighborhood around the needle or thermocouple (with radius specified by \textit{Neighborhood Radius}) in the thermal map calculated from regression. 
 
-**INSERT RESULT TABLE**
+\begin{tabular}{ | l | l | l | l | l | l | l | }
+\hline
+	Pt Num & 4 & 5 & 5 & 6 & 8 & 9 \\ \hline
+	Pt Sex & M & M & M & F & F & F \\ \hline
+	Pt Age & 54 & 48 & 48 & 65 & 59 & 61 \\ \hline
+	 &  &  &  &  &  &  \\ \hline
+	Baseline Scan Number & 5007 & 5012 & 5021 & 5009 & 5002 & 5005 \\ \hline
+	Baseline Temps & 36/36 & 35/35 & 38/36 & 31/31/30 & 36/37 & 37/37 \\ \hline
+	Pixel size (mm) & 0.9823 & 0.9823 & 0.9823 & 0.9823 & 0.6549 & 0.6549 \\ \hline
+	Neighborhood Radius (mm) & 1.9646 & 1.9646 & 1.9646 & 1.9646 & 1.3098 & 1.3098 \\ \hline
+	 &  &  &  &  &  &  \\ \hline
+	Comparison 1 &  &  &  &  &  &  \\ \hline
+	Scan Number & 5008 & 5013 & 5022 & 5010 & 5003 & 5006 \\ \hline
+	Temps (Given) & 64/56 & 58/38 & 48/83 & 132/124/45 & 100/37 & 145/42 \\ \hline
+	Temps (From Regression) & 67.2/59.6 & 64.2/45.4 & 50.9/62.2 & 128.4/108.9/81.0 & 111.0/36.6 & 142.6/56.5 \\ \hline
+	Time Since Baseline (min) & 14 & 10 & 10 & 7 & 5 & 55 \\ \hline
+	 &  &  &  &  &  &  \\ \hline
+	Comparison 2 &  &  &  &  &  &  \\ \hline
+	Scan Number & 5009 & 5014 & 5023 & 5011 & 5004 & 5007 \\ \hline
+	Temps (Given) & 67/57 & 66/58 & 52/95 & 126/107/98 & 52/38 & 47/37 \\ \hline
+	Temps (From Regression) & 65.5/59.2 & 66.0/46 & 66.8/94.7 & 126.7/110.0/103.1 & 65.2/36.5 & 50.7/55.6 \\ \hline
+	Time Since Baseline (min) & 70 & 22 & 23 & 13 & 13 & 62 \\ \hline
+	&  &  &  &  &  &  \\ \hline
+	Given \& Regression Temp RMSE & 2.752 & 7.7 & 12.847 & 16.189 & 8.626 & 11.997 \\ \hline
+	Error Ratio & 8.8774E-2 & 0.2484 & 0.2177 & 0.1587 & 0.2396 & 0.1110 \\ \hline
+\end{tabular}
+ 
 
 \subsection{Approximating Ablation Zone Area}
 
-For the ablation zones, we made a graph of radius of region versus average temperature in that region in the thermal map. This graph can one day be used to approximate the radius of an ablation zone. Here it is for the various patients in our study. 
+After generating a thermal map, we identified the point with the highest temperature as being the likely center of ablation. We then made a graph showing the average temperature in a region around that point as a function of the radius of the region. In the future, the values of this function can be used to approximate the radius of the ablation zone. Figure \ref{graphRadMean} shows the values of that function for various patients in our study. 
 
 \begin{figure} 
 \centering 
 \includegraphics[width=3in]{meanTempVsRadiusFull.png} 
-\caption{Shows the graph of radius vs mean temperature} 
+\caption{Graph of radius vs mean temperature} 
+\label{graphRadMean}
 \end{figure}
 
 
 \subsection{3D Visualization of Ablation Zone}
 
-By taking the 3D Thermal Map, thresholding the values, and then using a surface generation algorithm using \href{www.itksnap.org}{ITK-SNAP} \cite{Yushkevich06}, we were able to create a 3D diagram of the ablation zone. We overlayed the 3D diagram of the needle and we were able to obtain a convincing visual. The overlay was done in \href{http://www.slicer.org/}{3D Slicer} \cite{Fedorov12}. 
+We were able to produce a 3D visualization of the needle and the ablation zone. We thresholded the values of the 3D Thermal Map generated which produced a binarized 3D volume. We also thresholded the values of the original CBCT scan in order to produce a binarized 3D volume showing the needle. With both volumes, we ran a surface generation algorithm using \href{www.itksnap.org}{ITK-SNAP} \cite{Yushkevich06}. This created two 3D meshes. We overlayed them in \href{http://www.slicer.org/}{3D Slicer} \cite{Fedorov12} to show the needle and ablation zone together. Figure \ref{needleAblationZone} displays the result.
 
 \begin{figure} 
 \centering 
-\includegraphics[width=3in]{NeedleAndAblationZone.png} 
-\caption{Shows a 3D Visualization of the Needle and Ablation Zone} 
+\includegraphics[width=2in]{NeedleAndAblationZone.png} 
+\caption{3D Visualization of the Needle and Ablation Zone}
+\label{needleAblationZone} 
 \end{figure}
 
-\section{Conclusions and Future Work}
+\section{Conclusions}
 
-As can be observed, for some of the patients, our temperatures after regression were quite accurate while for others, the error was higher. The higher error was the result of a high residual value in the linear regression. This was likely caused by image noise, registration error, or user error when selecting the ROI. 
+The processing steps we performed seem to be good initial steps toward incorporating CT Thermometry in clinical practice. Affine and Deformable Registration aligned the CBCT scans allowing us a much more accurate change map. Needle Detection provided a quick way of finding the ROI. The change metric we used provided smooth change maps that were able to generate reasonable thermal maps. 
 
-For the patients where the error was low, the methods we employed have the potential to provide useful thermal maps during ablation procedures. These thermal maps can then be used to approximate the size of the ablation zone. Additionally, there is the potential to generate a 3D visual representation of the ablation zone. 
+For some of the patients, these thermal maps were quite accurate while for others the error was higher. The higher error was the result of a high residual value in the linear regression. This was likely caused by image noise or registration error. In the cases where the error was low, the thermal maps have the potential to be quite useful during ablation procedures. They can be used to approximate the size of the ablation zone. Additionally, there is the potential to generate a 3D visual representation of the ablation zone. 
+
+\section{Future Work}
 
 The next step is to automate ROI selection using the needle properties. Additionally, we hope to use a data set where multiple imaging modalities were employed. That way we can test our thermal map against one generated by a modality that is known to generate accurate thermal maps. 
 
