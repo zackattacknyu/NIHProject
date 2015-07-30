@@ -109,30 +109,31 @@ The most likely delay $t_{delay}$ occurs when the correlation is the highest thu
 t_{delay} = arg\,max_t (f \star g)[t]
 \]
 
-Our change metric ends up being RMSE between windows around a given pixel, but with an offset. Time delay analysis is a common field of study in signal processing. It is used to find the delay between signals. This is done by finding the cross correlation with different delays and seeing where it's maximized. The offset we use ends up being the same value. 
-
-\subsection{Metal Artifact Deletion}
-
-In addition to filtering, a common method to clean up these images before analysis is through Metal Deletion \cite{Boas11}. It is an active area of research. Unfortunately, the metal deletion techniques such as \href{http://www.mathworks.com/matlabcentral/fileexchange/34608-ct-reconstruction-package}{FBP} \cite{Bangert12} change the HU values and thus we were not able to rely on them for this work. 
+For our purposes, we will take two square small images $U$ and $V$ and interpret them as periodic 2D signals that continuously repeat horizontally and vertically. Extrapolating from time delay analysis, the ideal spatial offset between the images occurs when the correlation is highest. Thus our ideal offset $(r,c)$ is as follows:
+\[
+(r,c)_{offset} = arg\,max_{r,c} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {U_{k+r,l+c} \cdot V_{k,l}}
+\]
+Our change metric calculates the RMSE of the two images with this offset incorporated.
 
 
 \section{Pipeline}
 
-Here is a summary of the pipeline performed for each comparison scan to generate a thermal map:
+For each ablation procedure, there was a baseline CBCT scan as well as 1-4 comparison CBCT scans. The comparison scans were taken at various stages of heating and cooling the needle. For each comparison scan, a corresponding thermal map was generated via the following procedure:
 \begin{enumerate}
 \item Register the comparison scan to the baseline scan
-\item Filter both images and calculate the difference
-\item Use Connected Component and PCA to detect the Needles
-\item Use the result to find the Region of Interest (ROI)
-\item Calculate the Sliding Window RMSE value for the ROI
-\item Correlate values from (5) in the temperature zones with the temperature data
-\item Use regression from (6) to generate thermal map for entire ROI
+\item Use Connected Component Analysis and PCA to detect the Needle tips
+\item Use the result to find the ROI regions
+\item Take the ROI regions found, filter the images, and calculate the difference
+\item Use the result to find the ROI regions where the ablation likely occurred
+\item Calculate the Spatial Offset RMSE value for the ROI regions found
+\item Correlate Spatial Offset RMSE values from in the temperature zones with the temperature data
+\item Use the regression model from the correlation calculated to generate a thermal map for the entire ROI
 \end{enumerate}
 
 
-\subsection{Image Registration} 
+\subsection{Image Registration}
 
-Each comparison scan was registered to the baseline scan. Affine **INSERT REF** and Deformable Registration **INSERT REF** were performed using NiftyReg. Figure \ref{beforeAndAfterReg} shows an example of image slices before and after registration. 
+For the registration step, the 3D comparison scan was registered to the 3D baseline scan using the software package NiftyReg. We used the \textbf{\href{http://cmictig.cs.ucl.ac.uk/wiki/index.php/Reg_aladin}{reg aladin}} command to perform an affine registration\cite{Ourselin01}. This was used to try to account for movement of the organs between different scans. We then used the \textbf{\href{http://cmictig.cs.ucl.ac.uk/wiki/index.php/Reg_f3d}{reg f3d}} command to perform non-rigid registration\cite{Modat10}. This was an attempt to align the organs in such a way that accounted for changes in their shape between scans. Figure \ref{beforeAndAfterReg} shows an example of image slices before and after registration. 
 
 \begin{figure} 
 \centering 
@@ -152,18 +153,7 @@ Each comparison scan was registered to the baseline scan. Affine **INSERT REF** 
 
 \subsection{Needle Detection}
 
-The HU values for the needle and thermocouple are significantly higher than the values for normal tissues. Thus after thresholding the values in the CBCT scan high enough, the points remaining are the ones in the needle and thermocouple. Doing connected component analysis with \href{http://www.mathworks.com/help/images/ref/bwconncomp.html}{bwconncomp in Matlab} \cite{bwconncomp} let us find the clusters which contain the needles and thermocouples. For each components, \href{http://www.mathworks.com/help/stats/pca.html}{PCA in Matlab} \cite{pca} was done to find the needle vector and endpoints. 
-
-Here was the procedure done to get the ROIs:
-\begin{enumerate}
-\item Convert a voxel to a 3D point in the set if the HU value is over 1200
-\item Run connected component analysis
-\item Isolate the connected components with the most points
-\item For each component:
-\item Run PCA and find most significant vector
-\item Find each points coordinate in the new vector space
-\item The points with the greatest and least value will be the endpoints
-\end{enumerate}
+The HU values for the needle and thermocouple are significantly higher than the values for normal tissue. Thus after thresholding the values in the CBCT scan high enough, the points remaining are the ones in the needle and thermocouple. Doing connected component analysis with \textbf{\href{http://www.mathworks.com/help/images/ref/bwconncomp.html}{bwconncomp}} \cite{bwconncomp} in Matlab let us find the clusters which contain the needles and thermocouples. For each component, \textbf{\href{http://www.mathworks.com/help/stats/pca.html}{pca}} \cite{pca} in Matlab was done to find the needle vector and endpoints. Figure \ref{needleDetection} shows the result after performing this procedure for one of our patients.
 
 \begin{figure} 
 \centering 
@@ -179,15 +169,9 @@ Here was the procedure done to get the ROIs:
 
 \subsection{Change Detection}
 
-These images have a low signal to noise ratio as well as beam hardening artifacts. Li et al used the Wronskian Change Detector to try to account for this. While this change detector works well for classifying which pixels changed, it is not ideally suited for regression where the amount of change is important. The Wronskian detector uses a window around a pixel. We decided to use the window method also but with a different change metric. 
+These images have a low signal to noise ratio as well as beam hardening artifacts. We thus decided to use a window around each pixel in order to have a more robust change value. Initially we calculated the mean difference between the baseline image window and the comparison image window and used that as the value of the pixel in the result image. This is equivalent to performing a convolution on both images with an averaging filter and then taking the difference between the filtered images. The result images were used to provide an estimate of how the thermal map will appear. They are still too noisy to be used for the thermal map though. 
 
-We ended up using two metrics. The first one is more efficient but less robust. The second more is less efficient to compute but much more robust. The first one was used to get an idea of what the thermal map will look like. The second one was used to actually generate the thermal map. 
-
-There are various image filters that are meant to reduce noise. We decided to incorporate an averaging filter. We apply the filter to both images and then find the difference of the filtered image. This is equivalent to taking a window around a pixel and finding the mean difference in the window. This was the first method. 
-
-While the first method reduces the effects of noise, there are still beam hardening artifacts and registration errors that are not accounted for. We thus incorporated a second method where we took the windows and minimized the RMSE over every offset of the windows. 
-
-The second method is equivalent to treating the baseline and comparison windows as signals and finding the ideal spatial delay between them \cite{Rhudy09}. 
+In order to find a better result image, for each pixel, we calculated the minimum RMSE between the baseline and comparison windows assuming that there is a spatial offset between them. 
 
 Here is the second method procedure:
 For each pixel $(i,j)$ in the result image:
@@ -270,6 +254,10 @@ As can be observed, for some of the patients, our temperatures after regression 
 For the patients where the error was low, the methods we employed have the potential to provide useful thermal maps during ablation procedures. These thermal maps can then be used to approximate the size of the ablation zone. Additionally, there is the potential to generate a 3D visual representation of the ablation zone. 
 
 The next step is to automate ROI selection using the needle properties. Additionally, we hope to use a data set where multiple imaging modalities were employed. That way we can test our thermal map against one generated by a modality that is known to generate accurate thermal maps. 
+
+\subsection{Metal Artifact Deletion}
+
+In addition to filtering, a common method to clean up these images before analysis is through Metal Deletion \cite{Boas11}. It is an active area of research.
 
 
 
