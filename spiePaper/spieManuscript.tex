@@ -179,31 +179,32 @@ Afterward the following was calculated and the value was stored as the pixel val
 \[
 \min_{r,c} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {(U'_{k+r,l+c}-V_{k,l})^2}
 \]
+Figure \ref{changeDetectionMethods} shows the result image after applying the methods to an example slice in the baseline and comparison CBCT scan. As can be observed, raw subtraction gives us the noisiest result hence the need for a better metric. Filtered Difference gives us a much better result but there is still much noise and many artifacts. Spatial Offset RMSE gives us the smoothest map. 
 
 \begin{figure} 
 \centering 
 \includegraphics[width=\textwidth]{changeDetectionPanel2.png} 
-\caption{Results of different change metrics in the ROI. Raw subtraction (left), Filtered Difference (center), and Sliding Window RMSE (right)} 
+\caption{Results of different change metrics in the ROI. Raw subtraction (left), Filtered Difference (center), and Spatial Offset RMSE (right)} 
+\label{changeDetectionMethods}
 \end{figure}
 
 \subsection{Regression}
 
-After generating the sliding window image, we find the coordinates where the measured temperature zones are located. We correlate the sliding window values with the measured temperature at those zones using linear regression. We then take the regression equation found and compute its output across the sliding window image. This gives us the thermal map.  
-
-We then took the sliding window RMSE value and calibrated it using the measured temperature change at the needle through a regression model. We used the model to calculate a thermal map in the ROI. This thermal map was used to obtain an approximate mean temperature around the needles and thermocouples.
+After generating the Spatial Offset RMSE result image, we find the coordinates where the measured temperature zones are located. We correlate the result image values with the measured temperature changes at those zones using linear regression. We then take the regression equation found and compute its output across the result image. This gives us the thermal map. Figure \ref{RegressionCurve} shows the plot of Spatial Offset RMSE versus Temperature Change as well as the regression curve calculated from it. Figure \ref{ThermalMap} shows the resulting thermal map.
 
 \begin{figure} 
 \centering 
 \includegraphics[width=4in]{slidingDiffRegression.png} 
 \caption{Regression Curve Calculated} 
+\label{RegressionCurve}
 \end{figure}
 
 \begin{figure} 
 \centering 
 \includegraphics[width=4in]{slidingDiffThermalMap.png} 
 \caption{Thermal Map generated from Regression curve} 
+\label{ThermalMap}
 \end{figure}
-
 
 \section{Results}
 
