@@ -171,25 +171,14 @@ The HU values for the needle and thermocouple are significantly higher than the 
 
 These images have a low signal to noise ratio as well as beam hardening artifacts. We thus decided to use a window around each pixel in order to have a more robust change value. Initially we calculated the mean difference between the baseline image window and the comparison image window and used that as the value of the pixel in the result image. This is equivalent to performing a convolution on both images with an averaging filter and then taking the difference between the filtered images. The result images were used to provide an estimate of how the thermal map will appear. They are still too noisy to be used for the thermal map though. 
 
-In order to find a better result image, for each pixel, we calculated the minimum RMSE between the baseline and comparison windows assuming that there is a spatial offset between them. 
-
-Here is the second method procedure:
-For each pixel $(i,j)$ in the result image:
-\begin{enumerate}
-\item Let $w$ be half-width of the window around the pixel. 
-\item Let $n=2w+1$. This means the window is size $n$ by $n$. 
-\item Let $U$ be window around $(i,j)$ in baseline image
-\item Let $U'$ be $U$ repeated in the following way:
+In order to find a better result image, for each pixel, we calculated the minimum RMSE between the baseline and comparison windows assuming that there is a spatial offset between them. For each pixel, let $U$ be the $n$ by $n$ window around it in the baseline image and let $V$ be the $n$ by $n$ window around it in the comparison image. We made the matrix $U'$ which is $U$ repeated in the following manner:
 \[
 \forall(k,l,i \in Z)\, \, \, U'_{k+i \cdot n,l+i \cdot n} = U_{k,l}
 \]
-\item Let $V$ be window around $(i,j)$ in the comparison image
-\item Calculate the following:
+Afterward the following was calculated and the value was stored as the pixel value in the result image:
 \[
 \min_{r,c} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {(U'_{k+r,l+c}-V_{k,l})^2}
 \]
-
-\end{enumerate}
 
 \begin{figure} 
 \centering 
