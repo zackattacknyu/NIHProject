@@ -27,7 +27,7 @@
 \usepackage{hyperref}
 %\usepackage{mathtools}
 
-\title{CT Thermometry with Image Registration and Filtering} 
+\title{CT Thermometry for Cone-beam CT Guided Ablation} 
 
 %>>>> The author is responsible for formatting the 
 %  author list and their institutions.  Use  \skiplinehalf 
@@ -36,9 +36,10 @@
 %  can be indicated with a superscript in italics, 
 %  which is easily obtained with \supit{}.
 
-\author{Zachary DeStefano\supit{a}, Jack Yao\supit{a}, Nadine Abi-Jaoudeh\supit{a}, Ming Li\supit{a}
+\author{Zachary DeStefano\supit{a}, Nadine Abi-Jaoudeh\supit{a}, Ming Li\supit{b}, Bradford J Wood\supit{a}, Ronald M Summers\supit{a}, Jianhua Yao\supit{a}
 \skiplinehalf
-\supit{a}National Institutes of Health, Clinical Center\\Bethesda, MD 20814
+\supit{a}Clinical Image Processing Services, Radiology and Imaging Sciences, \\Clinical Center, National Institutes of Health, Bethesda, MD 20892\\
+\supit{b}National Heart, Lung and Blood Institute, \\National Institutes of Health, Bethesda, MD, USA
 }
 
 %>>>> Further information about the authors, other than their 
@@ -60,7 +61,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{abstract}
-Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Previously, this was attempted using CBCT scans of a pig shoulder undergoing ablation \cite{Li13}. We are extending this work by using CBCT scans of real patients and incorporating more processing steps. We register the scans before comparing them due to the movement of organs. We also employ a robust change metric due to image noise and artifacts. In order to achieve an automated system in the future, we use PCA to select the Region of Interest (ROI) where the needle tip is located and thus where the ablation occurred. Once we have generated a change map in the ROI, we correlate change data with temperature data at points in the region to transform our change map into a thermal map. This thermal map is then able to provide an estimate as to the size of the ablation zone. We repeated our procedure on a data set of 12 patients who had a total of 24 ablation procedures performed. We were able to generate reasonable thermal maps with varying degrees of accuracy. In addition to providing estimates of the size of the ablation zone, these maps were used to produce 3D visualizations of the ablation zone and needle.  
+Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Previously, this was attempted using CBCT scans of a pig shoulder undergoing ablation \cite{Li13}. We are extending this work by using CBCT scans of real patients and incorporating more processing steps. We register the scans before comparing them due to the movement and deformation of organs. We also employ a robust change metric due to image noise and artifacts. We then automatically locate the needle tip and the ablation zone. Once the change map in the ablation zone is generated, we correlate change data with measured temperature data at the key points in the region. This allows us to transform our change map into a thermal map. This thermal map is then able to provide an estimate as to the size and temperature of the ablation zone. We evaluated our procedure on a data set of 12 patients who had a total of 24 ablation procedures performed. We were able to generate reasonable thermal maps with varying degrees of accuracy. The average error ranged from 2.7 to 16.2 degrees Celcius. In addition to providing estimates of the size of the ablation zone for surgical guidance, 3D visualizations of the ablation zone and needle are also produced.  
 \end{abstract}
 
 %>>>> Include a list of keywords after the abstract 
