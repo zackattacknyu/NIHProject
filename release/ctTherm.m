@@ -374,7 +374,18 @@ end
 
 roiStruct = struct('name',outputName,'roiVol',roiArray,'minCoords',minCoordArray,'maxCoords',maxCoordArray);
 assignin('base','roiStruct',roiStruct);
+assignin('base','roiIndex',1);
 set(handles.listbox1,'String',outputName,'Value',1);
+
+minCoords = minCoordArray{1};
+set(handles.edit6,'String',minCoords(1));
+set(handles.edit9,'String',minCoords(2));
+set(handles.edit11,'String',minCoords(3));
+
+maxCoords = maxCoordArray{1};
+set(handles.edit8,'String',maxCoords(1));
+set(handles.edit10,'String',maxCoords(2));
+set(handles.edit12,'String',maxCoords(3));
 
 
 % --- Executes on selection change in listbox1.
@@ -397,7 +408,16 @@ set(handles.edit8,'String',maxCoords(1));
 set(handles.edit10,'String',maxCoords(2));
 set(handles.edit12,'String',maxCoords(3));
 
+assignin('base','currentBaseROI',roiStruct(indexSelected).roiVol);
 assignin('base','roiIndex',indexSelected);
+try
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -556,6 +576,7 @@ function pushbutton13_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton13 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+imtool3D(evalin('base','currentBaseROI'));
 
 
 % --- Executes on button press in pushbutton14.
@@ -563,6 +584,8 @@ function pushbutton14_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton14 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+imtool3D(evalin('base','currentComparisonROI'));
+
 
 
 % --- Executes on button press in pushbutton15.
