@@ -374,6 +374,12 @@ end
 
 roiStruct = struct('name',outputName,'roiVol',roiArray,'minCoords',minCoordArray,'maxCoords',maxCoordArray);
 assignin('base','roiStruct',roiStruct);
+
+assignin('base','outputROInames',outputName);
+assignin('base','baseROIvols',roiArray);
+assignin('base','roiMinCoords',minCoordArray);
+assignin('base','roiMaxCoords',maxCoordArray);
+
 assignin('base','roiIndex',1);
 set(handles.listbox1,'String',outputName,'Value',1);
 
@@ -594,12 +600,47 @@ function pushbutton15_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton15 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-currentNames = get(handles.listbox1,'String');
-numROI = numel(currentNames);
+try
+    outputName = evalin('base','outputROInames');
+    roiArray = evalin('base','baseROIvols');
+    minCoordArray = evalin('base','roiMinCoords');
+    maxCoordArray = evalin('base','roiMaxCoords');
+catch
+    outputName = [];
+    roiArray = [];
+    minCoordArray = [];
+    maxCoordArray = [];
+end
+
+numROI = numel(outputName);
 nextROIn = evalin('base','nextManualROInum');
-currentNames{numROI+1} = strcat('Manual_ROI_',num2str(nextROIn));
+outputName{numROI+1} = strcat('Manual_ROI_',num2str(nextROIn));
 assignin('base','nextManualROInum',nextROIn+1);
-set(handles.listbox1,'String',currentNames);
+set(handles.listbox1,'String',outputName);
+
+baseScan = evalin('base','baselineScan');
+roiArray{numROI+1}=baseScan;
+
+minCoordArray{numROI+1}=[1 1 1];
+maxCoordArray{numROI+1}=size(baseScan);
+
+roiStruct = struct('name',outputName,'roiVol',roiArray,'minCoords',minCoordArray,'maxCoords',maxCoordArray);
+
+assignin('base','roiStruct',roiStruct);
+assignin('base','outputROInames',outputName);
+assignin('base','baseROIvols',roiArray);
+assignin('base','roiMinCoords',minCoordArray);
+assignin('base','roiMaxCoords',maxCoordArray);
+
+minCoords = [1 1 1];
+set(handles.edit6,'String',minCoords(1));
+set(handles.edit9,'String',minCoords(2));
+set(handles.edit11,'String',minCoords(3));
+
+maxCoords = size(baseScan);
+set(handles.edit8,'String',maxCoords(1));
+set(handles.edit10,'String',maxCoords(2));
+set(handles.edit12,'String',maxCoords(3));
 
 
 % --- Executes on button press in pushbutton17.
@@ -612,6 +653,8 @@ fullFilePath = strcat(outputFilePath,outputFileName);
 diffROIConv = getConvDiffROI( evalin('base','currentBaseROI'),...
     evalin('base','currentComparisonROI'),evalin('base','fSize') );
 saveScanAsNII(diffROIConv,fullFilePath);
+assignin('base','convDiffROI',diffROIConv);
+set(handles.edit13,'String',fullFilePath);
 
 
 % --- Executes on button press in pushbutton18.
@@ -619,7 +662,7 @@ function pushbutton18_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton18 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+imtool3D(evalin('base','convDiffROI'));
 
 
 function edit13_Callback(hObject, eventdata, handles)
@@ -693,6 +736,10 @@ function pushbutton22_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton22 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[niiFile,parentDir] = uigetfile('*.nii','Select Conv Diff Nifty File');
+imgData = initializeNIIfile(parentDir,niiFile);
+assignin('base','convDiffROI',imgData);
+set(handles.edit13,'String',strcat(parentDir,niiFile));
 
 
 % --- Executes on selection change in listbox3.
