@@ -886,6 +886,7 @@ function pushbutton20_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton20 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+imtool3D(evalin('base','spatialOffsetROI'));
 
 
 
@@ -916,6 +917,10 @@ function pushbutton21_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton21 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[niiFile,parentDir] = uigetfile('*.nii','Select Spatial Offset RMSE Nifty File');
+imgData = initializeNIIfile(parentDir,niiFile);
+assignin('base','spatialOffsetROI',imgData);
+set(handles.edit14,'String',strcat(parentDir,niiFile));
 
 
 % --- Executes on button press in pushbutton22.
