@@ -386,7 +386,20 @@ set(handles.edit8,'String',maxCoords(1));
 set(handles.edit10,'String',maxCoords(2));
 set(handles.edit12,'String',maxCoords(3));
 
-reassignCurrentROI(minCoords,maxCoords);
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 
@@ -399,6 +412,7 @@ function listbox1_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox1
 indexSelected = get(hObject,'Value');
+assignin('base','roiIndex',indexSelected);
 
 minCoordsArray = evalin('base','roiMinCoords');
 minCoords = minCoordsArray{indexSelected};
@@ -412,7 +426,20 @@ set(handles.edit8,'String',maxCoords(1));
 set(handles.edit10,'String',maxCoords(2));
 set(handles.edit12,'String',maxCoords(3));
 
-reassignCurrentROI(minCoords,maxCoords);
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -448,7 +475,20 @@ assignin('base','roiMinCoords',minCoordArray);
 maxCoordsArray = evalin('base','roiMaxCoords');
 maxCoords = maxCoordsArray{roiIndex};
 
-reassignCurrentROI(minCoords,maxCoords);
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -472,6 +512,33 @@ function edit8_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of edit8 as text
 %        str2double(get(hObject,'String')) returns contents of edit8 as a double
+rowMax = floor(str2double(get(hObject,'String')));
+roiIndex = evalin('base','roiIndex');
+
+maxCoordArray = evalin('base','roiMaxCoords');
+maxCoords = maxCoordArray{roiIndex};
+maxCoords(1) = rowMax;
+
+maxCoordArray{roiIndex} = maxCoords;
+assignin('base','roiMaxCoords',maxCoordArray);
+
+minCoordsArray = evalin('base','roiMinCoords');
+minCoords = minCoordsArray{roiIndex};
+
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -507,7 +574,20 @@ assignin('base','roiMinCoords',minCoordArray);
 maxCoordsArray = evalin('base','roiMaxCoords');
 maxCoords = maxCoordsArray{roiIndex};
 
-reassignCurrentROI(minCoords,maxCoords);
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 
@@ -529,10 +609,35 @@ function edit10_Callback(hObject, eventdata, handles)
 % hObject    handle to edit10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hints: get(hObject,'String') returns contents of edit10 as text
 %        str2double(get(hObject,'String')) returns contents of edit10 as a double
+colMax = floor(str2double(get(hObject,'String')));
+roiIndex = evalin('base','roiIndex');
 
+maxCoordArray = evalin('base','roiMaxCoords');
+maxCoords = maxCoordArray{roiIndex};
+maxCoords(2) = colMax;
+
+maxCoordArray{roiIndex} = maxCoords;
+assignin('base','roiMaxCoords',maxCoordArray);
+
+minCoordsArray = evalin('base','roiMinCoords');
+minCoords = minCoordsArray{roiIndex};
+
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 % --- Executes during object creation, after setting all properties.
 function edit10_CreateFcn(hObject, eventdata, handles)
@@ -567,7 +672,20 @@ assignin('base','roiMinCoords',minCoordArray);
 maxCoordsArray = evalin('base','roiMaxCoords');
 maxCoords = maxCoordsArray{roiIndex};
 
-reassignCurrentROI(minCoords,maxCoords);
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -588,9 +706,35 @@ function edit12_Callback(hObject, eventdata, handles)
 % hObject    handle to edit12 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hints: get(hObject,'String') returns contents of edit12 as text
 %        str2double(get(hObject,'String')) returns contents of edit12 as a double
+sliceMax = floor(str2double(get(hObject,'String')));
+roiIndex = evalin('base','roiIndex');
+
+maxCoordArray = evalin('base','roiMaxCoords');
+maxCoords = maxCoordArray{roiIndex};
+maxCoords(3) = sliceMax;
+
+maxCoordArray{roiIndex} = maxCoords;
+assignin('base','roiMaxCoords',maxCoordArray);
+
+minCoordsArray = evalin('base','roiMinCoords');
+minCoords = minCoordsArray{roiIndex};
+
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -663,7 +807,20 @@ set(handles.edit8,'String',maxCoords(1));
 set(handles.edit10,'String',maxCoords(2));
 set(handles.edit12,'String',maxCoords(3));
 
-reassignCurrentROI(minCoords,maxCoords);
+baselineScan = evalin('base','baselineScan');
+assignin('base','currentBaseROI',baselineScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+try
+    comparisonScan = evalin('base','comparisonScan');
+    assignin('base','currentComparisonROI',...
+        comparisonScan(...
+        minCoords(1):maxCoords(1),...
+        minCoords(2):maxCoords(2),...
+        minCoords(3):maxCoords(3)));
+catch 
+end
 
 
 % --- Executes on button press in pushbutton17.
@@ -671,7 +828,7 @@ function pushbutton17_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton17 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Baseline Scan');
+[outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Conv Diff Image');
 fullFilePath = strcat(outputFilePath,outputFileName);
 diffROIConv = getConvDiffROI( evalin('base','currentBaseROI'),...
     evalin('base','currentComparisonROI'),evalin('base','fSize') );
@@ -715,6 +872,13 @@ function pushbutton19_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton19 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Spatial Offset RMSE Image');
+fullFilePath = strcat(outputFilePath,outputFileName);
+spatialOffsetRMSE = getSlidingWindowBlockJava( evalin('base','currentBaseROI'),...
+    evalin('base','currentComparisonROI'),evalin('base','fSize') );
+saveScanAsNII(spatialOffsetRMSE,fullFilePath);
+assignin('base','spatialOffsetROI',spatialOffsetRMSE);
+set(handles.edit14,'String',fullFilePath);
 
 
 % --- Executes on button press in pushbutton20.
