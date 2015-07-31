@@ -345,22 +345,36 @@ function pushbutton12_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 baseScan = evalin('base','baselineScan');
-HUthreshold = evalin('base','HUthreshold')
-pointsThreshold = evalin('base','pointsThreshold')
-minNumNeedles = evalin('base','minNumNeedles')
-roiRadius = evalin('base','roiRadius')
-[outputROI,minCoordsAll,maxCoordsAll] = getROIregions(baseScan, HUthreshold,pointsThreshold,minNumNeedles,roiRadius )
-outputNames = cell(1,numel(outputROI));
+HUthreshold = evalin('base','HUthreshold');
+pointsThreshold = evalin('base','pointsThreshold');
+minNumNeedles = evalin('base','minNumNeedles');
+roiRadius = evalin('base','roiRadius');
+[outputROI,minCoordsAll,maxCoordsAll] = getROIregions(baseScan, HUthreshold,pointsThreshold,minNumNeedles,roiRadius );
+
+numROIregions = numel(outputROI);
+outputName = cell(1,numROIregions);
+roiArray = cell(1,numROIregions);
+minCoordArray = cell(1,numROIregions);
+maxCoordArray = cell(1,numROIregions);
 index = 1;
 for j = 1:size(outputROI,1)
-    outputNames{index} = strcat('Needle_',num2str(j),'_Tip'); 
+    outputName{index} = strcat('Needle_',num2str(j),'_Tip');
+    roiArray{index} = outputROI{j,1};
+    minCoordArray{index} = minCoordsAll{j,1};
+    maxCoordArray{index} = maxCoordsAll{j,1};
     index = index+1;
 end
 for j = 1:size(outputROI,1)
-    outputNames{index} = strcat('Needle_',num2str(j),'_Other End'); 
+    outputName{index} = strcat('Needle_',num2str(j),'_Other End'); 
+    roiArray{index} = outputROI{j,2};
+    minCoordArray{index} = minCoordsAll{j,2};
+    maxCoordArray{index} = maxCoordsAll{j,2};
     index = index+1;
 end
-set(handles.listbox1,'String',outputNames,'Value',1);
+
+roiStruct = struct('name',outputName,'roiVol',roiArray,'minCoords',minCoordArray,'maxCoords',maxCoordArray);
+assignin('base','roiStruct',roiStruct);
+set(handles.listbox1,'String',outputName,'Value',1);
 
 
 % --- Executes on selection change in listbox1.
@@ -368,9 +382,22 @@ function listbox1_Callback(hObject, eventdata, handles)
 % hObject    handle to listbox1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox1
+indexSelected = get(hObject,'Value');
+roiStruct = evalin('base','roiStruct');
+
+minCoords = roiStruct(indexSelected).minCoords;
+set(handles.edit6,'String',minCoords(1));
+set(handles.edit9,'String',minCoords(2));
+set(handles.edit11,'String',minCoords(3));
+
+maxCoords = roiStruct(indexSelected).maxCoords;
+set(handles.edit8,'String',maxCoords(1));
+set(handles.edit10,'String',maxCoords(2));
+set(handles.edit12,'String',maxCoords(3));
+
+assignin('base','roiIndex',indexSelected);
 
 
 % --- Executes during object creation, after setting all properties.
