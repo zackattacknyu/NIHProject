@@ -22,7 +22,7 @@ function varargout = ctTherm(varargin)
 
 % Edit the above text to modify the response to help ctTherm
 
-% Last Modified by GUIDE v2.5 29-Jul-2015 18:58:19
+% Last Modified by GUIDE v2.5 31-Jul-2015 14:29:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -353,30 +353,23 @@ roiRadius = evalin('base','roiRadius');
 
 numROIregions = numel(outputROI);
 outputName = cell(1,numROIregions);
-roiArray = cell(1,numROIregions);
 minCoordArray = cell(1,numROIregions);
 maxCoordArray = cell(1,numROIregions);
 index = 1;
 for j = 1:size(outputROI,1)
     outputName{index} = strcat('Needle_',num2str(j),'_Tip');
-    roiArray{index} = outputROI{j,1};
     minCoordArray{index} = minCoordsAll{j,1};
     maxCoordArray{index} = maxCoordsAll{j,1};
     index = index+1;
 end
 for j = 1:size(outputROI,1)
     outputName{index} = strcat('Needle_',num2str(j),'_Other End'); 
-    roiArray{index} = outputROI{j,2};
     minCoordArray{index} = minCoordsAll{j,2};
     maxCoordArray{index} = maxCoordsAll{j,2};
     index = index+1;
 end
 
-roiStruct = struct('name',outputName,'roiVol',roiArray,'minCoords',minCoordArray,'maxCoords',maxCoordArray);
-assignin('base','roiStruct',roiStruct);
-
 assignin('base','outputROInames',outputName);
-assignin('base','baseROIvols',roiArray);
 assignin('base','roiMinCoords',minCoordArray);
 assignin('base','roiMaxCoords',maxCoordArray);
 
@@ -393,6 +386,10 @@ set(handles.edit8,'String',maxCoords(1));
 set(handles.edit10,'String',maxCoords(2));
 set(handles.edit12,'String',maxCoords(3));
 
+reassignCurrentROI(minCoords,maxCoords);
+
+
+
 
 % --- Executes on selection change in listbox1.
 function listbox1_Callback(hObject, eventdata, handles)
@@ -402,29 +399,20 @@ function listbox1_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox1
 indexSelected = get(hObject,'Value');
-roiStruct = evalin('base','roiStruct');
 
-minCoords = roiStruct(indexSelected).minCoords;
+minCoordsArray = evalin('base','roiMinCoords');
+minCoords = minCoordsArray{indexSelected};
 set(handles.edit6,'String',minCoords(1));
 set(handles.edit9,'String',minCoords(2));
 set(handles.edit11,'String',minCoords(3));
 
-maxCoords = roiStruct(indexSelected).maxCoords;
+maxCoordsArray = evalin('base','roiMaxCoords');
+maxCoords = maxCoordsArray{indexSelected};
 set(handles.edit8,'String',maxCoords(1));
 set(handles.edit10,'String',maxCoords(2));
 set(handles.edit12,'String',maxCoords(3));
 
-assignin('base','currentBaseROI',roiStruct(indexSelected).roiVol);
-assignin('base','roiIndex',indexSelected);
-try
-    comparisonScan = evalin('base','comparisonScan');
-    assignin('base','currentComparisonROI',...
-        comparisonScan(...
-        minCoords(1):maxCoords(1),...
-        minCoords(2):maxCoords(2),...
-        minCoords(3):maxCoords(3)));
-catch 
-end
+reassignCurrentROI(minCoords,maxCoords);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -445,9 +433,22 @@ function edit6_Callback(hObject, eventdata, handles)
 % hObject    handle to edit6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hints: get(hObject,'String') returns contents of edit6 as text
 %        str2double(get(hObject,'String')) returns contents of edit6 as a double
+rowMin = floor(str2double(get(hObject,'String')));
+roiIndex = evalin('base','roiIndex');
+
+minCoordArray = evalin('base','roiMinCoords');
+minCoords = minCoordArray{roiIndex};
+minCoords(1) = rowMin;
+
+minCoordArray{roiIndex} = minCoords;
+assignin('base','roiMinCoords',minCoordArray);
+
+maxCoordsArray = evalin('base','roiMaxCoords');
+maxCoords = maxCoordsArray{roiIndex};
+
+reassignCurrentROI(minCoords,maxCoords);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -491,9 +492,23 @@ function edit9_Callback(hObject, eventdata, handles)
 % hObject    handle to edit9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hints: get(hObject,'String') returns contents of edit9 as text
 %        str2double(get(hObject,'String')) returns contents of edit9 as a double
+colMin = floor(str2double(get(hObject,'String')));
+roiIndex = evalin('base','roiIndex');
+
+minCoordArray = evalin('base','roiMinCoords');
+minCoords = minCoordArray{roiIndex};
+minCoords(2) = colMin;
+
+minCoordArray{roiIndex} = minCoords;
+assignin('base','roiMinCoords',minCoordArray);
+
+maxCoordsArray = evalin('base','roiMaxCoords');
+maxCoords = maxCoordsArray{roiIndex};
+
+reassignCurrentROI(minCoords,maxCoords);
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -537,9 +552,22 @@ function edit11_Callback(hObject, eventdata, handles)
 % hObject    handle to edit11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hints: get(hObject,'String') returns contents of edit11 as text
 %        str2double(get(hObject,'String')) returns contents of edit11 as a double
+sliceMin = floor(str2double(get(hObject,'String')));
+roiIndex = evalin('base','roiIndex');
+
+minCoordArray = evalin('base','roiMinCoords');
+minCoords = minCoordArray{roiIndex};
+minCoords(3) = sliceMin;
+
+minCoordArray{roiIndex} = minCoords;
+assignin('base','roiMinCoords',minCoordArray);
+
+maxCoordsArray = evalin('base','roiMaxCoords');
+maxCoords = maxCoordsArray{roiIndex};
+
+reassignCurrentROI(minCoords,maxCoords);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -602,12 +630,10 @@ function pushbutton15_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 try
     outputName = evalin('base','outputROInames');
-    roiArray = evalin('base','baseROIvols');
     minCoordArray = evalin('base','roiMinCoords');
     maxCoordArray = evalin('base','roiMaxCoords');
 catch
     outputName = [];
-    roiArray = [];
     minCoordArray = [];
     maxCoordArray = [];
 end
@@ -619,16 +645,11 @@ assignin('base','nextManualROInum',nextROIn+1);
 set(handles.listbox1,'String',outputName);
 
 baseScan = evalin('base','baselineScan');
-roiArray{numROI+1}=baseScan;
 
 minCoordArray{numROI+1}=[1 1 1];
 maxCoordArray{numROI+1}=size(baseScan);
 
-roiStruct = struct('name',outputName,'roiVol',roiArray,'minCoords',minCoordArray,'maxCoords',maxCoordArray);
-
-assignin('base','roiStruct',roiStruct);
 assignin('base','outputROInames',outputName);
-assignin('base','baseROIvols',roiArray);
 assignin('base','roiMinCoords',minCoordArray);
 assignin('base','roiMaxCoords',maxCoordArray);
 
@@ -641,6 +662,8 @@ maxCoords = size(baseScan);
 set(handles.edit8,'String',maxCoords(1));
 set(handles.edit10,'String',maxCoords(2));
 set(handles.edit12,'String',maxCoords(3));
+
+reassignCurrentROI(minCoords,maxCoords);
 
 
 % --- Executes on button press in pushbutton17.
@@ -1029,5 +1052,30 @@ function pushbutton35_Callback(hObject, eventdata, handles)
 % --- Otherwise, executes on mouse press in 5 pixel border or over listbox1.
 function listbox1_ButtonDownFcn(hObject, eventdata, handles)
 % hObject    handle to listbox1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over edit6.
+function edit6_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to edit6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on key press with focus on edit6 and none of its controls.
+function edit6_KeyPressFcn(hObject, eventdata, handles)
+% hObject    handle to edit6 (see GCBO)
+% eventdata  structure with the following fields (see UICONTROL)
+%	Key: name of the key that was pressed, in lower case
+%	Character: character interpretation of the key(s) that was pressed
+%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes during object deletion, before destroying properties.
+function edit9_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to edit9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
