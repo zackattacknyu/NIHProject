@@ -177,7 +177,7 @@ In order to find a better result image, for each pixel, we calculated the minimu
 \]
 Afterward the following was calculated and the value was stored as the pixel value in the result image:
 \[
-\min_{r,c} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {(U'_{k+r,l+c}-V_{k,l})^2}
+\min_{r,c} \sqrt{ \frac{1}{n^2} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {(U'_{k+r,l+c}-V_{k,l})^2}}
 \]
 Figure \ref{changeDetectionMethods} shows the result image after applying the methods to an example slice in the baseline and comparison CBCT scan. As can be observed, raw subtraction gives us the noisiest result hence the need for a better metric. Filtered Difference gives us a much better result but there is still much noise and many artifacts. Spatial Offset RMSE gives us the smoothest map. 
 
