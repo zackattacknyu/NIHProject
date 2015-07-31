@@ -7,8 +7,7 @@ function [dcmFixedHU]= writeNIIfile( inputScansFolder,outputFilePath )
 %       - Outputs the NII file with the HU unit data for the DICOM folder
 
 dcmFixedHU = getDCMFolderData(inputScansFolder);
-niiFixed = make_nii(dcmFixedHU);
-save_nii(niiFixed,outputFilePath);
+saveScanAsNII(dcmFixedHU,outputFilePath);
 
 
 end

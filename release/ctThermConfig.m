@@ -5,6 +5,14 @@ THIS ACTS AS THE CONFIG FILE FOR CTTHERM
 CHANGE THE VALUES BELOW IF DESIRED. 
 %}
 
+
+%{
+This defines the half-width of the window used in Conv Diff and 
+    Spatial Offset Diff. The window will have a total size of N by N
+    where N=2*fSize+1
+%}
+fSize=4;
+
 %{
 This defines the HU unit threshold. HU voxels above this value are counted
 as needles or thermocouple and below this value they are counted as tissue.
@@ -42,5 +50,6 @@ assignin('base','HUthreshold',HUthreshold);
 assignin('base','pointsThreshold',pointsThreshold);
 assignin('base','minNumNeedles',minNumNeedles);
 assignin('base','roiRadius',roiRadius);
+assignin('base','fSize',fSize);
 assignin('base','nextManualROInum',1);
 assignin('base','nextTempPointNum',1);

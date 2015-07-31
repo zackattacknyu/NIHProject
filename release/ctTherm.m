@@ -411,6 +411,7 @@ set(handles.edit12,'String',maxCoords(3));
 assignin('base','currentBaseROI',roiStruct(indexSelected).roiVol);
 assignin('base','roiIndex',indexSelected);
 try
+    comparisonScan = evalin('base','comparisonScan');
     assignin('base','currentComparisonROI',...
         comparisonScan(...
         minCoords(1):maxCoords(1),...
@@ -606,6 +607,11 @@ function pushbutton17_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton17 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Baseline Scan');
+fullFilePath = strcat(outputFilePath,outputFileName);
+diffROIConv = getConvDiffROI( evalin('base','currentBaseROI'),...
+    evalin('base','currentComparisonROI'),evalin('base','fSize') );
+saveScanAsNII(diffROIConv,fullFilePath);
 
 
 % --- Executes on button press in pushbutton18.
