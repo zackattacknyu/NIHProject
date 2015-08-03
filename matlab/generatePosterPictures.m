@@ -85,12 +85,17 @@ rawDiffROI = rawDiffSlice(rInds,cInds);
 diffImageROI = diffImageSlice(rInds,cInds);
 diffFrameImage = sqrt(diffFrameBlock(:,:,slidWindowSliceNum));
 
-rawROI = putin01scale(rawDiffROI(5:117,5:167));
-convROI = putin01scale(diffImageROI(5:117,5:167));
-slidROI = putin01scale(diffFrameImage);
+rawROI = rawDiffROI(5:117,5:167);
+convROI = diffImageROI(5:117,5:167);
+slidROI = diffFrameImage;
+
+rawROI = putin01scale(rawROI);
+convROI = putin01scale(convROI);
+slidROI = putin01scale(slidROI);
 
 figure
 imagesc([rawROI convROI slidROI]);
+colorbar;
 axis off
 
 %{

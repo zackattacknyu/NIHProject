@@ -123,22 +123,22 @@ We compared windows around a pixel in the baseline scan and comparison scan usin
 
 \section{Pipeline}
 
-With each ablation, there was a baseline CBCT scan as well as 1-4 comparison CBCT scans taken during the procedure. The baseline scan was taken after the needle was inserted but before any heating occurred. The comparison scans were taken at various stages of heating and cooling the needle. For each comparison scan, a corresponding thermal map was generated via the following procedure:
+With each ablation, there was a baseline CBCT scan as well as 1-4 comparison CBCT scans taken during the procedure. The baseline scan was taken after the needle was inserted but before any temperature changes. The comparison scans were taken at various stages of heating and cooling the needle. For each comparison scan, a corresponding thermal map was generated via the following procedure:
 \begin{enumerate}
 \item Register the comparison scan to the baseline scan
 \item Use Connected Component Analysis and Principal Component Analysis (PCA) to detect the Needle and Thermocouple tips
 \item Use the result to identify an ROI
-\item Take the ROI, filter the ROI in the baseline and comparison scans with an averaging filter, and calculate the difference
+\item Filter the ROI in the baseline and comparison scans with an averaging filter, and calculate the difference
 \item Use the result to locate where the ablation likely occurred
 \item Calculate the Spatial Offset RMSE value for the ROI
-\item Correlate Spatial Offset RMSE values from inside the temperature zones with the measured temperature data at the needle and thermocouple tips. 
-\item Use the regression model from the correlation calculated to generate a thermal map for the entire ROI
+\item Correlate Spatial Offset RMSE values at the temperature zones with the measured temperature data there. 
+\item Use the regression model from the correlation calculated to generate a thermal map for the ROI
 \end{enumerate}
 
 
 \subsection{Image Registration}
 
-For the registration step, the 3D comparison scan was registered to the 3D baseline scan using the software package NiftyReg. We used the \textbf{\href{http://cmictig.cs.ucl.ac.uk/wiki/index.php/Reg_aladin}{reg aladin}} command to perform an affine registration\cite{Ourselin01}. This was used to try to account for movement of the organs between different scans. We then used the \textbf{\href{http://cmictig.cs.ucl.ac.uk/wiki/index.php/Reg_f3d}{reg f3d}} command to perform non-rigid registration\cite{Modat10}. This was an attempt to align the organs in such a way that accounted for changes in their shape between scans. Figure \ref{beforeAndAfterReg} shows an example of image slices before and after registration. 
+For the registration step, the comparison scan volume was registered to the baseline scan volume using the software package NiftyReg. We used the \textbf{\href{http://cmictig.cs.ucl.ac.uk/wiki/index.php/Reg_aladin}{reg aladin}} command to perform an affine registration\cite{Ourselin01} in order to account for movement of the organs between different scans. We then used the \textbf{\href{http://cmictig.cs.ucl.ac.uk/wiki/index.php/Reg_f3d}{reg f3d}} command to perform non-rigid registration\cite{Modat10} in order to align the organs in such a way that accounted for changes in their shape between scans. Figure \ref{beforeAndAfterReg} shows an example of image slices before and after registration. 
 
 \begin{figure} 
 \centering 
@@ -174,7 +174,7 @@ The HU values for the needle and thermocouple are significantly higher than the 
 
 \subsection{Change Detection}
 
-These images have a low signal to noise ratio as well as beam hardening artifacts. We thus decided to use a window around each pixel in order to have a more robust change value. Initially we calculated the mean difference between the baseline image window and the comparison image window and used that as the value of the pixel in the result image. This is equivalent to performing a convolution on both images with an averaging filter and then taking the difference between the filtered images. The result images were used to provide an estimate of how the thermal map will appear. They are still too noisy to be used for the thermal map though. 
+These images have a low signal to noise ratio as well as beam hardening artifacts. We thus decided to use a window around each pixel in order to obtain a more robust change value. Initially we calculated the mean difference between the baseline image window and the comparison image window and used that as the value of the pixel in the result image. This is equivalent to performing a convolution on both images with an averaging filter and then taking the difference between the filtered images. The result images were used to provide an estimate of how the thermal map will appear. They are still too noisy to be used for the thermal map though. 
 
 In order to find a better result image, for each pixel, we calculated the minimum RMSE between the baseline and comparison windows assuming that there is a spatial offset between them. For each pixel, let $U$ be the $n$ by $n$ window around it in the baseline image and let $V$ be the $n$ by $n$ window around it in the comparison image. We made the matrix $U'$ which is $U$ repeated in the following manner:
 \[
@@ -189,13 +189,13 @@ Figure \ref{changeDetectionMethods} shows the result image after applying the me
 \begin{figure} 
 \centering 
 \includegraphics[width=\textwidth]{changeDetectionPanel2.png} 
-\caption{Results of different change metrics in the ROI. Raw subtraction (left), Filtered Difference (center), and Spatial Offset RMSE (right)} 
+\caption{Results of different change metrics in the ROI. Raw subtraction (left), Filtered Difference (center), and Spatial Offset RMSE (right). Each image is normalized in order to show how the thermal map would appear} 
 \label{changeDetectionMethods}
 \end{figure}
 
 \subsection{Regression}
 
-After generating the Spatial Offset RMSE result image, we find the coordinates where the measured temperature zones are located. We correlate the result image values with the measured temperature changes at those zones using linear regression. We then take the regression equation found and compute its output across the result image. This gives us the thermal map. Figure \ref{RegressionCurve} shows the plot of Spatial Offset RMSE versus Temperature Change as well as the regression curve calculated from it. Figure \ref{ThermalMap} shows the resulting thermal map.
+After generating the Spatial Offset RMSE result image, we find the coordinates where the measured temperature zones are located. We correlate the result image values with the measured temperature changes at those zones using linear regression. We then take the regression equation calculated and apply it to the result image to generate a thermal map. Figure \ref{RegressionCurve} shows the plot of Spatial Offset RMSE versus Temperature Change as well as the regression curve calculated from it. Figure \ref{ThermalMap} shows the resulting thermal map.
 
 \begin{figure} 
 \centering 
@@ -217,7 +217,7 @@ We used a data set of CBCT scans taken for 13 patients whose procedures were per
 
 \subsection{Finding Error Rates}
 
-We decided to take the thermal maps generated from regression and see the average temperature in the zones that we were testing. We then did an RMSE of those temperatures with the measured temperatures. We divided this RMSE by the temperature range in order to obtain an error ratio. The results are in the table below. In that table, temperatures are in Celsius and \textit{Temps (From Regression)} is the average temperature in the neighborhood around the needle or thermocouple (with radius specified by \textit{Neighborhood Radius}) in the thermal map calculated from regression. 
+We decided to take the thermal maps generated from regression and see the average temperature in the zones that we were testing. We then did an RMSE of those temperatures with the measured temperatures. We divided this RMSE by the temperature range in order to obtain an error ratio. The results are in table 1. In the table, temperatures are in Celsius and \textit{Temps (From Regression)} is the average temperature in the neighborhood around the needle or thermocouple (with radius specified by \textit{Neighborhood Radius}) in the thermal map calculated from regression. 
 
 \begin{tabular}{ | l | l | l | l | l | l | l | }
 \hline
