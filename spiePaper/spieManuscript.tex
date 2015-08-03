@@ -71,21 +71,25 @@ Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is
 \section{Introduction}
 \label{sec:intro}  % \label{} allows reference to this section
 
-Cone-beam CT (CBCT) is a common imaging modality employed during Radiofrequency Ablation procedures. During the ablation, generating a thermal map would be quite useful.
+Radiofrequency ablation (RFA) has become a common interventional procedure for treating cancerous tumors in various parts of the body \cite{Mayo15}. During the operation, a thin needle is inserted into the body and guided toward the tumor. Once it reaches the tumor, high-frequency energy passes through the needle which causes the surrounding tissue to increase in temperature. This heat kills the nearby cells including the tumor. 
 
-The possibility of generating a thermal map from CBCT scans has been explored before \cite{Li13}. We decided to extend the work to real patients and incorporate more processing steps to enhance the maps. For the procedures analyzed in this work, there was a baseline CBCT scan taken after the ablation needle was inserted but before it was heated. There were then 1-4 scans taken as the needle was heated and cooled.
+C-arm Cone-beam CT (CBCT) is an imaging modality that has been adopted for a variety of purposes\cite{Orth08}. Unlike traditional CT scans, the source and detector with CBCT are easily shifted to various locations. Once the source and detector are in place, they rotate around a fixed point of interest. This allows volumetric data to be acquired quickly and easily during interventional procedures without the need for patient transportation. Because of its advantages, CBCT is commonly employed during RFA. Specifically, it allows us to obtain volumetric data during this procedure using a single rotation of the scanner. 
 
-Because the relationship between HU change and temperature change varies depending on which organ is being affected \cite{Fani14}, it makes sense to only compute the thermal map for the ROI where the ablation occurred. Because the needle has distinct HU values from tissue and the ablation occurred at the tip of the needle, we were able to automate the process of finding the ROI. 
+Even though CBCT provides much useful information, it is still difficult to determine how much tissue has been affected by the procedure. Specifically, we need to know the temperature changes that have occurred in the tissue\cite{Li13}. We want to make sure only the cancerous tissue has been heated and not the healthy tissue. Ideally, each of the CBCT voxels would also have a temperature reading. We would then be able to superimpose the thermal volume on the CBCT scan and quickly find out which tissue has been affected.
 
-The Spatial Offset RMSE method is more computationally intensive than the Mean Difference method but it produces a much smoother change map. We thus use the Mean Difference to give us an estimate of the thermal map in order to verify that our ROI contains the ablation. We then use the Spatial Offset RMSE to compute a more accurate thermal map. 
+This possibility has been explored in the past \cite{Li13} but only for phantoms. We decided to extend the work to real patients and incorporate more processing steps to enhance the thermal maps. For this work, we had a data set of CBCT scans taken during RFA procedures. With each procedure, there was a baseline CBCT scan taken after the ablation needle was inserted but before it was heated. There were then 1-4 comparison scans taken as the needle was heated and cooled. We processed each of the comparison scans and attempted to generate a thermal map by comparing them to the baseline scan.
+
+This processing was only done in the region where the ablation occurred. This is because the relationship between Hounsfeld Units (HU) in CT scans and temperature varies depending on which organ is being affected \cite{Fani14}. Thus our maps would be inaccurate for other tissue. Because the needle has distinct HU values from tissue and the ablation occurred at the tip of the needle, we were able to automate the process of finding this region. 
+
+There is strong evidence that the relationship between HU unit and temperature is linear \cite{Fani14}. Because we have baseline and comparison scans, we decided to correlate the change in HU value with the change in temperature. Because of CBCT scan artifacts and noise, we had to use a different change metric than simple difference but one that still behaved linearly as HU units changed. There are two change metrics that we employ in our pipeline, Filtered Difference and Spatial Offset RMSE.  
+
+The Filtered Difference method involves filtering both scans with an averaging filter and then obtaining the difference image. The Spatial Offset RMSE method involves taking a window around a pixel in both scans and computing the minimum RMSE of the values in the windows assuming there is a spatial offset between them. The Spatial Offset RMSE method is more computationally intensive than the Filtered Difference method but it produces a much smoother change map. We thus use the Filtered Difference to give us an estimate of the thermal map in order to verify our choice of region. We then use the Spatial Offset RMSE to compute the estimate of the thermal map. 
 
 \section{Related Work}
 
 \subsection{CT Thermometry}
 
-CT Thermometry has been explored since the late 1970's with some success \cite{Fani14}. Using linear regression, various attempts have shown relationships between HU unit value and temperature. Due to the varying thermal properties of different tissues, the exact calibration curve varies depending on which organ is being affected. It thus makes sense for us to only focus on the ROI around the ablation needle when generating a thermal map. 
-
-Many of the attempts focused on correlating individual HU unit values with temperature. These values can be heavily influenced by image noise and metal artifacts. We thus decided to use a more robust change metric when correlating our HU unit change values with temperature change.  
+CT Thermometry has been explored since the late 1970's with some success \cite{Fani14}. Many of the attempts focused on correlating individual HU unit values with temperature. For our purposes this would not work because these values can be heavily influenced by image noise and metal artifacts. An additional issue with previous attempts is that they used stationary phantoms. We decided to attempt CT Thermometry on real patients meaning that the movement and deformation of organs had to be taken into account. Due to these issues, we employed additional processing steps as well as a more robust change metric than raw difference.
 
 \subsection{Image Registration}
 
@@ -93,7 +97,7 @@ Medical Image Registration has been researched extensively \cite{Oliveira14, Hil
 
 \subsection{Wronskian Change Metric}
 
-Previously, the Wronskian Change Detector \cite{Durucan01} was proposed as a metric that would be robust to noise \cite{Li13}. This particular change detector has been shown to perform well for classification problems \cite{Panda13,Durucan01,Ang11,Subudhi13} in image analysis. The formula however computes the ratios between intensity values. Because the relationship between HU unit value and temperature is roughly linear \cite{Fani14}, we need a function that increases linearly as the change in HU unit increases. Because the Wronskian function does not, we decided not to use it for our purposes. 
+Previously, the Wronskian Change Detector \cite{Durucan01} was proposed as a metric that would be robust to noise \cite{Li13}. This particular change detector has been shown to perform well for classification problems \cite{Panda13,Durucan01,Ang11,Subudhi13} in image analysis. The formula however computes the ratios between intensity values. Because the relationship between HU unit value and temperature is roughly linear \cite{Fani14}, we need a function that increases linearly as the change in HU unit increases. Additionally, when computing the Wronskian, the location of the pixels is quite important, meaning it is not robust to motion artifacts. Due to these issues, we decided not to use the Wronskian Change Detector. 
 
 \subsection{Time Delay Analysis}
 
@@ -110,7 +114,7 @@ For our purposes, we will take two square small images $U$ and $V$ and interpret
 \[
 (r,c)_{offset} = arg\,max_{r,c} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {U_{k+r,l+c} \cdot V_{k,l}}
 \]
-Our change metric calculates the RMSE of the two images with this offset incorporated.
+The offset values found here are equivalent to the ones that are found in the Spatial Offset RMSE method. 
 
 \section{Method}
 
@@ -249,7 +253,7 @@ We decided to take the thermal maps generated from regression and see the averag
 
 \subsection{Approximating Ablation Zone Area}
 
-After generating a thermal map, we identified the point with the highest temperature as being the likely center of ablation. We then made a graph showing the average temperature in a region around that point as a function of the radius of the region. In the future, the values of this function can be used to approximate the radius of the ablation zone. Figure \ref{graphRadMean} shows the values of that function for various patients in our study. 
+After generating a thermal map, we identified the point with the highest temperature as being the likely center of ablation. We then made a graph showing the average temperature in a region around that point as a function of the radius of the region. The values of this function can be used to approximate the radius of the ablation zone. Figure \ref{graphRadMean} shows the values of that function for various patients in our study. 
 
 \begin{figure} 
 \centering 
@@ -261,7 +265,7 @@ After generating a thermal map, we identified the point with the highest tempera
 
 \subsection{3D Visualization of Ablation Zone}
 
-We were able to produce a 3D visualization of the needle and the ablation zone. We thresholded the values of the 3D Thermal Map generated which produced a binarized 3D volume. We also thresholded the values of the original CBCT scan in order to produce a binarized 3D volume showing the needle. With both volumes, we ran a surface generation algorithm using \href{www.itksnap.org}{ITK-SNAP} \cite{Yushkevich06}. This created two 3D meshes. We overlayed them in \href{http://www.slicer.org/}{3D Slicer} \cite{Fedorov12} to show the needle and ablation zone together. Figure \ref{needleAblationZone} displays the result.
+We were able to produce a 3D visualization of the needle and the ablation zone. We thresholded the values of the 3D Thermal Map generated which produced a binarized 3D volume. We also thresholded the values of the original CBCT scan in order to produce a binarized 3D volume showing only the needle. With both volumes, we ran a surface generation algorithm using \href{www.itksnap.org}{ITK-SNAP} \cite{Yushkevich06}. This created two 3D meshes. We superimposed them in \href{http://www.slicer.org/}{3D Slicer} \cite{Fedorov12} to show the needle and ablation zone together. Figure \ref{needleAblationZone} displays the result.
 
 \begin{figure} 
 \centering 
@@ -284,7 +288,11 @@ There are a myriad of medical image filtering techniques that have been develope
 
 \subsection{Further Testing}
 
-We hope these methods will continue to be tested and eventually incorporated into clinical practice. This will require testing on a lot more CBCT scans. Additionally, we will need a data set where multiple imaging modalities were employed. That way we can test our thermal map against one generated by a modality that is known to generate accurate thermal maps. 
+We hope these methods will continue to be tested and eventually incorporated into clinical practice. This will require testing on a lot more CBCT scans. Additionally, we will need a data set where multiple imaging modalities were employed. That way we can test our thermal map against one generated by a modality that is known to generate accurate thermal maps.
+
+\subsection{Improve Running Time}
+
+Most steps in the pipeline currently take less than 30 seconds so applying them in clincial practice is possible. The registration step however takes 1-6 hours. This will need to be cut down if we are to use the registration step in clinical practice.  
 
 
 
