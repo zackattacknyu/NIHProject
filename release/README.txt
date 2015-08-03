@@ -10,9 +10,38 @@ Matlab 2013b or above is recommended
 Statistics Toolbox and Image Processing Toolbox are required
 To generate Spatial Offset RMSE map, Matlab must be running Java 7 or above
 
+
 Install Instructions:
 
 1. Unzip folder
 2. Change the Matlab directory to location of unzipped folder 
 3. Open ctThermConfig.m and set desired configuration values
 4. Type "run" in command window to start the program
+
+
+
+User Instructions (Registration Step):
+
+1. Click "Load Baseline Scan (DICOM Folder) and Save As NII" 
+2. Select the DICOM folder with the CBCT series
+3. The NII file containing the whole scan is saved as:
+   "results/<Patient Last Name>_<Study Date>_<Series Number>.nii"
+4. Wait until the field "Baseline Scan File:" shows that file
+
+5. Click on "Load Comparison Scan (DICOM Folder) and Save As NII" 
+6. Repeat steps 2-3
+7. Wait until the field "Comparison Scan File:" shows the correct NII file
+
+8. Click on "Make Registration Batch Script" to generate the .bat file that will do the registration
+9. The field "Batch Script File:" will show where the generated batch file is saved
+10. Click on "Run Batch Script" or run the .bat file from the Windows Command Prompt
+	- NOTE: The batch script takes 1-5 hours at the moment, 
+	
+11. Wait for the registration to finish
+12. Click on "Load Comparison Scan - NII file"
+13. Select the file "<Comparison Scan>_registered.nii"
+14. The baseline and registered comparison CBCT scan are now ready for analysis
+
+
+User Instructions (ROI step):
+

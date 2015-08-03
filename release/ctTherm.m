@@ -191,9 +191,11 @@ function pushbutton5_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-baselineDCMfolder = uigetdir('','Select Baseline Scan DICOM folder');
-assignin('base','baselineDCMfolder',baselineDCMfolder);
+baselineDCMfolder = uigetdir('','Select Comparison Scan DICOM folder');
 set(handles.edit3,'String',baselineDCMfolder);
+[dcmFixedHU,outputFilePath] = saveDICOMfolder(baselineDCMfolder);
+assignin('base','baselineScan',dcmFixedHU);
+set(handles.edit1,'String',outputFilePath);
 
 
 % --- Executes on button press in pushbutton6.
@@ -1068,14 +1070,13 @@ function pushbutton25_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton25 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-%{
-uigetfile('*.nii','Select Nifty File for Index Gathering');
+[niiFile,parentDir] = uigetfile('*.nii','Select Nifty File for Index Gathering');
+indexData = initializeNIIfileWithDCMData(parentDir,niiFile); 
 prompt = 'Specify Slice Number:';
 title = 'Slice Number Entry:';
 sliceNum = inputdlg(prompt,title,1);
 uigetfile('*.nii','Select Nifty File for Value Gathering');
-%}
+
 tempPointNames = get(handles.listbox3,'String');
 numPoints = numel(tempPointNames);
 nextTempPointN = evalin('base','nextTempPointNum');

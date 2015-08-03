@@ -7,9 +7,13 @@ if( inputFolder(end)~='\' )
 end
 [dcmFixedHU,FamilyName,StudyDate,SeriesNumber] = getDCMFolderData(inputFolder);
 
-outputFilePath = strcat('results/',FamilyName,'_',StudyDate,'_',...
+outputFilePath = strcat(pwd,'\results\',FamilyName,'_',StudyDate,'_',...
     num2str(SeriesNumber),'.nii');
-saveScanAsNII(dcmFixedHU,outputFilePath);
+if(exist(outputFilePath,'file'))
+    msgbox('Study Data Already Imported');
+else
+    saveScanAsNII(dcmFixedHU,outputFilePath);
+end
 
 end
 
