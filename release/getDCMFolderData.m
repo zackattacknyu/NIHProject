@@ -1,4 +1,4 @@
-function [ dcmArrayHU ] = getDCMFolderData( dirName )
+function [ dcmArrayHU,FamilyName,StudyDate,SeriesNumber ] = getDCMFolderData( dirName )
 %GETDCMFOLDERDATA Summary of this function goes here
 %   dcmData - puts the matrices into a cell
 %   dcmAray - makes a large array
@@ -23,6 +23,9 @@ for i = 1:numFiles
        if(isfield(dcmInfo,'RescaleIntercept'))
            slope=dcmInfo.RescaleSlope;
            intercept=dcmInfo.RescaleIntercept;
+           FamilyName = dcmInfo.PatientName.FamilyName;
+           StudyDate = dcmInfo.StudyDate;
+           SeriesNumber = dcmInfo.SeriesNumber;
        end
        index = index + 1;
     end

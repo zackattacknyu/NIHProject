@@ -247,8 +247,10 @@ function pushbutton7_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 comparisonDCMfolder = uigetdir('','Select Comparison Scan DICOM folder');
-assignin('base','comparisonDCMfolder',comparisonDCMfolder);
 set(handles.edit4,'String',comparisonDCMfolder);
+[dcmFixedHU,outputFilePath] = saveDICOMfolder(comparisonDCMfolder);
+assignin('base','comparisonScan',dcmFixedHU);
+set(handles.edit2,'String',outputFilePath);
 
 
 % --- Executes on button press in pushbutton8.
@@ -256,21 +258,10 @@ function pushbutton8_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton8 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-try
-    inputFolder = evalin('base','comparisonDCMfolder');
-    if( inputFolder(end)~='\' )
-       inputFolder = strcat(inputFolder,'\'); 
-    end
-    [outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Comparison Scan');
-    fullFilePath = strcat(outputFilePath,outputFileName);
-    dcmHU = writeNIIfile(inputFolder,fullFilePath);
-
-    assignin('base','comparisonScan',dcmHU);
-    set(handles.edit2,'String',fullFilePath);
-    
-catch
-    msgbox('Please specify comparison DICOM folder first');
-end
+inputFolder = evalin('base','comparisonDCMfolder');
+[dcmFixedHU,outputFilePath] = saveDICOMfolder(inputFolder);
+assignin('base','comparisonScan',dcmFixedHU);
+set(handles.edit2,'String',outputFilePath);
 
 
 function edit4_Callback(hObject, eventdata, handles)
