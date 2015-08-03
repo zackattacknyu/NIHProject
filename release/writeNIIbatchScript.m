@@ -22,14 +22,16 @@ comparisontransformPath = strcat(initComparisonPath,'_transform.txt');
 comparisoncppPath = strcat(initComparisonPath,'_cpp.nii');
 comparisonresPath = strcat(initComparisonPath,'_registered.nii');
 
-line1 = {'reg_aladin -ref',baselineNIIfilePath,'-flo',comparisonNIIfilePath,...
-    ' -aff ',comparisontransformPath};
+line1 = {'reg_aladin -ref',' ',baselineNIIfilePath,' ','-flo',' ',...
+    comparisonNIIfilePath,' ',...
+    ' -aff ',' ',comparisontransformPath};
 
-line3 = {'reg_f3d -ref',baselineNIIfilePath,'-flo',comparisonNIIfilePath,...
-    '-aff',comparisontransformPath,'-cpp',comparisoncppPath,'-res',comparisonresPath};
+line3 = {'reg_f3d -ref',' ',baselineNIIfilePath,' ','-flo',' ',comparisonNIIfilePath,' ',...
+    '-aff',' ',comparisontransformPath,' ','-cpp',' ',comparisoncppPath...
+    ,' ','-res',' ',comparisonresPath};
 
-line1txt = strjoin(line1);
-line3txt = strjoin(line3);
+line1txt = [line1{:}];
+line3txt = [line3{:}];
 
 fprintf(fid,'%s\n',line1txt);
 fprintf(fid,'%s\n',line3txt);
