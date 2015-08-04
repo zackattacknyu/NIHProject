@@ -79,12 +79,6 @@ Even though CBCT provides much useful information, it is still difficult to dete
 
 This possibility has been explored in the past \cite{Li13} but only for phantoms. We decided to extend the work to real patients and incorporate more processing steps to enhance the thermal maps. For this work, we had a data set of CBCT scans taken during RFA procedures. With each procedure, there was a baseline CBCT scan taken after the ablation needle was inserted but before it was heated. There were then 1-4 comparison scans taken as the needle was heated and cooled. We processed each of the comparison scans and attempted to generate a thermal map by comparing them to the baseline scan.
 
-This processing was only done in the region where the ablation occurred. This is because the relationship between Hounsfeld Units (HU) in CT scans and temperature varies depending on which organ is being affected \cite{Fani14}. Thus our maps would be inaccurate for other tissue. Because the needle has distinct HU values from tissue and the ablation occurred at the tip of the needle, we were able to automate the process of finding this region. 
-
-There is strong evidence that the relationship between HU unit and temperature is linear \cite{Fani14}. Because we have baseline and comparison scans, we decided to correlate the change in HU value with the change in temperature. Because of CBCT scan artifacts and noise, we had to use a different change metric than simple difference but one that still behaved linearly as HU units changed. There are two change metrics that we employ in our pipeline, Filtered Difference and Spatial Offset RMSE.  
-
-The Filtered Difference method involves filtering both scans with an averaging filter and then obtaining the difference image. The Spatial Offset RMSE method involves taking a window around a pixel in both scans and computing the minimum RMSE of the values in the windows assuming there is a spatial offset between them. The Spatial Offset RMSE method is more computationally intensive than the Filtered Difference method but it produces a much smoother change map. We thus use the Filtered Difference to give us an estimate of the thermal map in order to verify our choice of region. We then use the Spatial Offset RMSE to compute the estimate of the thermal map. 
-
 \section{Related Work}
 
 \subsection{CT Thermometry}
@@ -116,22 +110,19 @@ For our purposes, we will take two square small images $U$ and $V$ and interpret
 \]
 The offset values found here are equivalent to the ones that are found in the Spatial Offset RMSE method. 
 
-\section{Method}
-
-These scans were taken a few minutes apart on live patients, thus there was movement of the organs. In order to account for this, we kept the baseline scan static and registered the subsequent scans to the baseline scan. This allowed us to have 3D CBCT scans that were reasonably aligned. However there was still noise, needle artifacts, and small registration errors. We thus needed a change metric that was robust to these issues. 
-
-Computing the pixel by pixel difference between scans is a poor metric that is not robust enough for our needs. Using the Wronskian Change Detector was explored previously \cite{Li13} but it is not well suited for the regression calculation we need to perform. Using the values in a window around a pixel proved to be effective though. 
-
-We compared windows around a pixel in the baseline scan and comparison scan using two different methods: Mean Difference and Spatial Offset RMSE. The mean difference method is equivalent to performing a convolution using an averaging filter on both images and then computing the difference image. The Spatial Offset RMSE method is equivalent to finding the ideal spatial offset between the windows and then computing the RMSE of the pixel values in the shifted signal. 
-
-
 \section{Pipeline}
 
-With each ablation, there was a baseline CBCT scan as well as 1-4 comparison CBCT scans taken during the procedure. The baseline scan was taken after the needle was inserted but before any temperature changes. The comparison scans were taken at various stages of heating and cooling the needle. For each comparison scan, a corresponding thermal map was generated via the following procedure:
+In order to generate thermal maps from the comparison CBCT scans, we did the processing only in the region where the ablation occurred. This is because the relationship between Hounsfeld Units (HU) in CT scans and temperature varies depending on which organ is being affected \cite{Fani14}. Thus our maps would be inaccurate for other tissue. Because the needle has distinct HU values from tissue and the ablation occurred at the tip of the needle, we were able to attempt automation of finding this region.
+
+There is strong evidence that the relationship between HU unit and temperature is linear \cite{Fani14} thus we correlated change in HU with change in temperature. Because of CBCT scan artifacts and noise, we had to use a different change metric than simple difference but one that still behaved linearly as HU units changed. Ultimately, we incorporate two change metrics into our pipeline that fit the criteria, Filtered Difference and Spatial Offset RMSE.  
+
+The Filtered Difference method involves filtering both scans with an averaging filter and then obtaining the difference image. The Spatial Offset RMSE method involves taking a window around a pixel in both scans and computing the minimum RMSE of the values in the windows assuming there is a spatial offset between them. The Spatial Offset RMSE method is more computationally intensive than the Filtered Difference method but it produces a much smoother change map. We thus use the Filtered Difference to give us an estimate of the thermal map in order to verify our choice of region. We then use the Spatial Offset RMSE to compute the estimate of the thermal map. 
+
+For each comparison scan, a corresponding thermal map was generated via the following procedure:
 \begin{enumerate}
 \item Register the comparison scan to the baseline scan
 \item Use Connected Component Analysis and Principal Component Analysis (PCA) to detect the Needle and Thermocouple tips
-\item Use the result to identify an ROI
+\item Use the result to identify an ROI. If that fails, manually input the ROI.
 \item Filter the ROI in the baseline and comparison scans with an averaging filter, and calculate the difference
 \item Use the result to locate where the ablation likely occurred
 \item Calculate the Spatial Offset RMSE value for the ROI
@@ -160,9 +151,11 @@ For the registration step, the comparison scan volume was registered to the base
 
 \end{figure}
 
-\subsection{Needle Detection}
+\subsection{ROI Detection}
 
-The HU values for the needle and thermocouple are significantly higher than the values for normal tissue. Thus after thresholding the values in the CBCT scan high enough, the points remaining are the ones in the needle and thermocouple. Doing connected component analysis with \textbf{\href{http://www.mathworks.com/help/images/ref/bwconncomp.html}{bwconncomp}} \cite{bwconncomp} in Matlab let us find the clusters which contain the needles and thermocouples. For each component, \textbf{\href{http://www.mathworks.com/help/stats/pca.html}{pca}} \cite{pca} in Matlab was done to find the needle vector and endpoints. Figure \ref{needleDetection} shows the result after performing this procedure for one of our patients.
+The HU values for the needle and thermocouple are significantly higher than the values for normal tissue. Thus after thresholding the values in the CBCT scan high enough, the points remaining are the ones in the needle and thermocouple. Doing connected component analysis with \textbf{\href{http://www.mathworks.com/help/images/ref/bwconncomp.html}{bwconncomp}} \cite{bwconncomp} in Matlab let us find the clusters which contain the needles and thermocouples. For each cluster, \textbf{\href{http://www.mathworks.com/help/stats/pca.html}{pca}} \cite{pca} in Matlab was done to find the needle vector and endpoints. Figure \ref{needleDetection} shows the result after performing this procedure for one of our patients.
+
+We now have a series of endpoints and for each one, the region around it is a potential ROI. For each potential ROI, we can verify it by inspecting the CBCT scan in that region and qualitatively assessing if the ablation occurred. Additionally, the Filtered Difference method can be used to approximate the thermal map, thus indicating if the ablation has occurred. If our method fails to find the ROI, then we use those techniques on the whole CBCT scan and manually find and input the box around the ablation zone. 
 
 \begin{figure} 
 \centering 
@@ -199,7 +192,7 @@ Figure \ref{changeDetectionMethods} shows the result image after applying the me
 
 \subsection{Regression}
 
-After generating the Spatial Offset RMSE result image, we find the coordinates where the measured temperature zones are located. We correlate the result image values with the measured temperature changes at those zones using linear regression. We then take the regression equation calculated and apply it to the result image to generate a thermal map. Figure \ref{RegressionCurve} shows the plot of Spatial Offset RMSE versus Temperature Change as well as the regression curve calculated from it. Figure \ref{ThermalMap} shows the resulting thermal map.
+After generating the Spatial Offset RMSE result image, we find the coordinates where the measured temperature zones are located. Each zone center and its measured temperature are manually inputted into the program. The points a small neighborhood around the zone center are all used as result image values. We correlate the result image values with the measured temperature changes using linear regression. We then take the regression equation calculated and apply it to the result image to generate a thermal map. Figure \ref{RegressionCurve} shows the plot of Spatial Offset RMSE versus Temperature Change as well as the regression curve calculated from it. Figure \ref{ThermalMap} shows the resulting thermal map.
 
 \begin{figure} 
 \centering 
@@ -221,7 +214,7 @@ We used a data set of CBCT scans taken for 13 patients whose procedures were per
 
 \subsection{Finding Error Rates}
 
-We decided to take the thermal maps generated from regression and see the average temperature in the zones that we were testing. We then did an RMSE of those temperatures with the measured temperatures. We divided this RMSE by the temperature range in order to obtain an error ratio. The results are in table 1. In the table, temperatures are in Celsius and \textit{Temps (From Regression)} is the average temperature in the neighborhood around the needle or thermocouple (with radius specified by \textit{Neighborhood Radius}) in the thermal map calculated from regression. 
+We decided to take the thermal maps generated from regression and see the average temperature in the zones that we were testing. We then did an RMSE of those temperatures with the measured temperatures. We divided this RMSE by the temperature range in order to obtain an error ratio. The results are in table 1. In the table, temperatures are in Celsius and \textit{Temps (From Regression)} is the average temperature in the neighborhood around the needle or thermocouple (with radius specified by \textit{Neighborhood Radius}) in the thermal map calculated from regression. Our error rate ranged from 8-22\% and the error amount ranged range 2.7 to 16.2 degrees Celsius. 
 
 \begin{tabular}{ | l | l | l | l | l | l | l | }
 \hline
@@ -253,7 +246,7 @@ We decided to take the thermal maps generated from regression and see the averag
 
 \subsection{Approximating Ablation Zone Area}
 
-After generating a thermal map, we identified the point with the highest temperature as being the likely center of ablation. We then made a graph showing the average temperature in a region around that point as a function of the radius of the region. The values of this function can be used to approximate the radius of the ablation zone. Figure \ref{graphRadMean} shows the values of that function for various patients in our study. 
+After generating a thermal map, we identified the point with the highest temperature as being the likely center of ablation. We then made a graph showing the average temperature in a region around that point as a function of the radius of the region. We can potentially use the values of the function to approximate the radius of the ablation zone. Once the average is below a certain fixed temperature or below a certain percentage of the peak, we are outside the ablation zone. Figure \ref{graphRadMean} shows these values for various patients in our study. 
 
 \begin{figure} 
 \centering 
@@ -278,7 +271,7 @@ We were able to produce a 3D visualization of the needle and the ablation zone. 
 
 The processing steps we performed seem to be good initial steps toward incorporating CT Thermometry in clinical practice. Affine and Deformable Registration aligned the CBCT scans allowing us a much more accurate change map. Needle Detection provided a quick way of finding the ROI. The change metric we used provided smooth change maps that were able to generate reasonable thermal maps. 
 
-For some of the patients, these thermal maps were quite accurate while for others the error was higher. The higher error was the result of a high residual value in the linear regression. This was likely caused by image noise or registration error. In the cases where the error was low, the thermal maps have the potential to be quite useful during ablation procedures. They can be used to approximate the size of the ablation zone. Additionally, there is the potential to generate a 3D visual representation of the ablation zone. 
+For some of the patients, these thermal maps were quite accurate while for others the error was higher. The higher error was the result of a high residual value in the linear regression. This was likely caused by image noise or registration error. In the cases where the error was low, the thermal maps have the potential to be quite useful during ablation procedures. They may be used to approximate the size of the ablation zone. Additionally, there is the potential to generate a 3D visual representation of the ablation zone. 
 
 \section{Future Work}
 
@@ -292,7 +285,7 @@ We hope these methods will continue to be tested and eventually incorporated int
 
 \subsection{Improve Running Time}
 
-Most steps in the pipeline currently take less than 30 seconds so applying them in clincial practice is possible. The registration step however takes 1-6 hours. This will need to be cut down if we are to use the registration step in clinical practice.  
+Most steps in the pipeline currently take less than 30 seconds so applying them in clinical practice is possible. The registration step however takes 1-6 hours. This will need to be cut down if we are to use the registration step in clinical practice. We will either need to use a different registration algorithm or change the parameters of our current one to improve its running time. If the registration step cannot be done efficiently, then we may need to adjust our change metrics to be more tolerant of registration errors.  
 
 
 
