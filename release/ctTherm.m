@@ -821,8 +821,7 @@ function pushbutton17_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton17 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Conv Diff Image');
-fullFilePath = strcat(outputFilePath,outputFileName);
+fullFilePath = strcat(pwd,'\results\convDiffROI',makeDateTimeString(),'.nii');
 diffROIConv = getConvDiffROI( evalin('base','currentBaseROI'),...
     evalin('base','currentComparisonROI'),evalin('base','fSize') );
 saveScanAsNII(diffROIConv,fullFilePath);
@@ -865,8 +864,7 @@ function pushbutton19_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton19 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[outputFileName,outputFilePath] = uiputfile('*.nii','Save NII file of Spatial Offset RMSE Image');
-fullFilePath = strcat(outputFilePath,outputFileName);
+fullFilePath = strcat(pwd,'\results\spatialOffsetROI',makeDateTimeString(),'.nii');
 spatialOffsetRMSE = getSlidingWindowBlockJava( evalin('base','currentBaseROI'),...
     evalin('base','currentComparisonROI'),evalin('base','fSize') );
 saveScanAsNII(spatialOffsetRMSE,fullFilePath);
@@ -1303,7 +1301,13 @@ function pushbutton31_Callback(hObject, eventdata, handles)
 inputVol = evalin('base','spatialOffsetROI');
 initTemp = evalin('base','initialTemperature');
 coeff = evalin('base','currentRegressionCoeffs');
-imtool3D(polyval(coeff,inputVol)+initTemp);
+thermMap = polyval(coeff,inputVol)+initTemp; 
+assignin('base','currentThermalMap',thermMap);
+imtool3D(thermMap);
+outputFileName = strcat('results\thermalMap',makeDateTimeString(),'.nii');
+saveScanAsNII(thermMap,outputFileName);
+set(handles.edit27,'String',strcat(pwd,'\',outputFileName));
+
 
 
 % --- Executes on button press in pushbutton32.
@@ -1311,7 +1315,7 @@ function pushbutton32_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton32 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+imtool3D(evalin('base','currentThermalMap'));
 
 
 function edit27_Callback(hObject, eventdata, handles)
@@ -1361,6 +1365,10 @@ function pushbutton34_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton34 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[niiFile,parentDir] = uigetfile('*.nii','Select Thermal Map NII file');
+thermMap = initializeNIIfile(parentDir,niiFile);
+assignin('base','currentThermalMap',thermMap);
+set(handles.edit27,'String',strcat(parentDir,niiFile));
 
 
 % --- Executes on button press in pushbutton35.
