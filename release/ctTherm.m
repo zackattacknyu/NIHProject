@@ -932,9 +932,24 @@ function listbox3_Callback(hObject, eventdata, handles)
 % hObject    handle to listbox3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox3 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox3
+indexSelected = get(hObject,'Value');
+assignin('base','tempPointIndex',indexSelected);
+
+tempPointCoords = evalin('base','tempPointCoords');
+tempPoint = tempPointCoords{indexSelected};
+set(handles.edit24,'String',tempPoint(1));
+set(handles.edit21,'String',tempPoint(2));
+set(handles.edit22,'String',tempPoint(3));
+
+tempPointTemps = evalin('base','tempPointTemps');
+tempPointTemp = tempPointTemps{indexSelected};
+set(handles.edit23,'String',tempPointTemp);
+
+tempPointNIIfiles = evalin('base','tempPointNIIfiles');
+tempPointNII = tempPointNIIfiles{indexSelected};
+set(handles.edit25,'String',tempPointNII);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1121,6 +1136,7 @@ tempPointCoords{numPoints+1} = [row col sliceNum];
 tempPointTemps{numPoints+1} = curTemperature;
 tempPointDiffVals{numPoints+1} = diffValsSlice;
 
+assignin('base','tempPointIndex',nextTempPointN);
 assignin('base','tempPointNIIfiles',tempPointNIIfiles);
 assignin('base','nextTempPointNum',nextTempPointN+1);
 assignin('base','tempPointCoords',tempPointCoords);
@@ -1132,6 +1148,7 @@ set(handles.edit24,'String',row);
 set(handles.edit21,'String',col);
 set(handles.edit22,'String',sliceNum);
 set(handles.edit23,'String',curTemperature);
+set(handles.listbox3,'Value',nextTempPointN);
 
 
 
@@ -1150,9 +1167,32 @@ function pushbutton27_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 curContents = get(handles.listbox3,'String');
 indexSelected = get(handles.listbox3,'Value');
+
+tempPointCoords = evalin('base','tempPointCoords');
+tempPointDiffVals = evalin('base','tempPointDiffVals');
+tempPointNIIfiles = evalin('base','tempPointNIIfiles');
+tempPointTemps = evalin('base','tempPointTemps');
+
+tempPointCoords(indexSelected)=[];
+tempPointDiffVals(indexSelected)=[];
+tempPointNIIfiles(indexSelected)=[];
+tempPointTemps(indexSelected)=[];
 curContents(indexSelected)=[]; %deletes the currently selected one
+
+assignin('base','tempPointCoords',tempPointCoords);
+assignin('base','tempPointDiffVals',tempPointDiffVals);
+assignin('base','tempPointNIIfiles',tempPointNIIfiles);
+assignin('base','tempPointTemps',tempPointTemps);
+
 set(handles.listbox3,'String',curContents);
 set(handles.listbox3,'Value',1);
+
+displayCoords = tempPointCoords{1};
+set(handles.edit25,'String',tempPointNIIfiles{1});
+set(handles.edit24,'String',displayCoords(1));
+set(handles.edit21,'String',displayCoords(2));
+set(handles.edit22,'String',displayCoords(3));
+set(handles.edit23,'String',tempPointTemps{1});
 
 
 
