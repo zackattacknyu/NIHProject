@@ -1376,6 +1376,22 @@ function pushbutton35_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton35 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+inputVol = evalin('base','spatialOffsetROI');
+initTemp = evalin('base','initialTemperature');
+coeff = evalin('base','currentRegressionCoeffs');
+currentBaseROI = evalin('base','currentBaseROI');
+fSize = evalin('base','fSize');
+HUthreshold = evalin('base','HUthreshold');
+
+inputVolNoNeedle = generateNoNeedleMap( currentBaseROI,...
+    inputVol,fSize,HUthreshold );
+thermalMapNoNeedle = polyval(coeff,inputVolNoNeedle)+initTemp;
+assignin('base','currentThermalMap',thermalMapNoNeedle);
+imtool3D(thermalMapNoNeedle);
+outputFileName = strcat('results\thermalMapNoNeedle',...
+    makeDateTimeString(),'.nii');
+saveScanAsNII(thermalMapNoNeedle,outputFileName);
+set(handles.edit27,'String',strcat(pwd,'\',outputFileName));
 
 
 % --- If Enable == 'on', executes on mouse press in 5 pixel border.
