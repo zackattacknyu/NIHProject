@@ -22,7 +22,7 @@ function varargout = ctTherm(varargin)
 
 % Edit the above text to modify the response to help ctTherm
 
-% Last Modified by GUIDE v2.5 31-Jul-2015 14:29:20
+% Last Modified by GUIDE v2.5 04-Aug-2015 16:11:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -935,7 +935,6 @@ function listbox3_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox3 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox3
 indexSelected = get(hObject,'Value');
-assignin('base','tempPointIndex',indexSelected);
 
 tempPointCoords = evalin('base','tempPointCoords');
 tempPoint = tempPointCoords{indexSelected};
@@ -1136,7 +1135,6 @@ tempPointCoords{numPoints+1} = [row col sliceNum];
 tempPointTemps{numPoints+1} = curTemperature;
 tempPointDiffVals{numPoints+1} = diffValsSlice;
 
-assignin('base','tempPointIndex',nextTempPointN);
 assignin('base','tempPointNIIfiles',tempPointNIIfiles);
 assignin('base','nextTempPointNum',nextTempPointN+1);
 assignin('base','tempPointCoords',tempPointCoords);
@@ -1201,6 +1199,15 @@ function pushbutton28_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton28 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+tempPointCoords = evalin('base','tempPointCoords');
+tempPointTemps = evalin('base','tempPointTemps');
+tempPointDiffVals = evalin('base','tempPointDiffVals');
+tempPointStr = get(handles.listbox3,'String');
+
+outputFileName = strcat('results/tempPointInfo',makeDateTimeString(),'.mat');
+
+save(outputFileName,'tempPointCoords','tempPointTemps',...
+    'tempPointDiffVals','tempPointStr');
 
 
 % --- Executes on button press in pushbutton29.
@@ -1330,3 +1337,25 @@ function edit9_DeleteFcn(hObject, eventdata, handles)
 % hObject    handle to edit9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in pushbutton36.
+function pushbutton36_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton36 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+currentROI = evalin('base','currentBaseROI');
+contents = cellstr(get(handles.listbox1,'String'));
+curROIString = contents{get(handles.listbox1,'Value')};
+saveNIIfileForROI(currentROI,curROIString);
+
+
+% --- Executes on button press in pushbutton37.
+function pushbutton37_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton37 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+currentROI = evalin('base','currentComparisonROI');
+contents = cellstr(get(handles.listbox1,'String'));
+curROIString = contents{get(handles.listbox1,'Value')};
+saveNIIfileForROI(currentROI,curROIString);

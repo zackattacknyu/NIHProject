@@ -6,11 +6,8 @@ if(~exist(writeDirectory,'dir'))
     mkdir(writeDirectory);
 end
 
-entries = datevec(now);
 outputStr = 'batchScript';
-for i = 1:length(entries)
-    outputStr = strcat(outputStr,'_',int2str(entries(i)));
-end
+outputStr = strcat(outputStr,makeDateTimeString());
 commandName = strcat('temp\',outputStr);
 batchFilePath = strcat(pwd,'\',commandName,'.bat');
 fid = fopen(batchFilePath,'w');
