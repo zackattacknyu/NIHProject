@@ -1079,6 +1079,12 @@ title = 'Slice Number Entry:';
 sliceNumInput = inputdlg(prompt,title,1);
 sliceNum = floor(str2double(sliceNumInput{1}));
 
+%gets the temperature in the temp zone
+prompt2 = 'Specify Temperature:';
+title2 = 'Temperature Entry:';
+temperatureInput = inputdlg(prompt2,title2,1);
+curTemperature = floor(str2double(temperatureInput{1}));
+
 %gets the indices of points of temperature zone
 wSize = evalin('base','wSize');
 indexSlice = indexData(:,:,sliceNum);
@@ -1090,18 +1096,21 @@ valueData = initializeNIIfileWithDCMData(parentDirVal,niiFileVal);
 
 valueSlice = valueData(:,:,sliceNum);
 diffValsSlice = valueSlice(inds);
-assignin('base','currentDiffVals',diffValsSlice);
 
 nextTempPointN = evalin('base','nextTempPointNum');
 if(nextTempPointN < 2)
     tempPointNames = [];
     tempPointNIIfiles = [];
     tempPointCoords = [];
+    tempPointTemps = [];
+    tempPointDiffVals = [];
     numPoints = 0;
 else
     tempPointNames = get(handles.listbox3,'String');
     tempPointNIIfiles = evalin('base','tempPointNIIfiles');
     tempPointCoords = evalin('base','tempPointCoords');
+    tempPointTemps = evalin('base','tempPointTemps');
+    tempPointDiffVals = evalin('base','tempPointDiffVals');
     numPoints = numel(tempPointNames);
 end
 
@@ -1109,15 +1118,20 @@ fullNIIpath = strcat(parentDirVal,niiFileVal);
 tempPointNIIfiles{numPoints+1} = fullNIIpath;
 tempPointNames{numPoints+1} = strcat('Temperature_Point_',num2str(nextTempPointN));
 tempPointCoords{numPoints+1} = [row col sliceNum];
+tempPointTemps{numPoints+1} = curTemperature;
+tempPointDiffVals{numPoints+1} = diffValsSlice;
 
 assignin('base','tempPointNIIfiles',tempPointNIIfiles);
 assignin('base','nextTempPointNum',nextTempPointN+1);
 assignin('base','tempPointCoords',tempPointCoords);
+assignin('base','tempPointTemps',tempPointTemps);
+assignin('base','tempPointDiffVals',tempPointDiffVals);
 set(handles.listbox3,'String',tempPointNames);
 set(handles.edit25,'String',fullNIIpath);
 set(handles.edit24,'String',row);
 set(handles.edit21,'String',col);
 set(handles.edit22,'String',sliceNum);
+set(handles.edit23,'String',curTemperature);
 
 
 
