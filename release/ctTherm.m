@@ -1232,7 +1232,18 @@ function pushbutton29_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton29 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+tempVals = evalin('base','tempPointTemps');
+diffVals = evalin('base','tempPointDiffVals');
+[diffPoints,tempPoints] = getTempValsFromCells(diffVals,tempVals);
+degree=1;
+[coeff,xx,yy] = generateRegressionOutput(diffPoints,tempPoints,degree);
+figure
+plot(xx,yy);
+hold on
+plot(diffPoints,tempPoints,'rx');
+xlabel('Sliding Window RMSE');
+ylabel('Temperature Change (Celsius)');
+hold off
 
 % --- Executes on button press in pushbutton30.
 function pushbutton30_Callback(hObject, eventdata, handles)
