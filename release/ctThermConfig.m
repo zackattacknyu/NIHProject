@@ -42,6 +42,13 @@ distance.
 %}
 roiRadius=30;
 
+%{
+When the regression is done, the neighborhood of points around the point selected
+    to be the needle or thermocouple center is used. 
+This is the radius of that neighborhood
+%}
+wSize=4;
+
 
 %{
 DO NOT CHANGE THE CODE BELOW
@@ -51,5 +58,6 @@ assignin('base','pointsThreshold',pointsThreshold);
 assignin('base','minNumNeedles',minNumNeedles);
 assignin('base','roiRadius',roiRadius);
 assignin('base','fSize',fSize);
+assignin('base','wSize',wSize);
 assignin('base','nextManualROInum',1);
 assignin('base','nextTempPointNum',1);

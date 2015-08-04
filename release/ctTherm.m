@@ -1072,10 +1072,24 @@ function pushbutton25_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 [niiFile,parentDir] = uigetfile('*.nii','Select Nifty File for Index Gathering');
 indexData = initializeNIIfileWithDCMData(parentDir,niiFile); 
+
+%gets slice number that contains the temperature zones
 prompt = 'Specify Slice Number:';
 title = 'Slice Number Entry:';
-sliceNum = inputdlg(prompt,title,1);
-uigetfile('*.nii','Select Nifty File for Value Gathering');
+sliceNumInput = inputdlg(prompt,title,1);
+sliceNum = floor(str2double(sliceNumInput{1}));
+
+%gets the indices of points of temperature zone
+wSize = evalin('base','wSize');
+indexSlice = indexData(:,:,sliceNum);
+inds = getSelectionWindowInds(indexSlice,wSize);
+
+[niiFileVal,parentDirVal] = uigetfile('*.nii','Select Nifty File for Value Gathering');
+valueData = initializeNIIfileWithDCMData(parentDirVal,niiFileVal);
+
+valueSlice = valueData(:,:,sliceNum);
+diffValsSlice = valueSlice(inds);
+assignin('base','currentDiffVals',diffValsSlice);
 
 tempPointNames = get(handles.listbox3,'String');
 numPoints = numel(tempPointNames);
