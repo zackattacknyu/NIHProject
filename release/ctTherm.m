@@ -1082,7 +1082,8 @@ sliceNum = floor(str2double(sliceNumInput{1}));
 %gets the indices of points of temperature zone
 wSize = evalin('base','wSize');
 indexSlice = indexData(:,:,sliceNum);
-inds = getSelectionWindowInds(indexSlice,wSize);
+[inds, row, col] = getSelectionWindowInds(indexSlice,wSize);
+row = floor(row); col = floor(col);
 
 [niiFileVal,parentDirVal] = uigetfile('*.nii','Select Nifty File for Value Gathering');
 valueData = initializeNIIfileWithDCMData(parentDirVal,niiFileVal);
@@ -1091,12 +1092,33 @@ valueSlice = valueData(:,:,sliceNum);
 diffValsSlice = valueSlice(inds);
 assignin('base','currentDiffVals',diffValsSlice);
 
-tempPointNames = get(handles.listbox3,'String');
-numPoints = numel(tempPointNames);
 nextTempPointN = evalin('base','nextTempPointNum');
+if(nextTempPointN < 2)
+    tempPointNames = [];
+    tempPointNIIfiles = [];
+    tempPointCoords = [];
+    numPoints = 0;
+else
+    tempPointNames = get(handles.listbox3,'String');
+    tempPointNIIfiles = evalin('base','tempPointNIIfiles');
+    tempPointCoords = evalin('base','tempPointCoords');
+    numPoints = numel(tempPointNames);
+end
+
+fullNIIpath = strcat(parentDirVal,niiFileVal);
+tempPointNIIfiles{numPoints+1} = fullNIIpath;
 tempPointNames{numPoints+1} = strcat('Temperature_Point_',num2str(nextTempPointN));
+tempPointCoords{numPoints+1} = [row col sliceNum];
+
+assignin('base','tempPointNIIfiles',tempPointNIIfiles);
 assignin('base','nextTempPointNum',nextTempPointN+1);
+assignin('base','tempPointCoords',tempPointCoords);
 set(handles.listbox3,'String',tempPointNames);
+set(handles.edit25,'String',fullNIIpath);
+set(handles.edit24,'String',row);
+set(handles.edit21,'String',col);
+set(handles.edit22,'String',sliceNum);
+
 
 
 
