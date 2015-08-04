@@ -1156,7 +1156,22 @@ function pushbutton26_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton26 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[matFile,parentDir] = uigetfile('*.mat','Select MAT file with Temp Data');
+load(strcat(parentDir,matFile));
+assignin('base','tempPointCoords',tempPointCoords);
+assignin('base','tempPointDiffVals',tempPointDiffVals);
+assignin('base','tempPointNIIfiles',tempPointNIIfiles);
+assignin('base','tempPointTemps',tempPointTemps);
+set(handles.listbox3,'String',tempPointStr);
 
+set(handles.listbox3,'Value',1);
+
+displayCoords = tempPointCoords{1};
+set(handles.edit25,'String',tempPointNIIfiles{1});
+set(handles.edit24,'String',displayCoords(1));
+set(handles.edit21,'String',displayCoords(2));
+set(handles.edit22,'String',displayCoords(3));
+set(handles.edit23,'String',tempPointTemps{1});
 
 % --- Executes on button press in pushbutton27.
 function pushbutton27_Callback(hObject, eventdata, handles)
@@ -1202,12 +1217,14 @@ function pushbutton28_Callback(hObject, eventdata, handles)
 tempPointCoords = evalin('base','tempPointCoords');
 tempPointTemps = evalin('base','tempPointTemps');
 tempPointDiffVals = evalin('base','tempPointDiffVals');
+tempPointNIIfiles = evalin('base','tempPointNIIfiles');
+
 tempPointStr = get(handles.listbox3,'String');
 
 outputFileName = strcat('results/tempPointInfo',makeDateTimeString(),'.mat');
 
 save(outputFileName,'tempPointCoords','tempPointTemps',...
-    'tempPointDiffVals','tempPointStr');
+    'tempPointDiffVals','tempPointStr','tempPointNIIfiles');
 
 
 % --- Executes on button press in pushbutton29.
