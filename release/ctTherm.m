@@ -1237,6 +1237,7 @@ diffVals = evalin('base','tempPointDiffVals');
 [diffPoints,tempPoints] = getTempValsFromCells(diffVals,tempVals);
 degree=1;
 [coeff,xx,yy] = generateRegressionOutput(diffPoints,tempPoints,degree);
+
 figure
 plot(xx,yy);
 hold on
@@ -1245,11 +1246,30 @@ xlabel('Sliding Window RMSE');
 ylabel('Temperature Change (Celsius)');
 hold off
 
+assignin('base','currentRegressionCoeffs',coeff);
+assignin('base','regressionTempPoints',tempPoints);
+assignin('base','regressionDiffPoints',diffPoints);
+assignin('base','regressionLineXvals',xx);
+assignin('base','regressionLineYvals',yy);
+outputFileName = strcat('results\regressionInfo',makeDateTimeString(),'.mat');
+save(outputFileName,'diffPoints','tempPoints','coeff','xx','yy');
+
+set(handles.edit26,'String',strcat(pwd,'\',outputFileName));
+
 % --- Executes on button press in pushbutton30.
 function pushbutton30_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton30 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[matFile,parentDir] = uigetfile('*.mat','Select MAT file with Regression Data');
+load(strcat(parentDir,matFile));
+assignin('base','currentRegressionCoeffs',coeff);
+assignin('base','regressionTempPoints',tempPoints);
+assignin('base','regressionDiffPoints',diffPoints);
+assignin('base','regressionLineXvals',xx);
+assignin('base','regressionLineYvals',yy);
+
+set(handles.edit26,'String',strcat(parentDir,matFile));
 
 
 
@@ -1318,6 +1338,19 @@ function pushbutton33_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton33 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+%coeff = evalin('base','currentRegressionCoeffs');
+tempPoints = evalin('base','regressionTempPoints');
+diffPoints = evalin('base','regressionDiffPoints');
+xx = evalin('base','regressionLineXvals');
+yy = evalin('base','regressionLineYvals');
+
+figure
+plot(xx,yy);
+hold on
+plot(diffPoints,tempPoints,'rx');
+xlabel('Sliding Window RMSE');
+ylabel('Temperature Change (Celsius)');
+hold off
 
 
 % --- Executes on button press in pushbutton34.
