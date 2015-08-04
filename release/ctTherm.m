@@ -1235,7 +1235,7 @@ function pushbutton29_Callback(hObject, eventdata, handles)
 tempVals = evalin('base','tempPointTemps');
 diffVals = evalin('base','tempPointDiffVals');
 [diffPoints,tempPoints] = getTempValsFromCells(diffVals,tempVals);
-degree=1;
+degree=evalin('base','regressionPolyDegree');
 [coeff,xx,yy] = generateRegressionOutput(diffPoints,tempPoints,degree);
 
 figure
@@ -1300,7 +1300,10 @@ function pushbutton31_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton31 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-uigetfile('*.nii','Select Nifty File with Thermal Map Inputs');
+inputVol = evalin('base','spatialOffsetROI');
+initTemp = evalin('base','initialTemperature');
+coeff = evalin('base','currentRegressionCoeffs');
+imtool3D(polyval(coeff,inputVol)+initTemp);
 
 
 % --- Executes on button press in pushbutton32.

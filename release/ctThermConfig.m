@@ -49,6 +49,18 @@ This is the radius of that neighborhood
 %}
 wSize=4;
 
+%{
+This is the degree of the polynomial used in the regression equation
+%}
+regressionPolyDegree=1;
+
+%{
+This is the initial temperature. The thermal map creates a map of changes
+    in temperature. In order to generate a map of temperatures, each pixel
+    value is added by this number.
+%}
+initialTemperature=37;
+
 
 %{
 DO NOT CHANGE THE CODE BELOW
@@ -59,5 +71,7 @@ assignin('base','minNumNeedles',minNumNeedles);
 assignin('base','roiRadius',roiRadius);
 assignin('base','fSize',fSize);
 assignin('base','wSize',wSize);
+assignin('base','initialTemperature',initialTemperature);
+assignin('base','regressionPolyDegree',regressionPolyDegree);
 assignin('base','nextManualROInum',1);
 assignin('base','nextTempPointNum',1);
