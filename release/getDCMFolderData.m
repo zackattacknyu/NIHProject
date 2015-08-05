@@ -1,7 +1,15 @@
 function [ dcmArrayHU,FamilyName,StudyDate,SeriesNumber ] = getDCMFolderData( dirName )
-%GETDCMFOLDERDATA Summary of this function goes here
-%   dcmData - puts the matrices into a cell
-%   dcmAray - makes a large array
+%GETDCMFOLDERDATA gets DICOM data from folder
+%
+%   INPUT:
+%       dirName - directory containing the .dcm files
+%
+%   OUTPUT
+%       dcmArrayHU - The volume for the entire scan in the folder
+%       FamilyName - The last name of the patient as specified in .dcm
+%                   files
+%       StudyDate - study date as specified in .dcm files
+%       SeriesNumber - series number as specified in .dcm files
 
 filesInFolder = dir(dirName);
 numFiles = size(filesInFolder,1);

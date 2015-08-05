@@ -1,7 +1,20 @@
 function [outputROI,minCoordsAll,maxCoordsAll] = getROIregions( ...
     fixedImg, threshold,pointsThreshold,minNumNeedles,roiRadius )
-%GETROIREGIONS Summary of this function goes here
-%   Detailed explanation goes here
+%GETROIREGIONS Takes in the 3D volume and outputs the detected ROI regions
+%
+%   INPUT:
+%       fixedImg - input image
+%       threshold - HU threshold for needles
+%       pointsThreshold - number of points in connected component required
+%                           before it is analyzed
+%       minNumNeedles - minimum number of needles that must be detected
+%                       overrides the pointsThreshold if necessary
+%       roiRadius - L-inf radius around needle point where ROI is take
+%
+%   OUTPUT
+%       outputROI - cell array with each entry being 3D ROI volume
+%       minCoordsAll - cell array where each entry is ROI min coords
+%       maxCoordsAll - cell array where each entry is ROI max coords
 
 imgCenter = size(fixedImg)./2;
 fixedImgNeedle = single(fixedImg>threshold);

@@ -1,6 +1,15 @@
 function [ inds, row, col ] = getSelectionWindowInds( slice, wSize)
-%GETSELECTIONWINDOWINDS Summary of this function goes here
-%   Detailed explanation goes here
+%GETSELECTIONWINDOWINDS Has user select point and then outputs the pixel
+%                       indices for the ones around that point
+%
+%   INPUT:
+%       slice - 2D image to obtain window indices for
+%       wSize - half-width of window to use
+%
+%   OUTPUT
+%       inds - linear indices of pixels in window
+%       row - row coord for pixel selected
+%       col - col coord for pixel selected
 
 fcur = figure;
 imagesc(slice)
