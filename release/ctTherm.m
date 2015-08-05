@@ -1092,7 +1092,7 @@ sliceNumInput = inputdlg(prompt,title,1);
 sliceNum = floor(str2double(sliceNumInput{1}));
 
 %gets the temperature in the temp zone
-prompt2 = 'Specify Temperature:';
+prompt2 = 'Specify Temperature Change:';
 title2 = 'Temperature Entry:';
 temperatureInput = inputdlg(prompt2,title2,1);
 curTemperature = floor(str2double(temperatureInput{1}));
@@ -1160,6 +1160,7 @@ assignin('base','tempPointCoords',tempPointCoords);
 assignin('base','tempPointDiffVals',tempPointDiffVals);
 assignin('base','tempPointNIIfiles',tempPointNIIfiles);
 assignin('base','tempPointTemps',tempPointTemps);
+assignin('base','nextTempPointNum',nextTempPointNum);
 set(handles.listbox3,'String',tempPointStr);
 
 set(handles.listbox3,'Value',1);
@@ -1216,13 +1217,15 @@ tempPointCoords = evalin('base','tempPointCoords');
 tempPointTemps = evalin('base','tempPointTemps');
 tempPointDiffVals = evalin('base','tempPointDiffVals');
 tempPointNIIfiles = evalin('base','tempPointNIIfiles');
+nextTempPointNum = evalin('base','nextTempPointNum')
 
 tempPointStr = get(handles.listbox3,'String');
 
 outputFileName = strcat('results/tempPointInfo',makeDateTimeString(),'.mat');
 
 save(outputFileName,'tempPointCoords','tempPointTemps',...
-    'tempPointDiffVals','tempPointStr','tempPointNIIfiles');
+    'tempPointDiffVals','tempPointStr','tempPointNIIfiles',...
+    'nextTempPointNum');
 
 
 % --- Executes on button press in pushbutton29.
