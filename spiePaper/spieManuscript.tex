@@ -36,17 +36,18 @@
 %  can be indicated with a superscript in italics, 
 %  which is easily obtained with \supit{}.
 
-\author{Zachary DeStefano\supit{a}, Nadine Abi-Jaoudeh\supit{a}, Ming Li\supit{b}, Bradford J Wood\supit{a}, Ronald M Summers\supit{a}, Jianhua Yao\supit{a}
+\author{Zachary DeStefano\supit{a}, Nadine Abi-Jaoudeh\supit{b}, Ming Li\supit{c}, Bradford J Wood\supit{b}, Ronald M Summers\supit{a}, Jianhua Yao\supit{a}
 \skiplinehalf
 \supit{a}Clinical Image Processing Services, Radiology and Imaging Sciences, \\Clinical Center, National Institutes of Health, Bethesda, MD 20892\\
-\supit{b}National Heart, Lung and Blood Institute, \\National Institutes of Health, Bethesda, MD, USA
+\supit{b}Interventional Radiology, Radiology and Imaging Sciences, \\Clinical Center, National Institutes of Health, Bethesda, MD 20892\\
+\supit{c}National Heart, Lung and Blood Institute, \\National Institutes of Health, Bethesda, MD, USA
 }
 
 %>>>> Further information about the authors, other than their 
 %  institution and addresses, should be included as a footnote, 
 %  which is facilitated by the \authorinfo{} command.
 
-\authorinfo{Author Emails: zdestefa@uci.edu}
+%\authorinfo{Author Emails: zdestefa@uci.edu, abijaoudehn@cc.nih.gov, ,bwood@nih.gov}
 %%>>>> when using amstex, you need to use @@ instead of @
  
 
@@ -122,7 +123,7 @@ For each comparison scan, a corresponding thermal map was generated via the foll
 \begin{enumerate}
 \item Register the comparison scan to the baseline scan
 \item Use Connected Component Analysis and Principal Component Analysis (PCA) to detect the Needle and Thermocouple tips
-\item Use the result to identify an ROI. If that fails, manually input the ROI.
+\item Use the result to obtain the ROI where the ablation occurred. If that fails, manually input the ROI.
 \item Filter the ROI in the baseline and comparison scans with an averaging filter, and calculate the difference
 \item Use the result to locate where the ablation likely occurred
 \item Calculate the Spatial Offset RMSE value for the ROI
@@ -285,7 +286,9 @@ We hope these methods will continue to be tested and eventually incorporated int
 
 Most steps in the pipeline currently take less than 30 seconds so applying them in clinical practice is possible. The registration step however takes 1-6 hours. This will need to be cut down if we are to use the registration step in clinical practice. We will either need to use a different registration algorithm or change the parameters of our current one to improve its running time. If the registration step cannot be done efficiently, then we may need to adjust our change metrics to be more tolerant of registration errors.  
 
+\acknowledgements
 
+This project was a collaboration between the Clinical Image Processing Service (CIPS) and Interventional Radiology (IR) in the department of Radiology and Imaging Sciences at the National Institutes of Health Clinical Center. Thank you to the non-authors in CIPS who provided valuable guidance and insights, especially Holger Roth and Nathan Lay. Thank you to those in IR who helped acquire the patient data. Much of the analysis was done as an internship project during Summer 2015. The internship was funded by an NIH Intramural Research Training Award (IRTA) grant. 
 
 \bibliography{report}   %>>>> bibliography data in report.bib
 \bibliographystyle{spiebib}   %>>>> makes bibtex use spiebib.bst
