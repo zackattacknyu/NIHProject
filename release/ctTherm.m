@@ -776,6 +776,7 @@ catch
 end
 
 numROI = numel(outputName);
+assignin('base','roiIndex',numROI+1);
 nextROIn = evalin('base','nextManualROInum');
 outputName{numROI+1} = strcat('Manual_ROI_',num2str(nextROIn));
 assignin('base','nextManualROInum',nextROIn+1);

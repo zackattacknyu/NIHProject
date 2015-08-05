@@ -140,6 +140,33 @@ Click on "Generate and Save Thermal Map w/o Needle" to generate the thermal map
 			the Spatial Offset RMSE volume to be selected
 	- The thermal volume is saved in the following:
 		"thermalMapNoNeedle_<Date & Time when button clicked>.mat"
+
+
+
+User Instructions (Post-Processing):
+
+To find the experimental mean temperatures:
+    - Use the matlab script "generateMeanTemperatures.m" after the thermal map
+    is generated. 
+    - Instructions are in the script. 
+
+To generate the mean temp vs radius graph:
+    - Use the matlab script "generateMeanTempVsRadius.m" after the thermal map
+        is generated
+    - Instructions in the script
+
+To generate the 3D view of ablation zone and needle:
+    1. Use ITK-SNAP on the NII file of the baseline scan to segment the needle
+    2. Save the segmentation as a .vtk file
+    3. Use the script "generateThermalMapNIIfile.m" to generate the 
+        proper NII file for the thermal map. Instructions in the script.
+    4. Use ITK-SNAP on the NII file of the thermal map to segment the ablation zone
+    5. Save the segmentation as a .vtk file
+    6. Open the files from step 2 and 5 in 3D slicer
+    7. Modify transparancy values for the different models to view
+        the ablation zone superimposed on the needle
+
+
 			
 			
  

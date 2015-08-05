@@ -62,7 +62,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{abstract}
-Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated.  Previously, this was attempted using CBCT scans of a pig shoulder undergoing ablation \cite{Li13}. We are extending this work by using CBCT scans of real patients and incorporating more processing steps. We register the scans before comparing them due to the movement and deformation of organs. We also employ a robust change metric due to image noise and artifacts. We then automatically locate the needle tip and the ablation zone. Once the change map in the ablation zone is generated, we correlate change data with measured temperature data at the key points in the region. This allows us to transform our change map into a thermal map. This thermal map is then able to provide an estimate as to the size and temperature of the ablation zone. We evaluated our procedure on a data set of 12 patients who had a total of 24 ablation procedures performed. We were able to generate reasonable thermal maps with varying degrees of accuracy. The average error ranged from 2.7 to 16.2 degrees Celsius. In addition to providing estimates of the size of the ablation zone for surgical guidance, 3D visualizations of the ablation zone and needle are also produced.  
+
+Monitoring temperature during a cone-beam CT (CBCT) guided ablation procedure is important for prevention of over-treatment and under-treatment. In order to accomplish ideal temperature monitoring, a thermometry map must be generated. Previously, this was attempted using CBCT scans of a pig shoulder undergoing ablation \cite{Li13}. We are extending this work by using CBCT scans of real patients and incorporating more processing steps. We register the scans before comparing them due to the movement and deformation of organs. We then automatically locate the needle tip and the ablation zone. We employ a robust change metric due to image noise and artifacts. This change metric takes windows around each pixel and uses an equation inspired by Time Delay Analysis to calculate the error between windows with the assumption that there is an ideal spatial offset. Once the change map is generated, we correlate change data with measured temperature data at the key points in the region. This allows us to transform our change map into a thermal map. This thermal map is then able to provide an estimate as to the size and temperature of the ablation zone. We evaluated our procedure on a data set of 12 patients who had a total of 24 ablation procedures performed. We were able to generate reasonable thermal maps with varying degrees of accuracy. The average error ranged from 2.7 to 16.2 degrees Celsius. In addition to providing estimates of the size of the ablation zone for surgical guidance, 3D visualizations of the ablation zone and needle are also produced. 
 \end{abstract}
 
 %>>>> Include a list of keywords after the abstract 
@@ -197,14 +198,14 @@ After generating the Spatial Offset RMSE result image, we find the coordinates w
 
 \begin{figure} 
 \centering 
-\includegraphics[width=4in]{slidingDiffRegression.png} 
+\includegraphics[width=4in]{slidingDiffRegression2.png} 
 \caption{Regression Curve Calculated} 
 \label{RegressionCurve}
 \end{figure}
 
 \begin{figure} 
 \centering 
-\includegraphics[width=4in]{slidingDiffThermalMap.png} 
+\includegraphics[width=4in]{slidingDiffThermalMap2.png} 
 \caption{Thermal Map generated from Regression curve} 
 \label{ThermalMap}
 \end{figure}

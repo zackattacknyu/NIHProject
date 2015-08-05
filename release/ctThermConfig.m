@@ -47,7 +47,7 @@ When the regression is done, the neighborhood of points around the point selecte
     to be the needle or thermocouple center is used. 
 This is the radius of that neighborhood
 %}
-wSize=4;
+wSize=2;
 
 %{
 This is the degree of the polynomial used in the regression equation
