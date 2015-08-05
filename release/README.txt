@@ -110,6 +110,41 @@ Click on "Save Temperature Points" to save .mat file containing the
 Click on "Load Temperature Points" to load a .mat file containing the
 	temperature point information found before
 
+	
+	
+User Instructions (Regresion and Thermal Map step):
+
+Click on "Generate and Save Regression" to generate the regression information
+	- The graph of Spatial Offset RMSE vs Temperature Change will appear
+	- The info will be saved in the "results" folder under:
+		"regressionInfo_<Date & Time when button clicked>.mat" 
+
+Click on "Load Regression" to load regression information
+
+Click on "View Regression" to view the graph of Spatial Offset RMSE vs Temperature Change
+
+Click on "Generate and Save Thermal Map" to generate the thermal map
+	- It requires the following:
+		- Something populated in "Regresion Info File:"
+		- Something populated in "Spatial Offset RMSE file:"
+	- The thermal volume is saved in the following:
+		"thermalMap_<Date & Time when button clicked>.mat"
+
+Click on "Generate and Save Thermal Map w/o Needle" to generate the thermal map 
+	where the needle points are assumed to have zero temperature change
+	- It requires the following:
+		- The baseline scan populated in "Baseline Scan File:"
+		- Something populated in "Regresion Info File:"
+		- Something populated in "Spatial Offset RMSE file:"
+		- The "ROI List:" box to be populated and the ROI used to generate
+			the Spatial Offset RMSE volume to be selected
+	- The thermal volume is saved in the following:
+		"thermalMapNoNeedle_<Date & Time when button clicked>.mat"
+			
+			
+ 
+
+
 
 
 
