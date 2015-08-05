@@ -24,7 +24,7 @@ public class WholeDiffBlock {
     
     private double[][][] outputBlock;
     
-    public WholeDiffBlock(Double[][][] baselineBlock, Double[][][] comparisonBlock, Integer fSize){
+    public WholeDiffBlock(Double[][][] baselineBlock, Double[][][] comparisonBlock, Integer fSize) throws Exception{
         this.baselineBlock = baselineBlock;
         this.comparisonBlock = comparisonBlock;
         this.fSize = fSize;
@@ -37,14 +37,14 @@ public class WholeDiffBlock {
     }
     
     
-    public static double[][][] getWholeDiffBlock(Double[][][] baselineBlock, Double[][][] comparisonBlock, Integer fSize){
+    public static double[][][] getWholeDiffBlock(Double[][][] baselineBlock, Double[][][] comparisonBlock, Integer fSize) throws Exception{
            
         WholeDiffBlock wholeBlock = new WholeDiffBlock(baselineBlock,comparisonBlock,fSize);       
         return wholeBlock.getOutputBlock();
         
     }
     
-    private void generateBlock(){
+    private void generateBlock() throws Exception{
         
         outputBlock = new double[baselineBlock.length][baselineBlock[0].length][baselineBlock[0][0].length];
         

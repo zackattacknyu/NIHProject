@@ -17,12 +17,20 @@ public class WholeDiffImage {
     private final int fSize;
     private final int sqSize;
     
-    public static double[][] getWholeDiffImage(Double[][] img1x, Double[][] img2x, Integer fSize){
-        double[][] img1 = new double[img1x.length][img1x[0].length];
-        double[][] img2 = new double[img2x.length][img2x[0].length];
+    public static double[][] getWholeDiffImage(Double[][] img1x, Double[][] img2x, Integer fSize) throws Exception{
         
-        for(int i = 0; i < img1.length; i++){
-            for(int j = 0; j < img2.length; j++){
+        if((img1x.length != img2x.length) || (img1x[0].length != img2x[0].length)){
+            throw new Exception("Images to compare have different sizes. Must have same size for diff image generation.");            
+        }
+                
+        int numRows = img1x.length;
+        int numCol = img1x[0].length;
+        
+        double[][] img1 = new double[numRows][numCol];
+        double[][] img2 = new double[numRows][numCol];
+        
+        for(int i = 0; i < numRows; i++){
+            for(int j = 0; j < numCol; j++){
                 img1[i][j] = img1x[i][j];
                 img2[i][j] = img2x[i][j];
             }
