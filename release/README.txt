@@ -68,14 +68,47 @@ User Instructions (Change Detection Step):
 
 Click on "Generate and Save Conv Diff Image in ROI" to generate
 		an NII file for the Conv Diff Image
+	- Wait until the field "Conv Diff File:" is populated with a new file
 	- It will be saved in the "results" folder under:
 		"convDiffROI_<Date & Time when button clicked>.nii"
 	- If you click on "View Conv Diff Image in ROI", you can view it
 
 Click on "Generate and Save Spatial Offset RMSE Image in ROI" to generate
 		an NII file for the Spatial Offset RMSE image
-	- 
+	- Wait until the field "Spatial Offset RMSE File:" is populated with a new file
+	- It will be saved in the "results" folder under:
+		"spatialOffsetROI_<Date & Time when button clicked>.nii"
+	- If you click on "View Spatial Offset RMSE Image in ROI", you can view it
 
+
+User Instructions (Acquire Temperature Points):
+
+1. Click on "New Temperature Point"
+2. Specify the NIFTI file you want to view to acquire
+	the indices of the temperature zone. You will view this file
+	and specify the coordinates of the center of the temperature zone.
+	You will specify another file later, which can be different, whose 
+	values at those coordinates will be used as the Spatial Offset RMSE values
+3. Specify the Slice Number and click "OK"
+4. Specify the temperature change at that point and click "OK"
+6. Click on the pixel that is the center of the ablation zone
+5. Finally, specify the NII file which has the values you will use. The
+	indices used were specified in step 3 and 6. It can be the same file
+	as specified in step 2 but it does not need to be. It does need to have
+	the same size though.
+6. The temperature change as well as the Spatial Offset RMSE values in a
+	neighborhood around the points specified will be added to the data set
+	which will later be used for the regression calculation
+
+Click on "Delete Temperature Point" to delete a temperature reading
+
+Click on "Save Temperature Points" to save .mat file containing the 
+	temperature point information acquired already
+	- It will be saved in the "results" folder under:
+		"tempPointInfo_<Date & Time when button clicked>.mat"
+
+Click on "Load Temperature Points" to load a .mat file containing the
+	temperature point information found before
 
 
 
