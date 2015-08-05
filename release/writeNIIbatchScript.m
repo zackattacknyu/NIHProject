@@ -1,6 +1,13 @@
 function [ commandName, batchFilePath ] = writeNIIbatchScript( baselineNIIfilePath,comparisonNIIfilePath )
-%WRITENIIBATCHSCRIPT Summary of this function goes here
-%   Detailed explanation goes here
+%WRITENIIBATCHSCRIPT generates the registration batch script
+%
+%   INPUT:
+%       baselineNIIfilePath - file path for baseline NII file
+%       comparisonNIIfilePath - file path for comparison NII file
+%
+%   OUTPUT
+%       commandName - MS DOS command to start batch script
+%       batchFilePath - path of .bat file generated
 writeDirectory = strcat(pwd,'\temp');
 if(~exist(writeDirectory,'dir'))
     mkdir(writeDirectory);

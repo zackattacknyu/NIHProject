@@ -1,6 +1,8 @@
 function [ dcmFixedHU,outputFilePath ] = saveDICOMfolder( inputFolder )
-%SAVEDICOMFOLDER Summary of this function goes here
-%   Detailed explanation goes here
+%SAVEDICOMFOLDER Takes in DICOM folder and outputs specific NII file
+%
+%The NII file it outputs is as follows:
+%   results/<FamilyName>_<StudyDate>_<SeriesNumber>.nii
 
 if( inputFolder(end)~='\' )
    inputFolder = strcat(inputFolder,'\'); 

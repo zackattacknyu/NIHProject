@@ -1,6 +1,5 @@
 function [ fixedImg ] = initializeNIIfile( parentDir,niiFileName )
-%INITIALIZENIIFILES 
-%   This takes in an NII file and returns a 3D array of its
+%INITIALIZENIIFILES This takes in an NII file and returns a 3D array of its
 %       raw data.
 
 niiFilePath = strcat(parentDir,'/',niiFileName);

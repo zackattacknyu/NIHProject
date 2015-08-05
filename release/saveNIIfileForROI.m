@@ -1,6 +1,5 @@
 function [  ] = saveNIIfileForROI( currentROI,curROIString )
-%SAVENIIFILEFORROI Summary of this function goes here
-%   Detailed explanation goes here
+%SAVENIIFILEFORROI saves the NII file for a selected ROI
 
 
 outputStr = 'results/ROIselectedOn';

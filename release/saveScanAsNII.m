@@ -1,6 +1,6 @@
 function [ ] = saveScanAsNII( scanData,outputFilePath )
-%SAVESCANASNII Summary of this function goes here
-%   Detailed explanation goes here
+%SAVESCANASNII takes in 3D volume and file path and makes the NII file
+
 niiFixed = make_nii(scanData);
 save_nii(niiFixed,outputFilePath);
 

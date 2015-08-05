@@ -1,6 +1,5 @@
 function [ outputStr ] = makeDateTimeString( )
-%MAKEDATETIMESTRING Summary of this function goes here
-%   Detailed explanation goes here
+%MAKEDATETIMESTRING outputs the following: "_<Date and Time now>"
 
 outputStr = '';
 entries = datevec(now);

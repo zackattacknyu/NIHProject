@@ -4,7 +4,7 @@ function [ outputBlock ] = getSlidingWindowBlockJava( fixedROI, movingROI,fSize 
 %   INPUT:
 %       fixedROI - region of interest for baseline image
 %       movingROI - region of interest for comparison image
-%       fSize - half-width
+%       fSize - half-width of window to use
 %
 %   OUTPUT
 %       diffFrameBlock - output block
