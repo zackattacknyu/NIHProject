@@ -45,3 +45,40 @@ User Instructions (Registration Step):
 
 User Instructions (ROI step):
 
+NOTE: Make sure both baseline and comparison scans are loaded before proceeding
+1. Click on "Make ROIs automatically - Run Needle Detection"
+2. A 3D Plot will appear showing the detected components and endpoints
+3. Close the 3D Plot if satisfied with the detections
+4. The "ROI List: " will be now be populated with the detected endpoints
+5. The fields under "Current ROI: " show the parameters of the ROI. 
+	They can be changed if desired.
+6. If you need a new ROI, click "Make ROI Manually" 
+	and adjust the parameters in the fields under "Current ROI:"
+
+If you click on "View ROI in Baseline Scan" or "View ROI in Comparison Scan":
+	- The ROI selected in the "ROI List:" is the one that will appear	
+	
+If you click on "Save ROI in Baseline Scan" or "Save ROI in Comparison Scan":
+	- The ROI selected in the "ROI List:" is the one saved
+	- It is saved in the "results" folder under the file name 
+		"ROIselectedOn_<Date/Time when button clicked>.nii"
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

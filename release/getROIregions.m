@@ -26,6 +26,10 @@ outputROI = cell(numCompsUse,2);
 minCoordsAll = cell(numCompsUse,2);
 maxCoordsAll = cell(numCompsUse,2);
 
+figure
+hold on
+title('3D Plot of high HU components (blue) and their endpoints, the ROI centers (red)');
+
 for j = 1:numCompsUse
     [rInd,cInd,zInd] = ind2sub(size(fixedImg),compPixelLists{compIndices(j)});
     pts = [rInd,cInd,zInd];
@@ -36,10 +40,13 @@ for j = 1:numCompsUse
     needleEnd = pts(pointInds(end),:);
     
     roiCenters = [needleEnd;needleStart];
-
+    
     if(norm(needleStart-imgCenter)<norm(needleEnd-imgCenter)) %needle start is closer to center
         roiCenters = flipud(roiCenters);
     end
+    
+    plot3(roiCenters(:,1),roiCenters(:,2),roiCenters(:,3),'rx','MarkerSize',20,'LineWidth',3);
+    plot3(pts(:,1),pts(:,2),pts(:,3),'b.')
     
     for k = 1:2
         minCoords = max([1 1 1],roiCenters(k,:)-roiRadius);
@@ -54,6 +61,8 @@ for j = 1:numCompsUse
     
     
 end
+
+hold off
 
 end
 

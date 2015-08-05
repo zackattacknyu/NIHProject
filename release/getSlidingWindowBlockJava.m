@@ -1,4 +1,4 @@
-function [ diffFrameBlock ] = getSlidingWindowBlockJava( fixedROI, movingROI,fSize )
+function [ outputBlock ] = getSlidingWindowBlockJava( fixedROI, movingROI,fSize )
 %GETSLIDINGWINDOWBLOCKJAVA Gets the sliding window difference block for an
 %                                           ROI
 %   INPUT:
@@ -42,6 +42,12 @@ for k=1:numZ
     diffFrameBlock(:,:,k) = slidingWindowSquDiffJava(fixedSlice,movingSlice,fSize);
     
 end
+
+%{
+diffFrameBlock now has the MSE of the window
+We need the RMSE so we take the sqrt here
+%}
+outputBlock = sqrt(diffFrameBlock);
 
 end
 
