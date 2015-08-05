@@ -102,12 +102,12 @@ It is a common problem in signal processing to have two nearly identical signals
 \]
 The most likely delay $t_{delay}$ occurs when the correlation is the highest thus
 \[
-t_{delay} = arg\,max_t (f \star g)[t]
+t_{delay} = \arg\max_t (f \star g)[t]
 \]
 
 For our purposes, we will take two square small images $U$ and $V$ and interpret them as periodic 2D signals that continuously repeat horizontally and vertically. Extrapolating from time delay analysis, the ideal spatial offset between the images occurs when the correlation is highest. Thus our ideal offset $(r,c)$ is as follows:
 \[
-(r,c)_{offset} = arg\,max_{r,c} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {U_{k+r,l+c} \cdot V_{k,l}}
+(r,c)_{offset} = \arg\max_{r,c} \sum_{l=0}^{n-1} \sum_{k=0}^{n-1} {U_{k+r,l+c} \cdot V_{k,l}}
 \]
 The offset values found here are equivalent to the ones that are found in the Spatial Offset RMSE method. 
 
