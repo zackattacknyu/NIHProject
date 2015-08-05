@@ -61,9 +61,20 @@ If you click on "View ROI in Baseline Scan" or "View ROI in Comparison Scan":
 If you click on "Save ROI in Baseline Scan" or "Save ROI in Comparison Scan":
 	- The ROI selected in the "ROI List:" is the one saved
 	- It is saved in the "results" folder under the file name 
-		"ROIselectedOn_<Date/Time when button clicked>.nii"
-
+		"ROIselectedOn_<Date & Time when button clicked>.nii"
 		
+
+User Instructions (Change Detection Step):
+
+Click on "Generate and Save Conv Diff Image in ROI" to generate
+		an NII file for the Conv Diff Image
+	- It will be saved in the "results" folder under:
+		"convDiffROI_<Date & Time when button clicked>.nii"
+	- If you click on "View Conv Diff Image in ROI", you can view it
+
+Click on "Generate and Save Spatial Offset RMSE Image in ROI" to generate
+		an NII file for the Spatial Offset RMSE image
+	- 
 
 
 
