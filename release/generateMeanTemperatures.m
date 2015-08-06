@@ -7,17 +7,19 @@ It goes through the selected slices in the thermal map and finds
 Use this to find the average temps from regression for error analysis
 %}
 
+%MUST MANUALLY INPUT THE SLICE NUMBERS HERE
+sliceNums = [10 68 86];
+
+
 %radius for temperature zone in pixels
 curRadius = 3; 
 
-sliceNums = [10 68 86];
 inputImages = currentThermalMap(:,:,sliceNums);
-%%
-outputAvgTemps = cell(1,length(inputImages));
+outputAvgTemps = cell(1,size(inputImages,3));
 
 
-for ind = 1:length(inputImages)
-    tempImage = polyval(coeff,inputImages{ind})+36;
+for ind = 1:size(inputImages,3)
+    tempImage = inputImages(:,:,ind);
     ff = figure;
     imagesc(tempImage);
     colorbar;
