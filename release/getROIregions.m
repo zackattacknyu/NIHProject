@@ -1,4 +1,4 @@
-function [outputROI,minCoordsAll,maxCoordsAll] = getROIregions( ...
+function [outputROI,minCoordsAll,maxCoordsAll,needleTipInROI] = getROIregions( ...
     fixedImg, threshold,pointsThreshold,minNumNeedles,roiRadius )
 %GETROIREGIONS Takes in the 3D volume and outputs the detected ROI regions
 %
@@ -36,6 +36,7 @@ numCompsUse = max(minNumNeedles,numImpComps);
 numCompsUse = min(numCompsUse,numComps); 
 
 outputROI = cell(numCompsUse,2);
+needleTipInROI = cell(numCompsUse,2);
 minCoordsAll = cell(numCompsUse,2);
 maxCoordsAll = cell(numCompsUse,2);
 
@@ -62,8 +63,42 @@ for j = 1:numCompsUse
     plot3(pts(:,1),pts(:,2),pts(:,3),'b.')
     
     for k = 1:2
-        minCoords = max([1 1 1],roiCenters(k,:)-roiRadius);
-        maxCoords = min(size(fixedImg),roiCenters(k,:)+roiRadius);
+        %minCoords = max([1 1 1],roiCenters(k,:)-roiRadius);
+        %maxCoords = min(size(fixedImg),roiCenters(k,:)+roiRadius);
+        
+        minCoords = roiCenters(k,:)-roiRadius;
+        maxCoords = roiCenters(k,:)+roiRadius;
+        needleTipCoords = repmat(1+roiRadius,1,3);
+        
+        %checks the min and max coords
+        if(minCoords(1) < 1)
+            needleTipCoords(1)=needleTipCoords(1)+minCoords(1)+1; %cancels out negative part
+            minCoords(1)=1;
+        end
+        if(minCoords(2) < 1)
+            needleTipCoords(2)=needleTipCoords(2)+minCoords(2)+1; %cancels out negative part
+            minCoords(2)=1;
+        end
+        if(minCoords(3) < 1)
+            needleTipCoords(3)=needleTipCoords(3)+minCoords(3)+1; %cancels out negative part
+            minCoords(3)=1;
+        end
+        
+        if(maxCoords(1) > size(fixedImg,1))
+            needleTipCoords(1)=needleTipCoords(1)+maxCoords(1)+1; %cancels out negative part
+            maxCoords(1)=size(fixedImg,1);
+        end
+        if(maxCoords(2) > size(fixedImg,2))
+            needleTipCoords(2)=needleTipCoords(2)+maxCoords(2)+1; %cancels out negative part
+            maxCoords(2)=size(fixedImg,2);
+        end
+        if(maxCoords(3) > size(fixedImg,3))
+            needleTipCoords(3)=needleTipCoords(3)+maxCoords(3)+1; %cancels out negative part
+            maxCoords(3)=size(fixedImg,3);
+        end
+        
+        needleTipInROI{j,k} = needleTipCoords;
+        
         outputROI{j,k} = fixedImg(minCoords(1):maxCoords(1),...
             minCoords(2):maxCoords(2),minCoords(3):maxCoords(3));
         
