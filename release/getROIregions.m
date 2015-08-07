@@ -83,19 +83,7 @@ for j = 1:numCompsUse
             needleTipCoords(3)=needleTipCoords(3)+minCoords(3)+1; %cancels out negative part
             minCoords(3)=1;
         end
-        
-        if(maxCoords(1) > size(fixedImg,1))
-            needleTipCoords(1)=needleTipCoords(1)+maxCoords(1)+1; %cancels out negative part
-            maxCoords(1)=size(fixedImg,1);
-        end
-        if(maxCoords(2) > size(fixedImg,2))
-            needleTipCoords(2)=needleTipCoords(2)+maxCoords(2)+1; %cancels out negative part
-            maxCoords(2)=size(fixedImg,2);
-        end
-        if(maxCoords(3) > size(fixedImg,3))
-            needleTipCoords(3)=needleTipCoords(3)+maxCoords(3)+1; %cancels out negative part
-            maxCoords(3)=size(fixedImg,3);
-        end
+        maxCoords = min(size(fixedImg),maxCoords);
         
         needleTipInROI{j,k} = needleTipCoords;
         
