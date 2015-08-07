@@ -1,3 +1,18 @@
+%{
+
+This script plotted temperature vs distance to see if it follows an
+    exponential distribution roughly
+
+Future:
+    - focus on points eminating from center in only one direction
+    - plot the contour lines to 
+        see their shapes and see if they are
+        circular
+
+%}
+
+load('tempData.mat');
+
 centerPtInVol = [58 54 23];
 curRadius = 30;
 
