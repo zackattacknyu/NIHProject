@@ -1,7 +1,7 @@
 %TO BE RUN AFTER GENERATEHEATMAP[METHOD].M
 %   GENERATES GRAPH OF MEAN TEMPERATURE VERSUS RADIUS
 
-%tempImage = thermMapROI;
+tempImage = currentThermalMap(:,:,23);
 figure
 imagesc(tempImage);
 colorbar;
@@ -23,6 +23,11 @@ for curRadius = 0:maxRadii
     tempsInRegion = tempsInRegion(tempsInRegion>0);
     averageTemps(curRadius+1) = mean(tempsInRegion);
 end
+
+figure
+plot(0:maxRadii,averageTemps);
+xlabel('Radius of Region centered at Ablation Zone (pixels)');
+ylabel('Average Temperature in Region (Celcius)');
 %%
 
 %averageTempsPlot = {averageTemps};
@@ -39,10 +44,7 @@ averageTempsPlot = averageTempsPlotTemp;
 save('currentAvgTemps.mat','averageTempsPlot')
 
 %%
-figure
-plot(0:maxRadii,averageTemps);
-xlabel('Radius of Region centered at Ablation Zone (pixels)');
-ylabel('Average Temperature in Region (Celcius)');
+
 
 %%
 
