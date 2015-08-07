@@ -21,4 +21,4 @@ zInds = minCoords(3):maxCoords(3);
 diffFrameAll = zeros(size(baselineScan));
 diffFrameAll(rInds,cInds,zInds)=currentThermalMap;
 niiDiff = make_nii(diffFrameAll);
-save_nii(niiDiff,'pt8_3DOverlayFiles/diffBlockAll_5002_5003.nii');
+save_nii(niiDiff,strcat('results/thermalMapInVol',makeDateTimeString(),'.nii'));
