@@ -25,6 +25,7 @@
 \usepackage{caption} 
 \usepackage{subcaption} 
 \usepackage{hyperref}
+\usepackage{gensymb}
 %\usepackage{mathtools}
 
 \title{CT Thermometry for Cone-beam CT Guided Ablation} 
@@ -77,7 +78,7 @@ Radiofrequency ablation (RFA) has become a common interventional procedure for t
 
 C-arm Cone-beam CT (CBCT) is an imaging modality that has been adopted for a variety of purposes\cite{Orth08}, including guidance during RFA. Unlike traditional CT scans, the source and detector with CBCT are easily shifted to various locations. Once the source and detector are in place, they rotate around a fixed point of interest. This allows volumetric data to be acquired quickly and easily during interventional procedures without the need for patient transportation. This occurs because the data is acquired via only a single rotation of the scanner.
 
-Even though CBCT provides much useful information, it is still difficult to determine how much tissue has been affected by the procedure. Specifically, we need to know the temperature changes that have occurred in the tissue\cite{Li13}. We want to make sure only the cancerous tissue has been heated and not the healthy tissue. Ideally, each of the CBCT voxels would also have a temperature reading. We would then be able to superimpose the thermal volume on the CBCT scan and quickly find out which tissue has been affected.
+Even though CBCT provides much useful information, it is still difficult to determine how much tissue has been affected by the procedure because changes in temperature are not visible. We need to know the temperature changes that have occurred in the tissue\cite{Li13} because immediate cell death happens at 60 \degree Celcius. We want to make sure only the cancerous tissue has been heated and not the healthy tissue. Ideally, each of the CBCT voxels would also have a temperature reading. We would then be able to superimpose the thermal volume on the CBCT scan and quickly find out which tissue has been affected.
 
 This possibility has been explored in the past \cite{Li13} but only for phantoms. We decided to extend the work to real patients and incorporate more processing steps to enhance the thermal maps. For this work, we had a data set of CBCT scans taken during RFA procedures. With each procedure, there was a baseline CBCT scan taken after the ablation needle was inserted but before it was heated. There were then 1-4 comparison scans taken as the needle was heated and cooled. We processed each of the comparison scans and attempted to generate a thermal map by comparing them to the baseline scan.
 
