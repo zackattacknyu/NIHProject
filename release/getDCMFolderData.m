@@ -22,6 +22,18 @@ intercept = 0;
 for i = 1:numFiles
     filename = filesInFolder(i,1).name;
     filepath = strcat(dirName,filename);
+    
+    %do not include file if the name does not contain a number
+    hasNumber = false;
+    for ii = 1:length(filename)
+        if(isstrprop(filename(ii),'digit')) 
+            hasNumber=true; 
+        end
+    end
+    if(~hasNumber)
+       continue; 
+    end
+    
     %if(length(filename) < 4)
     %   continue; %do not include it 
     %end
